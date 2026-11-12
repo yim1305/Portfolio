@@ -1,4 +1,4 @@
-# Krittin Jindamai — research portfolio
+# Krittin Jindamai's Portfolio
 
 A small static website for professors and research groups: who I am, what I work on, and the results, in as little reading time as possible.
 
