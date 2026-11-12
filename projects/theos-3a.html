@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>THEOS-3A structural analysis | Krittin Jindamai</title>
+  <meta name="description" content="Meshing, modal analysis and quasi-static load analysis of the primary structure of Thailand's THEOS-3A satellite.">
+  <meta property="og:title" content="THEOS-3A structural analysis | Krittin Jindamai">
+  <meta property="og:description" content="Meshing, modal analysis and quasi-static load analysis of the primary structure of Thailand's THEOS-3A satellite.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/fonts/stix-two-text-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <!-- Marks the page as script-enabled before first paint (see section 14 of site.css). -->
+  <script>document.documentElement.className += " js";</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===== SITE HEADER: identical on every page. If you edit it, edit it in all HTML files. ===== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-name" href="../index.html">Krittin Jindamai</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="../experience.html">Experience</a>
+        <a href="../projects.html" aria-current="page">Projects</a>
+        <a class="btn" href="../assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container page">
+
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../projects.html">Projects</a> / THEOS-3A structural analysis</nav>
+
+    <!-- ===== PROJECT HEADER: what it is, one-sentence abstract, links ===== -->
+    <header class="project-head">
+      <p class="project-head__meta"><span>Internship, GISTDA, Summer 2025</span> <span class="status status--done">Complete</span></p>
+      <h1>THEOS-3A structural analysis</h1>
+      <p class="lede">Primary structure meshing, modal analysis, and static load analysis for Thailand's THEOS-3A Earth observation satellite.</p>
+      <!-- No paper or code links yet. Add a <p class="actions"> block here (see _template.html). -->
+    </header>
+
+    <!-- ===== FACTS: short label and value pairs ===== -->
+    <dl class="facts">
+      <div><dt>Role</dt><dd>Mechanical engineering intern</dd></div>
+      <div><dt>Organization</dt><dd>Geo-Informatics and Space Technology Development Agency (GISTDA), Thailand</dd></div>
+      <div><dt>Supervisors</dt><dd>Panachai Santananukarn, Atipat Wattananuchai</dd></div>
+      <div><dt>Period</dt><dd>Summer 2025</dd></div>
+      <div><dt>Tools</dt><dd>HyperMesh, MSC Nastran</dd></div>
+    </dl>
+
+    <!-- ===== BODY: lead figure, text sections, figure grid ===== -->
+    <div class="prose">
+      <h2>Overview</h2>
+      <p>THEOS-3A is the first satellite to be fully developed, manufactured, and integrated in Thailand. The program is currently in its development stage, with the engineering model under construction. I was tasked with running static and modal load analysis to verify that the engineering model would survive testing on the shaker system.</p>
+
+      <h2>Approach</h2>
+      <ul>
+        <li>Meshed the entire satellite structure in HyperMesh.</li>
+        <li>Cleaned up poor-quality mesh elements.</li>
+        <li>Modeled joints using rigid and spring elements.</li>
+        <li>Ran free-mode modal analysis, fixed-mode modal analysis, and static load analysis based on the SpaceX Rideshare Payload User's Guide.</li>
+      </ul>
+
+      <h2>Results</h2>
+      <p>Max shear stress, von Mises stress, and displacement all stayed within the structure's allowable strength limits. Detailed simulation images and results from this project are not published here, per GISTDA's data policy.</p>
+    </div>
+
+    <section class="block">
+      <h2>Figures</h2>
+      <div class="figure-grid">
+        <figure class="figure">
+          <a class="figure__frame" href="../assets/img/theos-3a/theos-constellation.webp" data-zoom><img src="../assets/img/theos-3a/theos-constellation.webp" alt="GISTDA graphic of the THEOS constellation of Earth observation satellites around the Earth." width="1100" height="1247" loading="lazy" decoding="async"></a>
+          <figcaption>The THEOS constellation. Image: <a href="https://www.gistda.or.th/news_view.php?n_id=8789&amp;lang=EN" target="_blank" rel="noopener">GISTDA</a>.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <nav class="pager" aria-label="More projects">
+      <a class="pager__prev" href="communigator-payload.html"><span>Previous</span><span>Swamp Launch payload flight software</span></a>
+    </nav>
+
+  </main>
+
+  <!-- ===== SITE FOOTER: identical on every page. ===== -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>Krittin Jindamai (Yim), University of Florida</p>
+      <p class="site-footer__links">
+        <a href="mailto:krittin.jindamai@ufl.edu">krittin.jindamai@ufl.edu</a>
+        <a href="https://www.linkedin.com/in/krittinjindamai/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/yim1305" target="_blank" rel="noopener">GitHub</a>
+        <a href="../assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/site.js" defer></script>
+</body>
+</html>

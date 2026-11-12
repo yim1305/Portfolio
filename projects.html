@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projects | Krittin Jindamai</title>
+  <meta name="description" content="All research and engineering projects by Krittin Jindamai.">
+  <meta property="og:title" content="Projects | Krittin Jindamai">
+  <meta property="og:description" content="All research and engineering projects by Krittin Jindamai.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/stix-two-text-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/ibm-plex-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/site.css">
+  <!-- Marks the page as script-enabled before first paint (see section 14 of site.css). -->
+  <script>document.documentElement.className += " js";</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===== SITE HEADER: identical on every page. If you edit it, edit it in all HTML files. ===== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-name" href="index.html">Krittin Jindamai</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="experience.html">Experience</a>
+        <a href="projects.html" aria-current="page">Projects</a>
+        <a class="btn" href="assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container page">
+
+    <h1 class="page-title">Projects</h1>
+    <p class="page-intro">Everything in one list. Each row opens a page with the approach, results, figures, and links to papers and code.</p>
+
+    <!-- To add a project: copy one <li> block, change the link, image, text and dates. -->
+    <section class="cv-section">
+      <h2 class="visually-hidden">Research</h2>
+      <div class="section__head"><h3>Research</h3></div>
+      <ul class="index">
+          <li>
+            <a class="index__row" href="projects/honors-thesis.html">
+              <div class="index__thumb index__thumb--plot"><img src="assets/img/honors-thesis/flywheel-speed-home.svg" alt="" loading="lazy" decoding="async"></div>
+              <div>
+                <p class="index__title">HCMG momentum management using magnetorquers</p>
+                <p class="index__desc">A 12U CubeSat simulation that slews with a hybrid CMG array, then uses magnetorquers to desaturate its flywheels during fine pointing.</p>
+              </div>
+              <div class="index__meta"><span>2026 to 2027</span> <span class="status status--progress">In progress</span></div>
+            </a>
+          </li>
+          <li>
+            <a class="index__row" href="projects/clf-mcbf-hcmg.html">
+              <div class="index__thumb"><div class="placeholder">Figure to be added</div></div>
+              <div>
+                <p class="index__title">CLF-MCBF for safe HCMG mode switching</p>
+                <p class="index__desc">Matrix-valued control barrier functions that keep a hybrid CMG array nonsingular while its gimbals lock and unlock.</p>
+              </div>
+              <div class="index__meta"><span>2026 to 2027</span> <span class="status status--progress">In progress</span></div>
+            </a>
+          </li>
+          <li>
+            <a class="index__row" href="projects/harmonia.html">
+              <div class="index__thumb index__thumb--plot"><img src="assets/img/harmonia/periods.webp" alt="" loading="lazy" decoding="async"></div>
+              <div>
+                <p class="index__title">HARMONIA: unified docking and debris-capture architecture</p>
+                <p class="index__desc">Rotation rates and grapple geometry for 44 defunct LEO satellites, plus rendezvous analysis supporting a PhD dissertation.</p>
+              </div>
+              <div class="index__meta"><span>2026 to present</span> <span class="status status--progress">Ongoing</span></div>
+            </a>
+          </li>
+          <li>
+            <a class="index__row" href="projects/cbf-nonholonomic.html">
+              <div class="index__thumb"><img src="assets/img/cbf-nonholonomic/gazebo-lab.png" alt="" loading="lazy" decoding="async"></div>
+              <div>
+                <p class="index__title">CBF safety control for nonholonomic robots</p>
+                <p class="index__desc">Look-ahead control barrier functions that let a safety filter steer, not just brake, a differential-drive robot near walls.</p>
+              </div>
+              <div class="index__meta"><span>2026</span> <span class="status status--progress">Ongoing</span></div>
+            </a>
+          </li>
+          <li>
+            <a class="index__row" href="projects/knacksat-bdot.html">
+              <div class="index__thumb index__thumb--plot"><img src="assets/img/knacksat-bdot/angular-velocity.png" alt="" loading="lazy" decoding="async"></div>
+              <div>
+                <p class="index__title">KNACKSAT-3: attitude determination and detumbling</p>
+                <p class="index__desc">TRIAD attitude determination and a B-dot detumbling simulation used to tune magnetorquer gains for a 1U CubeSat.</p>
+              </div>
+              <div class="index__meta"><span>Summer 2024</span> <span class="status status--done">Complete</span></div>
+            </a>
+          </li>
+      </ul>
+    </section>
+
+    <section class="cv-section">
+      <h2 class="visually-hidden">Engineering projects</h2>
+      <div class="section__head"><h3>Engineering projects</h3></div>
+      <ul class="index">
+          <li>
+            <a class="index__row" href="projects/adaptive-attitude-tracking.html">
+              <div class="index__thumb index__thumb--plot"><img src="assets/img/adaptive-attitude-tracking/offset-tracking-errors.webp" alt="" loading="lazy" decoding="async"></div>
+              <div>
+                <p class="index__title">Adaptive attitude tracking for CubeSats with uncertain inertia</p>
+                <p class="index__desc">An adaptive controller for a four-CMG spacecraft with unknown inertia, with a Lyapunov proof of asymptotic tracking.</p>
+              </div>
+              <div class="index__meta"><span>Fall 2026</span> <span class="status status--done">Complete</span></div>
+            </a>
+          </li>
+          <li>
+            <a class="index__row" href="projects/lunar-hopper.html">
+              <div class="index__thumb index__thumb--plot"><img src="assets/img/lunar-hopper/trajectory-3d.webp" alt="" loading="lazy" decoding="async"></div>
+              <div>
+                <p class="index__title">Lunar hopper trajectory optimization and navigation</p>
+                <p class="index__desc">Minimum-wet-mass hop trajectories over real lunar terrain, and GPS-independent navigation with an error-state EKF.</p>
+              </div>
+              <div class="index__meta"><span>Fall 2026</span> <span class="status status--progress">In progress</span></div>
+            </a>
+          </li>
+          <li>
+            <a class="index__row" href="projects/airbrake.html">
+              <div class="index__thumb"><img src="assets/img/airbrake/flight-poster.jpg" alt="" loading="lazy" decoding="async"></div>
+              <div>
+                <p class="index__title">Apogee control airbrake for Project TerraGator</p>
+                <p class="index__desc">A cam-slot airbrake with Kalman-filter navigation and PID control that put three flights within 20 ft of target apogee.</p>
+              </div>
+              <div class="index__meta"><span>2025 to 2026</span> <span class="status status--done">Complete</span></div>
+            </a>
+          </li>
+          <li>
+            <a class="index__row" href="projects/communigator-payload.html">
+              <div class="index__thumb"><img src="assets/img/communigator-payload/launch.jpg" alt="" loading="lazy" decoding="async"></div>
+              <div>
+                <p class="index__title">Payload flight software for Project Communigator</p>
+                <p class="index__desc">Embedded flight computer that logs, filters and transmits payload telemetry for the 2025 NASA Student Launch competition.</p>
+              </div>
+              <div class="index__meta"><span>2024 to 2025</span> <span class="status status--done">Complete</span></div>
+            </a>
+          </li>
+          <li>
+            <a class="index__row" href="projects/theos-3a.html">
+              <div class="index__thumb"><img src="assets/img/theos-3a/theos-constellation.webp" alt="" loading="lazy" decoding="async"></div>
+              <div>
+                <p class="index__title">THEOS-3A structural analysis</p>
+                <p class="index__desc">Meshing, modal analysis and quasi-static load analysis of the primary structure of Thailand's THEOS-3A satellite.</p>
+              </div>
+              <div class="index__meta"><span>Summer 2025</span> <span class="status status--done">Complete</span></div>
+            </a>
+          </li>
+      </ul>
+    </section>
+
+  </main>
+
+  <!-- ===== SITE FOOTER: identical on every page. ===== -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>Krittin Jindamai (Yim), University of Florida</p>
+      <p class="site-footer__links">
+        <a href="mailto:krittin.jindamai@ufl.edu">krittin.jindamai@ufl.edu</a>
+        <a href="https://www.linkedin.com/in/krittinjindamai/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/yim1305" target="_blank" rel="noopener">GitHub</a>
+        <a href="assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js" defer></script>
+</body>
+</html>

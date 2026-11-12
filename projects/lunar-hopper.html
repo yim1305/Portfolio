@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lunar hopper trajectory optimization and navigation | Krittin Jindamai</title>
+  <meta name="description" content="Minimum-wet-mass hop trajectories over real lunar terrain, and GPS-independent navigation with an error-state EKF.">
+  <meta property="og:title" content="Lunar hopper trajectory optimization and navigation | Krittin Jindamai">
+  <meta property="og:description" content="Minimum-wet-mass hop trajectories over real lunar terrain, and GPS-independent navigation with an error-state EKF.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/fonts/stix-two-text-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <!-- Marks the page as script-enabled before first paint (see section 14 of site.css). -->
+  <script>document.documentElement.className += " js";</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===== SITE HEADER: identical on every page. If you edit it, edit it in all HTML files. ===== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-name" href="../index.html">Krittin Jindamai</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="../experience.html">Experience</a>
+        <a href="../projects.html" aria-current="page">Projects</a>
+        <a class="btn" href="../assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container page">
+
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../projects.html">Projects</a> / Lunar hopper trajectory optimization and navigation</nav>
+
+    <!-- ===== PROJECT HEADER: what it is, one-sentence abstract, links ===== -->
+    <header class="project-head">
+      <p class="project-head__meta"><span>Senior design project, Fall 2026</span> <span class="status status--progress">In progress</span></p>
+      <h1>Lunar hopper trajectory optimization and navigation</h1>
+      <p class="lede">Hopper1 flies about 202 km from a base near the lunar south pole to the floor of Drygalski crater and back. I built the trajectory optimizer that sizes the vehicle and the navigation simulation that checks it can find its landing site.</p>
+      <p class="actions">
+        <a class="btn" href="https://github.com/yim1305/Final-Hopper-Optimizer-and-EKF-Code" target="_blank" rel="noopener">Code on GitHub</a>
+      </p>
+    </header>
+
+    <!-- ===== FACTS: short label and value pairs ===== -->
+    <dl class="facts">
+      <div><dt>Role</dt><dd>Astrodynamics and guidance, navigation lead</dd></div>
+      <div><dt>Supervisor</dt><dd>Prof. Michael Generale</dd></div>
+      <div><dt>Period</dt><dd>Fall 2026</dd></div>
+      <div><dt>Status</dt><dd>In progress</dd></div>
+      <div><dt>Tools</dt><dd>Python, CasADi, IPOPT, SciPy</dd></div>
+    </dl>
+
+    <!-- ===== BODY: lead figure, text sections, figure grid ===== -->
+    <figure class="figure figure--lead">
+      <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/lunar-hopper/trajectory-3d.webp" data-zoom><img src="../assets/img/lunar-hopper/trajectory-3d.webp" alt="Three-dimensional plot of two arcing trajectories over a gray terrain surface, from a launch base to a target about 200 kilometers away, peaking near 40 kilometers altitude." width="1053" height="957" decoding="async"></a>
+      <figcaption>Outbound (orange) and return (blue) reference trajectories of the selected design over the mapped lunar surface, from the launch base to the Drygalski target about 202 km away.</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2>Overview</h2>
+      <p>The senior design brief is a lunar hopper, similar to NASA's Advanced Moonfall, that carries a 200 kg payload to sites 200 km from the lunar south pole and returns. I lead astrodynamics and guidance and navigation. The trajectory work answers how small the vehicle can be and still fly the round trip over real terrain. The navigation work answers how well it knows its position at touchdown without GPS.</p>
+
+      <h2>Approach</h2>
+      <ul>
+        <li><strong>Trajectory optimization.</strong> Minimize wet mass over the outbound and return hops with 3-DOF dynamics in a Moon-fixed frame, including lunar rotation and finite thrust. Hermite–Simpson collocation turns the problem into a nonlinear program with 21,537 variables and 39,998 constraints, solved with IPOPT through CasADi.</li>
+        <li><strong>Terrain.</strong> Clearance, landing and sensor-pointing constraints use a 30 m elevation model built from NASA LOLA data.</li>
+        <li><strong>Independent check.</strong> The optimized controls are re-propagated with SciPy and compared against the collocation solution before a flight is accepted.</li>
+        <li><strong>Navigation.</strong> A 15-state error-state extended Kalman filter fuses an inertial measurement unit, two star trackers and terrain-relative navigation fixes. A Monte Carlo study with random sensor errors compares six sensor combinations on both hops.</li>
+      </ul>
+
+      <h2>Results</h2>
+      <ul>
+        <li>The selected design uses eight A2200 engines and a 2,000 kg dry mass, and needs a wet mass of 5,363 kg for the round trip.</li>
+        <li>With the IMU, both star trackers and terrain-relative navigation, the median horizontal position error at touchdown is 12.0 m outbound and 13.0 m on return over 100 Monte Carlo runs, and the worst runs are 23.4 m and 34.2 m, inside the 50 m requirement.</li>
+        <li>Without star trackers the 3σ error grows to 81 to 89 m and fails the requirement. On inertial sensing alone the estimate drifts 2.1 to 2.8 km.</li>
+        <li>The optimized trajectory and mass results fed the structural design, propellant-tank sizing and engine-configuration trades.</li>
+      </ul>
+    </div>
+
+    <section class="block">
+      <h2>Figures</h2>
+      <div class="figure-grid">
+        <figure class="figure figure--wide">
+          <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/lunar-hopper/flight-profiles.webp" data-zoom><img src="../assets/img/lunar-hopper/flight-profiles.webp" alt="Four stacked plots against flight time for the outbound and return hops: height above terrain peaking near 40 kilometers, speed up to about 500 meters per second, thrust, and vehicle mass falling from about 5,400 to 2,300 kilograms." width="1419" height="1282" loading="lazy" decoding="async"></a>
+          <figcaption>Height above terrain, speed, thrust and vehicle mass against flight time for the outbound (orange) and return (blue) hops.</figcaption>
+        </figure>
+        <!-- PLACEHOLDER FIGURE. To fill: replace this whole <figure> with the "Figure" snippet from README.md. -->
+        <figure class="figure">
+          <div class="figure__frame"><div class="placeholder"><strong>Result plot to be added</strong></div></div>
+          <figcaption>Suggested: touchdown position-error distribution from the Monte Carlo study.</figcaption>
+        </figure>
+        <!-- PLACEHOLDER FIGURE. To fill: replace this whole <figure> with the "Figure" snippet from README.md. -->
+        <figure class="figure">
+          <div class="figure__frame"><div class="placeholder"><strong>Result plot to be added</strong></div></div>
+          <figcaption>Suggested: position-error history with and without star trackers.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <nav class="pager" aria-label="More projects">
+      <a class="pager__prev" href="adaptive-attitude-tracking.html"><span>Previous</span><span>Adaptive attitude tracking with uncertain inertia</span></a>
+      <a class="pager__next" href="airbrake.html"><span>Next</span><span>Swamp Launch apogee control airbrake</span></a>
+    </nav>
+
+  </main>
+
+  <!-- ===== SITE FOOTER: identical on every page. ===== -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>Krittin Jindamai (Yim), University of Florida</p>
+      <p class="site-footer__links">
+        <a href="mailto:krittin.jindamai@ufl.edu">krittin.jindamai@ufl.edu</a>
+        <a href="https://www.linkedin.com/in/krittinjindamai/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/yim1305" target="_blank" rel="noopener">GitHub</a>
+        <a href="../assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/site.js" defer></script>
+</body>
+</html>

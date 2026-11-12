@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Experience | Krittin Jindamai</title>
+  <meta name="description" content="Research, engineering project and work experience of Krittin Jindamai, aerospace engineering undergraduate at the University of Florida.">
+  <meta property="og:title" content="Experience | Krittin Jindamai">
+  <meta property="og:description" content="Research, engineering project and work experience of Krittin Jindamai, aerospace engineering undergraduate at the University of Florida.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/stix-two-text-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/ibm-plex-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/site.css">
+  <!-- Marks the page as script-enabled before first paint (see section 14 of site.css). -->
+  <script>document.documentElement.className += " js";</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===== SITE HEADER: identical on every page. If you edit it, edit it in all HTML files. ===== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-name" href="index.html">Krittin Jindamai</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="experience.html" aria-current="page">Experience</a>
+        <a href="projects.html">Projects</a>
+        <a class="btn" href="assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container page">
+
+    <h1 class="page-title">Experience</h1>
+    <p class="page-intro">The same content as my CV, with links to project pages.</p>
+    <p class="actions">
+      <a class="btn btn--primary" href="assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+      <a class="btn" href="assets/docs/transcript.pdf" target="_blank" rel="noopener">Transcript (PDF)</a>
+    </p>
+
+    <!-- Each <article class="entry"> is one row: dates on the left, details on the right. -->
+
+    <section class="cv-section">
+      <h2>Education</h2>
+      <article class="entry">
+        <p class="entry__when">2023 to 2027</p>
+        <div class="entry__body">
+          <h3>University of Florida</h3>
+          <p class="entry__role">Bachelor of Science in Aerospace Engineering, expected May 2027. GPA 3.98 / 4.00</p>
+          <ul>
+            <li>Davis UWC Scholar, University Scholars Program, Honors Program, Dean's List</li>
+            <li>Certificate of Outstanding Merit, Herbert Wertheim College of Engineering (2024)</li>
+            <li>Relevant coursework: Nonlinear Control, Astrodynamics, Stability and Control of Spacecraft, Optimal Control</li>
+          </ul>
+        </div>
+      </article>
+      <article class="entry">
+        <p class="entry__when">2021 to 2023</p>
+        <div class="entry__body">
+          <h3>United World College Costa Rica</h3>
+          <p class="entry__role">International Baccalaureate Diploma Programme</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="cv-section">
+      <h2>Research experience</h2>
+      <article class="entry">
+        <p class="entry__when">Spring 2026 to present</p>
+        <div class="entry__body">
+          <h3>Space Systems Group (SSG)</h3>
+          <p class="entry__role">Undergraduate researcher. Advisor: Dr. Fitz-Coy. Gainesville, Florida</p>
+          <h4><a href="projects/honors-thesis.html">Honors thesis: HCMG momentum management using magnetorquers</a></h4>
+          <ul>
+            <li>Built a MATLAB attitude and orbit simulation of a 12U CubeSat for rapid retargeting and precision nadir pointing in sun-synchronous orbit, under gravity-gradient, aerodynamic-drag, and J2 perturbations.</li>
+            <li>Implemented generalized singularity-robust steering for the HCMG array, using null motion to reach a nonsingular gimbal configuration before locking into reaction-wheel (RW) mode.</li>
+            <li>Applied cross-product magnetorquer desaturation, limiting RW speed growth over 15 simulated orbits; without desaturation, speeds drifted within three orbits, leading to loss of control authority.</li>
+            <li>Reviewed passive and active desaturation methods, HCMG steering laws, and spacecraft disturbance models.</li>
+          </ul>
+          <h4><a href="projects/harmonia.html">HARMONIA: unified docking and debris-capture architecture</a></h4>
+          <ul>
+            <li>Retrieve folded Mini-MegaTORTORA light curves using Python and determine rotation rates for 44 defunct low-Earth-orbit satellites, resolving factor-of-two period ambiguities.</li>
+            <li>Estimate grapple radii, the distances from spin axes to capture points, using satellite bus and adapter-ring dimensions, and analyze trends across the dataset.</li>
+            <li>Analyzed rotation rate versus time since end of life across the dataset, identifying a trend toward lower rates among satellites inactive for longer.</li>
+            <li>Generate Hohmann-phasing and Clohessy–Wiltshire relative-motion plots for far-field rendezvous and proximity operations supporting the lead researcher's PhD dissertation.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="entry">
+        <p class="entry__when">Spring 2026 to present</p>
+        <div class="entry__body">
+          <h3>Nonlinear Control Research Group (NCR)</h3>
+          <p class="entry__role">Undergraduate research assistant. Advisors: Dr. Dixon, Dr. Kamalapurkar. Gainesville, Florida</p>
+          <h4><a href="projects/clf-mcbf-hcmg.html">University Scholars Program: CLF-MCBF for safe HCMG mode switching</a></h4>
+          <ul>
+            <li>Applied matrix-valued control barrier functions to hybrid control moment gyroscope (HCMG) mode switching, solving a constrained semidefinite optimization for safe gimbal locking and unlocking.</li>
+            <li>Extending the method to a unified CLF-CBF controller that enforces stability and safety without a nominal controller.</li>
+            <li>Validated nonsingular gimbal locking during various maneuvers in MATLAB.</li>
+            <li>Currently drafting a conference paper as the first author.</li>
+          </ul>
+          <h4><a href="projects/cbf-nonholonomic.html">CBF safety control for nonholonomic robots</a></h4>
+          <ul>
+            <li>Investigate look-ahead control barrier functions (CBFs) for smooth waypoint tracking of nonholonomic robots near safety constraints.</li>
+            <li>Simulated trajectory tracking in a virtual indoor laboratory space using ROS 2 and Gazebo Harmonic to assess feasibility before hardware deployment.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="entry">
+        <p class="entry__when">Summer 2024</p>
+        <div class="entry__body">
+          <h3>King Mongkut's University of Technology North Bangkok</h3>
+          <p class="entry__role">ADCS research assistant. Advisor: Dr. Saisutjarit. Thailand</p>
+          <h4><a href="projects/knacksat-bdot.html">KNACKSAT-3: attitude determination and detumbling</a></h4>
+          <ul>
+            <li>Implemented TRIAD attitude determination using magnetometer and sun sensor measurements.</li>
+            <li>Modeled 1U CubeSat detumbling in low Earth orbit using B-dot control of 3 self-made magnetorquers in MATLAB and Simulink.</li>
+            <li>Integrated the nonlinear dynamics using the fourth-order Runge–Kutta method.</li>
+            <li>Enabled B-dot controller gain tuning for custom magnetorquers before spacecraft integration.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <section class="cv-section">
+      <h2>Engineering projects</h2>
+      <article class="entry">
+        <p class="entry__when">Fall 2026</p>
+        <div class="entry__body">
+          <h3><a href="projects/lunar-hopper.html">Lunar hopper trajectory optimization and navigation</a></h3>
+          <p class="entry__role">Senior design project. Astrodynamics and guidance, navigation lead</p>
+          <ul>
+            <li>Built a minimum-wet-mass outbound-and-return lunar hop optimizer in Python using Hermite–Simpson collocation and IPOPT, enforcing terrain, landing, and sensor-pointing constraints with NASA south-pole elevation data.</li>
+            <li>Built GPS-independent navigation with an error-state extended Kalman filter fusing IMU, star tracker, and terrain-relative measurements; achieved RMS landing error below 10 m across 1,000 Monte Carlo simulations with perturbed sensor measurements.</li>
+            <li>Informed structural design, propellant-tank sizing, and engine-configuration trades using optimized trajectory and mass results.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="entry">
+        <p class="entry__when">Fall 2026</p>
+        <div class="entry__body">
+          <h3><a href="projects/adaptive-attitude-tracking.html">Adaptive attitude tracking for CubeSats with uncertain inertia</a></h3>
+          <p class="entry__role">Nonlinear Control final project</p>
+          <ul>
+            <li>Designed an adaptive attitude-tracking controller for a spacecraft actuated by a four-CMG pyramid with unknown inertia, using a pseudoinverse steering law.</li>
+            <li>Proved asymptotic attitude-tracking convergence using Lyapunov analysis and Barbalat's lemma.</li>
+            <li>Reduced attitude error from 20° to below 0.001° in about 46 s in a MATLAB simulation, with inertia estimates initialized up to 32% off the true values.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="entry">
+        <p class="entry__when">Fall 2024 to Spring 2026</p>
+        <div class="entry__body">
+          <h3>Swamp Launch Rocket Team</h3>
+          <p class="entry__role">Gainesville, Florida</p>
+          <h4><a href="projects/airbrake.html">Guidance, navigation, and controls lead engineer, Fall 2025 to Spring 2026</a></h4>
+          <ul>
+            <li>Developed embedded C++ flight software for real-time trajectory prediction and tracking using a PID controller.</li>
+            <li>Implemented a Kalman filter to estimate position, quaternion attitude, and IMU biases in real time.</li>
+            <li>Designed, assembled, and soldered custom flight-computer PCBs.</li>
+            <li>Designed and manufactured a cam-slot airbrake mechanism using CNC machining, milling, and turning.</li>
+            <li>Led a team of 11 members to three successful launches within 20 ft of the target altitude.</li>
+          </ul>
+          <h4><a href="projects/communigator-payload.html">Payload software lead engineer, Fall 2024 to Spring 2025</a></h4>
+          <ul>
+            <li>Led 15 members to a sixth-place overall finish at the 2025 NASA Student Launch Competition.</li>
+            <li>Programmed C++ telemetry software to compile and transmit rocket and landing-site conditions to a NASA transceiver over a 2 m-band radio link as an APRS packet.</li>
+            <li>Filtered IMU and barometer measurements with a Kalman filter to estimate rocket velocity in real time.</li>
+            <li>Collaborated with electrical and mechanical teams to develop the rocket's retention mechanism.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <section class="cv-section">
+      <h2>Work experience</h2>
+      <article class="entry">
+        <p class="entry__when">Fall 2026 to present</p>
+        <div class="entry__body">
+          <h3>Mechanics of Materials Laboratory</h3>
+          <p class="entry__role">Teaching assistant. Gainesville, Florida</p>
+          <ul>
+            <li>Lead two weekly laboratory sections (60+ students) through tensile, compression, and four-point bending tests, guiding data collection with DAQ systems, strain gauges, Wheatstone bridges, and Instron machines.</li>
+            <li>Help students connect test results to mechanics of materials theory and follow technical report-writing conventions; hold office hours for courses and lab support.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="entry">
+        <p class="entry__when">Spring 2026 to present</p>
+        <div class="entry__body">
+          <h3>Housing and Residential Life</h3>
+          <p class="entry__role">Resident assistant. Gainesville, Florida</p>
+          <ul>
+            <li>Mediate roommate conflicts and respond to on-call incidents for 34 residents; connect residents with campus support services.</li>
+            <li>Organized seven community events and connected residents with campus clubs and design teams.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="entry">
+        <p class="entry__when">Summer 2025</p>
+        <div class="entry__body">
+          <h3>Geo-Informatics and Space Technology Development Agency (GISTDA)</h3>
+          <p class="entry__role">Mechanical engineering intern. Thailand</p>
+          <h4><a href="projects/theos-3a.html"><span class="visually-hidden">Project: </span>THEOS-3A structural analysis</a></h4>
+          <ul>
+            <li>Meshed and assembled the finite-element model of the THEOS-3A primary structure in HyperMesh.</li>
+            <li>Characterized structural natural frequencies and mode shapes through free-free and fixed-base modal analyses.</li>
+            <li>Evaluated launch and on-orbit structural response through quasi-static analyses at multiple load factors in MSC Nastran.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <section class="cv-section">
+      <h2>Skills</h2>
+      <dl class="skills">
+        <dt>Simulation and control</dt><dd>MATLAB, Simulink, Python, C++, CasADi, IPOPT, STK</dd>
+        <dt>Robotics</dt><dd>ROS 2, Gazebo Harmonic</dd>
+        <dt>Structures and CAD</dt><dd>HyperMesh, MSC Nastran, Ansys, Fusion, SolidWorks (CSWA certified)</dd>
+        <dt>Other</dt><dd>GitHub, LaTeX</dd>
+      </dl>
+    </section>
+
+  </main>
+
+  <!-- ===== SITE FOOTER: identical on every page. ===== -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>Krittin Jindamai (Yim), University of Florida</p>
+      <p class="site-footer__links">
+        <a href="mailto:krittin.jindamai@ufl.edu">krittin.jindamai@ufl.edu</a>
+        <a href="https://www.linkedin.com/in/krittinjindamai/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/yim1305" target="_blank" rel="noopener">GitHub</a>
+        <a href="assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js" defer></script>
+</body>
+</html>

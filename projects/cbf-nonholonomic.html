@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CBF safety control for nonholonomic robots | Krittin Jindamai</title>
+  <meta name="description" content="Look-ahead control barrier functions that let a safety filter steer, not just brake, a differential-drive robot near walls.">
+  <meta property="og:title" content="CBF safety control for nonholonomic robots | Krittin Jindamai">
+  <meta property="og:description" content="Look-ahead control barrier functions that let a safety filter steer, not just brake, a differential-drive robot near walls.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/fonts/stix-two-text-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <!-- Marks the page as script-enabled before first paint (see section 14 of site.css). -->
+  <script>document.documentElement.className += " js";</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===== SITE HEADER: identical on every page. If you edit it, edit it in all HTML files. ===== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-name" href="../index.html">Krittin Jindamai</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="../experience.html">Experience</a>
+        <a href="../projects.html" aria-current="page">Projects</a>
+        <a class="btn" href="../assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container page">
+
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../projects.html">Projects</a> / CBF safety control for nonholonomic robots</nav>
+
+    <!-- ===== PROJECT HEADER: what it is, one-sentence abstract, links ===== -->
+    <header class="project-head">
+      <p class="project-head__meta"><span>Nonlinear Control Research Group research, 2026</span> <span class="status status--progress">Ongoing</span></p>
+      <h1>CBF safety control for nonholonomic robots</h1>
+      <p class="lede">Control barrier functions for waypoint control of nonholonomic robots near safe-set boundaries.</p>
+      <p class="actions">
+        <a class="btn" href="https://github.com/yim1305/CBF-Code" target="_blank" rel="noopener">Code on GitHub</a>
+      </p>
+    </header>
+
+    <!-- ===== FACTS: short label and value pairs ===== -->
+    <dl class="facts">
+      <div><dt>Lab</dt><dd>Nonlinear Control Research Group (NCR), University of Florida</dd></div>
+      <div><dt>Advisors</dt><dd>Dr. Warren Dixon, Dr. Rushikesh Kamalapurkar</dd></div>
+      <div><dt>Mentor</dt><dd>Keith Currier (Ph.D. student)</dd></div>
+      <div><dt>Period</dt><dd>Spring 2026 to present</dd></div>
+      <div><dt>Tools</dt><dd>Python, ROS 2, Gazebo Harmonic</dd></div>
+    </dl>
+
+    <!-- ===== BODY: lead figure, text sections, figure grid ===== -->
+    <div class="prose">
+      <h2>Overview</h2>
+      <p>A standard Control Barrier Function assumes a fully-actuated system. A differential-drive robot's angular velocity has no instantaneous effect on a barrier evaluated at its own centroid, so the constraint has no sensitivity to ω and a CBF-QP safety filter can brake the robot in front of a wall but can't turn it away. This work resolves that by evaluating the barrier at a look-ahead point offset from the robot along its heading, a standard feedback-linearization technique. It makes the barrier's time derivative affine in the full body-frame input u = [v, ω], giving the filter direct authority over steering instead of just speed.</p>
+
+      <h2>Approach</h2>
+      <ul>
+        <li><strong>Safe set.</strong> The lab modeled as a rectangular region in Gazebo, expressed as four independent half-plane barriers built from the room's real interior dimensions.</li>
+        <li><strong>Safety filter.</strong> A minimally-invasive QP, min‖u − u<sub>nom</sub>‖² subject to Ḃ ≤ −k·B at each wall, solved every control cycle in cvxpy/OSQP for the closest-to-nominal command that stays inside the safe set.</li>
+        <li><strong>Tracking controller.</strong> A feedforward + look-ahead-point feedback law driving a nominal, pre-filter command along a reference path, so the QP had a real wall-approaching input to intervene on.</li>
+        <li><strong>Simulation.</strong> TurtleBot3 Burger and lab geometry in Gazebo Harmonic (ROS 2 Humble), with the full tracker → CBF-QP filter → actuation pipeline running as ROS 2 nodes in closed loop.</li>
+      </ul>
+
+      <h2>Results</h2>
+      <p>The robot remained inside the prescribed safe set throughout the run, without crossing the boundary or colliding with a wall.</p>
+      <p>Tracking performance degrades once the commanded trajectory pushes beyond the feasible region and the robot settles near the boundary. This is expected: the tracking controller continues requesting motion toward an unsafe reference while the CBF-QP prioritizes safety and rejects that motion. The resulting tracking error is therefore a limitation of the nominal tracking objective near an infeasible path, not a failure of the CBF—the safety filter is doing exactly what it is designed to do.</p>
+    </div>
+
+    <section class="block">
+      <h2>Figures</h2>
+      <div class="figure-grid">
+        <figure class="figure figure--wide">
+          <a class="figure__frame" href="../assets/img/cbf-nonholonomic/gazebo-lab.png" data-zoom><img src="../assets/img/cbf-nonholonomic/gazebo-lab.png" alt="Gazebo simulation view of a gray floor grid with a red rectangular boundary and a small robot inside it." width="1405" height="708" loading="lazy" decoding="async"></a>
+          <figcaption>The lab in Gazebo: safe-set boundary and the robot.</figcaption>
+        </figure>
+        <figure class="figure">
+          <a class="figure__frame" href="../assets/img/cbf-nonholonomic/waypoint-trajectory.png" data-zoom><img src="../assets/img/cbf-nonholonomic/waypoint-trajectory.png" alt="Top-down plot of a spiral path traced by the robot inside a boundary." width="424" height="469" loading="lazy" decoding="async"></a>
+          <figcaption>Waypoint approach with a heading-aware trajectory.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <nav class="pager" aria-label="More projects">
+      <a class="pager__prev" href="harmonia.html"><span>Previous</span><span>HARMONIA: docking and debris capture</span></a>
+      <a class="pager__next" href="knacksat-bdot.html"><span>Next</span><span>KNACKSAT-3: attitude determination and detumbling</span></a>
+    </nav>
+
+  </main>
+
+  <!-- ===== SITE FOOTER: identical on every page. ===== -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>Krittin Jindamai (Yim), University of Florida</p>
+      <p class="site-footer__links">
+        <a href="mailto:krittin.jindamai@ufl.edu">krittin.jindamai@ufl.edu</a>
+        <a href="https://www.linkedin.com/in/krittinjindamai/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/yim1305" target="_blank" rel="noopener">GitHub</a>
+        <a href="../assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/site.js" defer></script>
+</body>
+</html>

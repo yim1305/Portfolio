@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Swamp Launch apogee control airbrake | Krittin Jindamai</title>
+  <meta name="description" content="A cam-slot airbrake with Kalman-filter navigation and PID control that put three flights within 20 ft of target apogee.">
+  <meta property="og:title" content="Swamp Launch apogee control airbrake | Krittin Jindamai">
+  <meta property="og:description" content="A cam-slot airbrake with Kalman-filter navigation and PID control that put three flights within 20 ft of target apogee.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/fonts/stix-two-text-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <!-- Marks the page as script-enabled before first paint (see section 14 of site.css). -->
+  <script>document.documentElement.className += " js";</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===== SITE HEADER: identical on every page. If you edit it, edit it in all HTML files. ===== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-name" href="../index.html">Krittin Jindamai</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="../experience.html">Experience</a>
+        <a href="../projects.html" aria-current="page">Projects</a>
+        <a class="btn" href="../assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container page">
+
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../projects.html">Projects</a> / Swamp Launch apogee control airbrake</nav>
+
+    <!-- ===== PROJECT HEADER: what it is, one-sentence abstract, links ===== -->
+    <header class="project-head">
+      <p class="project-head__meta"><span>Swamp Launch Rocket Team, 2025 to 2026</span> <span class="status status--done">Complete</span></p>
+      <h1>Apogee control airbrake for Project TerraGator</h1>
+      <p class="lede">Apogee control system for a NASA Student Launch rocket: dead reckoning and inertial navigation, Kalman-filter sensor fusion, PID control, FEA, and CNC manufacturing.</p>
+      <p class="actions">
+        <a class="btn" href="https://github.com/yim1305/Project-Terragator-Software" target="_blank" rel="noopener">Code on GitHub</a>
+      </p>
+    </header>
+
+    <!-- ===== FACTS: short label and value pairs ===== -->
+    <dl class="facts">
+      <div><dt>Role</dt><dd>Guidance, navigation, and controls lead</dd></div>
+      <div><dt>Team</dt><dd>Swamp Launch Rocket Team, University of Florida</dd></div>
+      <div><dt>Supervisor</dt><dd>Dr. Sean R. Niemi</dd></div>
+      <div><dt>Period</dt><dd>Fall 2025 to Spring 2026</dd></div>
+      <div><dt>Tools</dt><dd>MATLAB, Simulink, C++, Fusion, SolidWorks, Ansys Mechanical</dd></div>
+    </dl>
+
+    <!-- ===== BODY: lead figure, text sections, figure grid ===== -->
+    <figure class="figure figure--lead">
+      <div class="figure__frame">
+        <video controls preload="none" playsinline poster="../assets/img/airbrake/flight-poster.jpg" width="960" height="540" aria-label="Onboard video looking down the rocket during flight with the airbrake fins deployed">
+          <source src="../assets/video/airbrake-flight.mp4" type="video/mp4">
+        </video>
+      </div>
+      <figcaption>Onboard view during ascent with the airbrake deployed.</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2>Overview</h2>
+      <p>Part of the criteria for the NASA USLI 2026 competition was to get as close to the apogee declared during CDR as possible. I was in charge of the Apogee Control System (ACS), designing, building, and manufacturing every aspect of the system across GNC, software, electrical, and mechanical engineering. We completed three successful flights within 20 ft of our target apogee and placed 5th at the 2026 NASA USLI competition.</p>
+
+      <h2>Guidance, navigation, and control</h2>
+      <ul>
+        <li>Built a dead-reckoning inertial-navigation stack in which the IMU propagated motion between updates for position and attitude.</li>
+        <li>Fused barometric altitude and inertial measurements with a Kalman filter to estimate position and velocity.</li>
+        <li>Designed and tuned the PID controller that commanded the airbrake to control apogee, using MATLAB and Simulink simulations before implementing it on the flight computer.</li>
+      </ul>
+
+      <h2>Software and electrical</h2>
+      <ul>
+        <li>Built the flight computer around a Teensy 4.1 with C++ drivers for the IMU and barometer.</li>
+        <li>Implemented the sensor-fusion pipeline and a finite-state machine for launch, ascent, apogee, descent, and landing detection.</li>
+        <li>Integrated the navigation estimates with the airbrake actuation and PID control loop for autonomous flight operation.</li>
+      </ul>
+
+      <h2>Mechanical design, analysis, and manufacturing</h2>
+      <ul>
+        <li>Designed the Apogee Control System airbrake mechanism in Fusion and SolidWorks.</li>
+        <li>Performed finite-element analysis, including static-load and modal analysis, to verify structural integrity during actuation.</li>
+        <li>Manufactured components on the lathe, mill, CNC, and waterjet.</li>
+      </ul>
+    </div>
+
+    <section class="block">
+      <h2>Results</h2>
+      <div class="figure-grid">
+        <figure class="figure">
+          <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/airbrake/altitude.png" data-zoom><img src="../assets/img/airbrake/altitude.png" alt="Line plot of altitude in feet against time, rising to just under the dashed commanded apogee line and then descending." width="396" height="291" loading="lazy" decoding="async"></a>
+          <figcaption>Altitude versus time, measured against the commanded apogee.</figcaption>
+        </figure>
+        <figure class="figure">
+          <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/airbrake/apogee-error.png" data-zoom><img src="../assets/img/airbrake/apogee-error.png" alt="Line plot of predicted apogee error in feet against time, converging toward zero before apogee is detected." width="387" height="303" loading="lazy" decoding="async"></a>
+          <figcaption>Predicted apogee error, converging as apogee is detected.</figcaption>
+        </figure>
+        <figure class="figure">
+          <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/airbrake/acs-assembly.webp" data-zoom><img src="../assets/img/airbrake/acs-assembly.webp" alt="Render of the avionics and airbrake assembly on its sled." width="600" height="262" loading="lazy" decoding="async"></a>
+          <figcaption>Apogee control system assembly.</figcaption>
+        </figure>
+        <figure class="figure">
+          <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/airbrake/airbrake-mechanism.webp" data-zoom><img src="../assets/img/airbrake/airbrake-mechanism.webp" alt="Render of the cam-slot airbrake mechanism with a central rotating plate and deployable fins." width="600" height="579" loading="lazy" decoding="async"></a>
+          <figcaption>Cam-slot airbrake mechanism.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <nav class="pager" aria-label="More projects">
+      <a class="pager__prev" href="lunar-hopper.html"><span>Previous</span><span>Lunar hopper trajectory optimization and navigation</span></a>
+      <a class="pager__next" href="communigator-payload.html"><span>Next</span><span>Swamp Launch payload flight software</span></a>
+    </nav>
+
+  </main>
+
+  <!-- ===== SITE FOOTER: identical on every page. ===== -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>Krittin Jindamai (Yim), University of Florida</p>
+      <p class="site-footer__links">
+        <a href="mailto:krittin.jindamai@ufl.edu">krittin.jindamai@ufl.edu</a>
+        <a href="https://www.linkedin.com/in/krittinjindamai/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/yim1305" target="_blank" rel="noopener">GitHub</a>
+        <a href="../assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/site.js" defer></script>
+</body>
+</html>

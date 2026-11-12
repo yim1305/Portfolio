@@ -1,0 +1,449 @@
+/* ==========================================================================
+   Krittin Jindamai — research portfolio
+   One stylesheet for every page. No build step, no framework.
+
+   CONTENTS
+     1. Fonts
+     2. Design tokens   <- change colors, type and spacing here only
+     3. Base elements
+     4. Layout helpers
+     5. Header and footer
+     6. Buttons, links, status
+     7. Home: intro, orbit drawing, satellite icon
+     8. Home: at-a-glance band
+     9. Home: selected work, trajectory rail, plot cards
+    10. Figures, placeholders, video
+    11. Project detail page
+    12. Experience page
+    13. Project index page
+    14. Motion (every animation on the site)
+    15. Lightbox
+    16. Print
+
+   RULES FOR EDITORS
+     - Use the tokens in section 2. Do not write new hex colors or font names
+       further down the file.
+     - No gradients, glow or blur. The only shadow is --card-shadow, on the
+       overlapping plot cards of the home page.
+     - Every animation must be listed in section 14 and must switch off under
+       prefers-reduced-motion.
+   ========================================================================== */
+
+/* 1. Fonts (self-hosted, SIL Open Font License) ---------------------------- */
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("../fonts/stix-two-text-latin-wght-normal.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "STIX Two Text";
+  src: url("../fonts/stix-two-text-latin-wght-italic.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("../fonts/ibm-plex-sans-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 2. Design tokens --------------------------------------------------------- */
+:root {
+  /* Color */
+  --paper: #ffffff;          /* page background */
+  --wash: #f5f7fa;           /* figure wells, quiet bands */
+  --ink: #0e1a33;            /* headings and body text (navy ink) */
+  --ink-2: #45506a;          /* supporting text */
+  --ink-3: #6f7b93;          /* dates, captions, metadata */
+  --rule: #dfe4ec;           /* hairlines */
+  --rule-strong: #c5cddb;    /* emphasized hairlines, planned-path dashes */
+  --link: #1238a8;           /* links only */
+  --link-hover: #0a2470;
+  --signal: #e8541e;         /* satellite marker and "in progress" dot only */
+
+  /* Type */
+  --serif: "STIX Two Text", "Times New Roman", Times, serif;
+  --sans: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --text-xs: 0.8125rem;      /* 13px */
+  --text-sm: 0.9375rem;      /* 15px */
+  --text-md: 1.0625rem;      /* 17px, body */
+  --text-lg: 1.3125rem;      /* 21px, lede */
+  --text-xl: 1.625rem;       /* 26px, h3 / work titles */
+  --text-2xl: 2.125rem;      /* 34px, h2 */
+  --text-3xl: clamp(2.5rem, 1.6rem + 3.6vw, 3.75rem); /* h1 */
+
+  /* Space and shape */
+  --page: 70rem;             /* max content width (1120px) */
+  --reading: 46rem;          /* max width of running text */
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --radius: 6px;
+  --card-shadow: 0 1px 2px rgba(14, 26, 51, 0.05), 0 10px 24px -14px rgba(14, 26, 51, 0.28); /* overlapping plot cards only */
+
+  /* Motion */
+  --settle: cubic-bezier(0.2, 0.9, 0.25, 1.12); /* slight overshoot, like a damped response */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 3. Base elements --------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 5rem; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: var(--text-md);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; line-height: 1.15; margin: 0; letter-spacing: -0.005em; }
+h1 { font-size: var(--text-3xl); letter-spacing: -0.015em; }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-xl); }
+h4 { font-size: var(--text-lg); line-height: 1.3; }
+p { margin: 0 0 1em; }
+ul, ol { margin: 0 0 1em; padding-left: 1.2em; }
+li { margin-bottom: 0.35em; }
+img, video, svg { max-width: 100%; height: auto; display: block; }
+a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+a:hover { color: var(--link-hover); text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; border-radius: 2px; }
+::selection { background: #dbe5ff; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* 4. Layout helpers -------------------------------------------------------- */
+.container { width: 100%; max-width: calc(var(--page) + 2 * var(--gutter)); margin-inline: auto; padding-inline: var(--gutter); }
+.section { padding-block: clamp(3rem, 7vw, 5rem) 1rem; }
+.section__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.5rem 1.5rem; margin-bottom: 1.5rem; }
+.section__note { color: var(--ink-2); font-size: var(--text-sm); margin: 0; }
+.skip-link { position: absolute; left: -999px; top: 0; background: var(--ink); color: var(--paper); padding: 0.5rem 1rem; z-index: 20; }
+.skip-link:focus { left: 0; }
+
+/* 5. Header and footer ----------------------------------------------------- */
+.site-header { position: sticky; top: 0; z-index: 10; background: var(--paper); border-bottom: 1px solid var(--rule); }
+.site-header__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 3.75rem; }
+.site-name { font-family: var(--serif); font-weight: 600; font-size: 1.1875rem; color: var(--ink); text-decoration: none; white-space: nowrap; }
+.site-name:hover { color: var(--ink); }
+.site-nav { display: flex; align-items: center; gap: clamp(0.9rem, 3vw, 1.75rem); font-size: var(--text-sm); }
+.site-nav a { color: var(--ink-2); text-decoration: none; padding-block: 1.15rem; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.site-nav a:hover { color: var(--ink); }
+.site-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
+.site-nav .btn { padding: 0.3rem 0.8rem; border: 1px solid var(--rule-strong); margin-bottom: 0; }
+.site-nav .btn:hover { border-color: var(--ink); }
+@media (max-width: 30rem) {
+  .site-nav .btn { display: none; }
+  .site-nav { gap: 0.8rem; font-size: 0.875rem; }
+  .site-name { font-size: 1.0625rem; }
+}
+
+.site-footer { border-top: 1px solid var(--rule); margin-top: clamp(2rem, 5vw, 3.5rem); padding-block: 2rem 2.5rem; font-size: var(--text-sm); color: var(--ink-2); }
+.site-footer__inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem 2rem; }
+.site-footer p { margin: 0; }
+.site-footer__links { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
+
+/* 6. Buttons, links, status ------------------------------------------------ */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.5rem 1rem; border: 1px solid var(--rule-strong); border-radius: var(--radius);
+  background: var(--paper); color: var(--ink); font: 500 var(--text-sm)/1.3 var(--sans);
+  text-decoration: none; transition: border-color 150ms var(--ease), background-color 150ms var(--ease);
+}
+.btn:hover { border-color: var(--ink); color: var(--ink); }
+.btn--primary { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.btn--primary:hover { background: #1b2c52; color: var(--paper); }
+.btn[aria-disabled="true"] { color: var(--ink-3); border-style: dashed; pointer-events: none; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin: 0; }
+.actions__links { display: flex; flex-wrap: wrap; gap: 0.25rem 1.1rem; margin-left: 0.4rem; font-size: var(--text-sm); }
+.link-list { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; margin: 0; font-size: var(--text-sm); }
+
+.status { display: inline-flex; align-items: center; gap: 0.4em; white-space: nowrap; color: var(--ink-2); }
+.status::before { content: ""; width: 0.5em; height: 0.5em; border-radius: 50%; background: var(--ink-3); }
+.status--progress::before { background: var(--signal); }
+.status--done::before { background: var(--ink); }
+
+/* 7. Home: intro, orbit drawing, satellite icon ----------------------------- */
+.intro { overflow: hidden; }
+.intro__grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); align-items: center; gap: clamp(2rem, 5vw, 4rem); padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+.intro__where { color: var(--ink-2); font-size: var(--text-sm); margin-bottom: 0.9rem; }
+.intro__name small { font-size: 0.55em; font-weight: 400; font-style: italic; color: var(--ink-3); letter-spacing: 0; white-space: nowrap; }
+.intro__lede { font-family: var(--serif); font-size: clamp(1.25rem, 1rem + 1vw, 1.5rem); line-height: 1.4; margin: 1.1rem 0 0.9rem; max-width: 34ch; }
+.intro__text { color: var(--ink-2); max-width: 58ch; }
+.intro .actions { margin-top: 1.6rem; }
+
+/* Round icon buttons (LinkedIn, GitHub, Email). The tooltip text comes from data-label. */
+.actions__icons { display: inline-flex; gap: 0.5rem; margin-left: 0.5rem; }
+.icon-btn { position: relative; display: inline-grid; place-items: center; width: 2.5rem; height: 2.5rem; border: 1px solid var(--rule-strong); border-radius: 50%; color: var(--ink); transition: border-color 150ms var(--ease), background-color 150ms var(--ease), transform 150ms var(--ease); }
+.icon-btn:hover { border-color: var(--ink); background: var(--wash); color: var(--ink); transform: translateY(-2px); }
+.icon-btn svg { width: 1.2rem; height: 1.2rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.icon-btn::after { content: attr(data-label); position: absolute; top: calc(100% + 0.4rem); left: 50%; transform: translateX(-50%); padding: 0.1rem 0.5rem; border-radius: 4px; background: var(--ink); color: var(--paper); font: 500 var(--text-xs)/1.5 var(--sans); white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 150ms var(--ease); z-index: 2; }
+.icon-btn:hover::after, .icon-btn:focus-visible::after { opacity: 1; }
+
+/* The orbit drawing: an inline SVG behind a circular portrait. */
+.orbit { position: relative; width: 100%; max-width: 30rem; aspect-ratio: 1; margin-inline: auto; }
+.orbit__svg { position: absolute; inset: -14%; width: 128%; height: 128%; max-width: none; overflow: visible; }
+.orbit__path { fill: none; stroke: var(--rule-strong); stroke-width: 1.25; }
+.orbit__path--dashed { stroke: var(--rule); stroke-dasharray: 3 7; }
+.orbit__target { fill: var(--paper); stroke: var(--ink-3); stroke-width: 1.25; }
+.orbit__sat { transition: opacity 400ms var(--ease); }
+.sat-on-rail .orbit__sat { opacity: 0; }
+.orbit__portrait {
+  position: absolute; left: 50%; top: 50%; width: 58%; aspect-ratio: 1;
+  transform: translate(-50%, -50%); border-radius: 50%; object-fit: cover;
+  border: 1px solid var(--rule-strong); outline: 7px solid var(--paper);
+}
+@media (max-width: 54rem) {
+  .intro__grid { grid-template-columns: minmax(0, 1fr); }
+  .orbit { order: -1; max-width: 17rem; margin-inline: 0; margin-left: 1.75rem; }
+}
+
+/* The satellite icon (symbol #sat in index.html). */
+.sat__body { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+.sat__panel { fill: var(--ink); stroke: var(--ink); stroke-width: 1; }
+.sat__cell { stroke: var(--paper); stroke-width: 1; }
+.sat__strut { stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
+.sat__beacon { fill: var(--signal); }
+.sat__eye { fill: var(--ink); }
+.sat__smile { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round; }
+
+/* 8. Home: at-a-glance band ----------------------------------------------- */
+.glance { border-block: 1px solid var(--rule); }
+.glance__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.glance__col { padding: 1.5rem 1.75rem; border-left: 1px solid var(--rule); }
+.glance__col:first-child { padding-left: 0; border-left: 0; }
+.glance__col:last-child { padding-right: 0; }
+.glance__title { font: 600 var(--text-sm)/1.3 var(--sans); color: var(--ink-3); letter-spacing: 0; margin-bottom: 0.6rem; }
+.glance__list { list-style: none; padding: 0; margin: 0; font-size: var(--text-sm); }
+.glance__list li { margin-bottom: 0.3em; }
+.glance__list strong { font-weight: 600; }
+.glance__list span { color: var(--ink-3); }
+@media (max-width: 54rem) {
+  .glance__grid { grid-template-columns: minmax(0, 1fr); }
+  .glance__col, .glance__col:first-child, .glance__col:last-child { padding: 1.25rem 0; border-left: 0; border-top: 1px solid var(--rule); }
+  .glance__col:first-child { border-top: 0; }
+}
+
+/* 9. Home: selected work, trajectory rail, plot cards ----------------------- */
+/* The rail is one dashed line (the planned path) beside the whole list.
+   site.js finds the project at mid-screen and sets two values on .rail:
+     --rail-y         where the satellite sits, in px from the top of the list
+     --rail-progress  how much of the line is solid ("flown"), 0 to 1
+   Both follow the page in either direction. Without JavaScript the line is
+   solid, the waypoints are filled, and the satellite stays on its orbit. */
+.work-wrap { position: relative; padding-left: 3.5rem; }
+.rail { position: absolute; left: 1.25rem; top: 0; bottom: 0; width: 2px; background: repeating-linear-gradient(to bottom, var(--rule-strong) 0 5px, transparent 5px 11px); }
+.rail__flown { position: absolute; inset: 0; background: var(--ink); transform-origin: top; }
+.rail__sat { position: absolute; left: 50%; top: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px; display: none; border-radius: 50%; background: var(--paper); }
+.js .rail__flown { transform: scaleY(var(--rail-progress, 0)); transition: transform 700ms var(--ease); }
+.js .rail__sat { display: block; opacity: 0; transform: translateY(var(--rail-y, 0px)); transition: transform 800ms var(--settle), opacity 300ms var(--ease); }
+.js .sat-on-rail .rail__sat, .js.sat-on-rail .rail__sat { opacity: 1; }
+
+.work { list-style: none; margin: 0; padding: 0; }
+.work__item { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(1.5rem, 3.5vw, 3rem); align-items: center; padding-block: 2.25rem; margin: 0; }
+/* Waypoint on the rail, level with the item's first line of text. */
+.work__node { position: absolute; left: calc(-2.25rem + 1px); top: 3.25rem; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border-radius: 50%; background: var(--ink); outline: 4px solid var(--paper); }
+.js .work__node { background: var(--paper); box-shadow: inset 0 0 0 2px var(--rule-strong); transition: background-color 300ms var(--ease), box-shadow 300ms var(--ease); }
+.js .is-passed .work__node { background: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); }
+/* Hide the line below the last waypoint. */
+.work__item:last-child::after { content: ""; position: absolute; left: calc(-2.25rem - 8px); top: calc(3.25rem + 6px); bottom: 0; width: 18px; background: var(--paper); }
+
+/* Figure area: one to three overlapping white cards, or one video.
+   The last card in the HTML is the one in front. */
+.work__figure { display: block; position: relative; color: inherit; text-decoration: none; }
+.stack { aspect-ratio: 16 / 11; }
+.stack__card { position: absolute; display: block; background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius); box-shadow: var(--card-shadow); padding: 0.45rem; object-fit: contain; transition: transform 450ms var(--settle), border-color 150ms var(--ease); }
+.stack--1 .stack__card { inset: 0; width: 100%; height: 100%; }
+.stack--2 .stack__card:nth-child(1) { top: 0; right: 0; width: 62%; height: 60%; transform: rotate(2.5deg); }
+.stack--2 .stack__card:nth-child(2) { bottom: 0; left: 0; width: 86%; height: 78%; }
+.stack--3 .stack__card:nth-child(1) { top: 0; right: 0; width: 56%; height: 54%; transform: rotate(3deg); }
+.stack--3 .stack__card:nth-child(2) { top: 5%; left: 0; width: 52%; height: 52%; transform: rotate(-2.5deg); }
+.stack--3 .stack__card:nth-child(3) { bottom: 0; left: 7%; width: 86%; height: 74%; }
+.stack--video .stack__card { object-fit: cover; padding: 0; }
+.stack .placeholder { border-style: dashed; border-color: var(--rule-strong); box-shadow: none; background-color: var(--paper); }
+.stack .placeholder strong, .stack .placeholder span { background: var(--paper); }
+@media (hover: hover) {
+  .stack:hover .stack__card { border-color: var(--rule-strong); }
+  .stack--2:hover .stack__card:nth-child(1) { transform: translate(8px, -8px) rotate(4deg); }
+  .stack--3:hover .stack__card:nth-child(1) { transform: translate(10px, -8px) rotate(5deg); }
+  .stack--3:hover .stack__card:nth-child(2) { transform: translate(-10px, -6px) rotate(-4.5deg); }
+  .stack--2:hover .stack__card:nth-child(2), .stack--3:hover .stack__card:nth-child(3) { transform: translateY(3px); }
+}
+
+.work__meta { display: flex; flex-wrap: wrap; gap: 0.2rem 1rem; font-size: var(--text-sm); color: var(--ink-3); margin: 0 0 0.5rem; }
+.work__title { margin-bottom: 0.6rem; }
+.work__title a { color: var(--ink); text-decoration: none; }
+.work__title a:hover { color: var(--link); text-decoration: underline; text-decoration-thickness: 1px; }
+.work__summary { color: var(--ink-2); margin-bottom: 0.8rem; max-width: 62ch; }
+.work__result { border-left: 2px solid var(--ink); padding-left: 0.9rem; margin-bottom: 1rem; max-width: 60ch; font-weight: 500; }
+@media (max-width: 54rem) {
+  .work-wrap { padding-left: 2.5rem; }
+  .rail { left: 0.9rem; }
+  .work__node { left: calc(-1.6rem + 1px); top: 2.6rem; }
+  .work__item:last-child::after { left: calc(-1.6rem - 8px); top: calc(2.6rem + 6px); }
+  .work__item { grid-template-columns: minmax(0, 1fr); align-items: start; padding-block: 1.75rem; }
+  .work__figure { order: 0; }
+}
+
+/* 10. Figures, placeholders, video ---------------------------------------- */
+/* Captions number themselves ("Figure 1.") in page order; never type the number. */
+.page { counter-reset: figure; }
+.figure { margin: 0; }
+.figure__frame { display: block; background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
+a.figure__frame { cursor: zoom-in; transition: border-color 150ms var(--ease); }
+a.figure__frame:hover { border-color: var(--ink-3); }
+.figure__frame img, .figure__frame video { width: 100%; }
+.figure__frame--pad img { padding: clamp(0.5rem, 2vw, 1.25rem); }
+.figure__frame--white { background: var(--paper); }
+.figure figcaption { margin-top: 0.6rem; font-size: var(--text-sm); color: var(--ink-2); max-width: 64ch; }
+.figure figcaption::before { counter-increment: figure; content: "Figure " counter(figure) ". "; font-weight: 600; color: var(--ink); }
+.figure-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem 1.5rem; align-items: start; }
+.figure-grid .figure--wide { grid-column: 1 / -1; }
+@media (max-width: 40rem) { .figure-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Placeholder: an empty set of axes. Replace the whole element when the real
+   figure or text is ready (see README, "Fill a placeholder"). */
+.placeholder {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.2rem;
+  width: 100%; height: 100%; min-height: 11rem; padding: 1rem; text-align: center;
+  color: var(--ink-3); font-size: var(--text-sm);
+  background-color: var(--wash);
+  background-image: linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+  background-size: 2rem 2rem; background-position: -1px -1px;
+}
+.placeholder strong { font-weight: 600; color: var(--ink-2); background: var(--wash); padding: 0 0.5rem; }
+.placeholder span { background: var(--wash); padding: 0 0.5rem; }
+.figure__frame .placeholder { aspect-ratio: 16 / 10; height: auto; }
+.placeholder--text { align-items: flex-start; text-align: left; min-height: 0; padding: 1rem 1.25rem; border: 1px dashed var(--rule-strong); border-radius: var(--radius); background-image: none; background-color: var(--paper); margin-bottom: 1em; }
+.placeholder--text strong, .placeholder--text span { background: none; padding: 0; }
+
+/* 11. Project detail page -------------------------------------------------- */
+.page { padding-top: clamp(1.5rem, 4vw, 2.5rem); }
+.crumbs { font-size: var(--text-sm); color: var(--ink-3); margin-bottom: clamp(1.5rem, 4vw, 2.5rem); }
+.crumbs a { color: var(--ink-2); }
+.project-head { max-width: 54rem; }
+.project-head__meta { display: flex; flex-wrap: wrap; gap: 0.2rem 1rem; font-size: var(--text-sm); color: var(--ink-3); margin-bottom: 0.75rem; }
+.project-head h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3rem); }
+.lede { font-family: var(--serif); font-size: clamp(1.2rem, 1rem + 0.8vw, 1.4rem); line-height: 1.45; color: var(--ink-2); margin: 1rem 0 1.5rem; max-width: 46rem; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0; margin: 2.25rem 0; border-block: 1px solid var(--rule); }
+.facts > div { padding: 1rem 1.25rem 1rem 0; }
+.facts dt { font-size: var(--text-xs); font-weight: 600; color: var(--ink-3); margin-bottom: 0.15rem; }
+.facts dd { margin: 0; font-size: var(--text-sm); }
+.figure--lead { margin-bottom: 2.5rem; max-width: 58rem; }
+.figure--lead .placeholder { aspect-ratio: 16 / 7; }
+.prose { max-width: var(--reading); }
+.prose h2 { font-size: var(--text-xl); margin: 2.5rem 0 0.75rem; }
+.prose h3 { font: 600 var(--text-md)/1.4 var(--sans); margin: 1.5rem 0 0.4rem; letter-spacing: 0; }
+.prose li strong { font-weight: 600; }
+.block { margin-top: 3rem; }
+.block > h2 { font-size: var(--text-xl); margin-bottom: 1.25rem; }
+.pager { display: flex; justify-content: space-between; gap: 1rem 2rem; flex-wrap: wrap; margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); font-size: var(--text-sm); }
+.pager a { text-decoration: none; }
+.pager a:hover span:last-child { text-decoration: underline; }
+.pager span { display: block; }
+.pager span:first-child { color: var(--ink-3); }
+.pager__next { text-align: right; margin-left: auto; }
+
+/* 12. Experience page ------------------------------------------------------ */
+.page-title { margin-bottom: 0.75rem; }
+.page-intro { color: var(--ink-2); max-width: var(--reading); margin-bottom: 1.5rem; }
+.cv-section { margin-top: 3.25rem; }
+.cv-section > h2 { font-size: var(--text-xl); padding-bottom: 0.6rem; border-bottom: 1px solid var(--ink); }
+.entry { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 0.25rem 2rem; padding-block: 1.5rem; border-bottom: 1px solid var(--rule); }
+.entry__when { font-size: var(--text-sm); color: var(--ink-3); padding-top: 0.2rem; font-variant-numeric: tabular-nums; }
+.entry__body h3 { font: 600 var(--text-lg)/1.3 var(--serif); }
+.entry__role { color: var(--ink-2); font-size: var(--text-sm); margin: 0.2rem 0 0.9rem; }
+.entry__body h4 { font: 600 var(--text-md)/1.4 var(--sans); margin: 1rem 0 0.35rem; letter-spacing: 0; }
+.entry__body ul { font-size: var(--text-sm); color: var(--ink-2); max-width: 70ch; margin-bottom: 0.25rem; }
+.entry__body > :last-child { margin-bottom: 0; }
+.skills { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 0.6rem 2rem; margin: 1.25rem 0 0; font-size: var(--text-sm); }
+.skills dt { color: var(--ink-3); }
+.skills dd { margin: 0; }
+@media (max-width: 40rem) {
+  .entry, .skills { grid-template-columns: minmax(0, 1fr); }
+  .skills dd { margin-bottom: 0.5rem; }
+}
+
+/* 13. Project index page --------------------------------------------------- */
+.index { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+.index li { margin: 0; }
+.index__row { display: grid; grid-template-columns: 9rem minmax(0, 1fr) auto; gap: 0.5rem 1.5rem; align-items: center; padding-block: 1.1rem; border-bottom: 1px solid var(--rule); color: inherit; text-decoration: none; }
+.index__thumb { aspect-ratio: 16 / 10; background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+.index__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.index__thumb--plot img { object-fit: contain; padding: 0.25rem; }
+.index__thumb .placeholder { min-height: 0; background-size: 1rem 1rem; font-size: 0; }
+.index__title { font: 600 var(--text-lg)/1.3 var(--serif); color: var(--ink); margin: 0 0 0.2rem; }
+.index__row:hover .index__title { color: var(--link); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+.index__desc { color: var(--ink-2); font-size: var(--text-sm); margin: 0; max-width: 64ch; }
+.index__meta { text-align: right; font-size: var(--text-sm); color: var(--ink-3); display: flex; flex-direction: column; align-items: flex-end; gap: 0.15rem; }
+@media (max-width: 40rem) {
+  .index__row { grid-template-columns: 5.5rem minmax(0, 1fr); }
+  .index__meta { grid-column: 2; text-align: left; flex-direction: row; align-items: center; gap: 1rem; }
+}
+
+/* 14. Motion ---------------------------------------------------------------- */
+/* Every animation on the site is listed here. All of them animate only
+   transform or opacity, and all switch off under prefers-reduced-motion. */
+
+/* (a) Scroll reveal: text blocks with .reveal settle into place once.
+       Only active when JavaScript has added .js to <html>. */
+.js .reveal { opacity: 0; transform: translateY(16px); }
+.js .reveal.is-in { opacity: 1; transform: none; transition: opacity 500ms var(--ease), transform 800ms var(--settle); }
+.js .reveal--late.is-in { transition-delay: 90ms; }
+
+/* (b) Plot cards deal in one after another when their stack scrolls into view.
+       The stack itself stays put; only its cards animate. */
+.js .stack.reveal, .js .stack.reveal.is-in { opacity: 1; transform: none; transition: none; }
+.js .stack:not(.is-in) .stack__card { opacity: 0; }
+.js .stack.is-in .stack__card { animation: card-in 750ms var(--settle) both; }
+.js .stack.is-in .stack__card:nth-child(2) { animation-delay: 110ms; }
+.js .stack.is-in .stack__card:nth-child(3) { animation-delay: 220ms; }
+@keyframes card-in { from { opacity: 0; translate: 0 26px; scale: 0.94; } to { opacity: 1; translate: 0 0; scale: 1; } }
+
+/* (c) Orbit: the main orbit draws itself once on load. The satellite's slow
+       trip around it is an SVG <animateMotion> inside index.html. */
+.orbit__path--draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: orbit-draw 1800ms var(--ease) 150ms forwards; }
+@keyframes orbit-draw { to { stroke-dashoffset: 0; } }
+
+/* (d) The satellite wiggles gently, on its orbit and on the rail. */
+.sat-wiggle { transform-box: fill-box; transform-origin: 50% 50%; animation: sat-wiggle 2.8s ease-in-out infinite; }
+@keyframes sat-wiggle { 0%, 100% { transform: rotate(-8deg) translateY(0); } 50% { transform: rotate(8deg) translateY(-2px); } }
+
+/* (e) Intro portrait: the second photo fades in and out over the first. */
+.orbit__portrait--alt { opacity: 0; animation: portrait-swap 16s var(--ease) 3s infinite; }
+@keyframes portrait-swap { 0%, 42% { opacity: 0; } 50%, 92% { opacity: 1; } 100% { opacity: 0; } }
+
+/* (f) Page-to-page cross-fade in browsers that support it; others just load. */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 180ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal, .js .reveal.is-in { opacity: 1; transform: none; transition: none; }
+  .js .stack:not(.is-in) .stack__card { opacity: 1; }
+  .js .stack.is-in .stack__card { animation: none; }
+  .stack__card, .icon-btn, .btn, a.figure__frame { transition: none; }
+  .js .rail__flown, .js .rail__sat, .js .work__node, .orbit__sat { transition: none; }
+  .orbit__path--draw { animation: none; stroke-dashoffset: 0; }
+  .sat-wiggle, .orbit__portrait--alt { animation: none; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
+
+/* 15. Lightbox -------------------------------------------------------------- */
+.lightbox { border: 0; padding: 0; background: transparent; max-width: 96vw; max-height: 94vh; }
+.lightbox::backdrop { background: rgba(14, 26, 51, 0.82); }
+.lightbox img { max-width: 96vw; max-height: 94vh; width: auto; height: auto; background: var(--paper); border-radius: var(--radius); cursor: zoom-out; }
+.lightbox[data-plot] img { padding: 1rem; min-width: min(90vw, 70rem); }
+
+/* 16. Print ------------------------------------------------------------------ */
+@media print {
+  .site-header, .site-footer, .pager, .skip-link, .orbit__svg, .orbit__portrait--alt { display: none; }
+  .js .reveal { opacity: 1; transform: none; }
+  body { font-size: 11pt; }
+}

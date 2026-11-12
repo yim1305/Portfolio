@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HARMONIA: docking and debris capture | Krittin Jindamai</title>
+  <meta name="description" content="Rotation rates and grapple geometry for 44 defunct LEO satellites, plus rendezvous analysis supporting a PhD dissertation.">
+  <meta property="og:title" content="HARMONIA: docking and debris capture | Krittin Jindamai">
+  <meta property="og:description" content="Rotation rates and grapple geometry for 44 defunct LEO satellites, plus rendezvous analysis supporting a PhD dissertation.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/fonts/stix-two-text-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <!-- Marks the page as script-enabled before first paint (see section 14 of site.css). -->
+  <script>document.documentElement.className += " js";</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===== SITE HEADER: identical on every page. If you edit it, edit it in all HTML files. ===== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-name" href="../index.html">Krittin Jindamai</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="../experience.html">Experience</a>
+        <a href="../projects.html" aria-current="page">Projects</a>
+        <a class="btn" href="../assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container page">
+
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../projects.html">Projects</a> / HARMONIA: docking and debris capture</nav>
+
+    <!-- ===== PROJECT HEADER: what it is, one-sentence abstract, links ===== -->
+    <header class="project-head">
+      <p class="project-head__meta"><span>Space Systems Group research, 2026 to present</span> <span class="status status--progress">Ongoing</span></p>
+      <h1>HARMONIA: unified docking and debris-capture architecture</h1>
+      <p class="lede">A target dataset for debris capture: how fast defunct low-Earth-orbit satellites rotate, how that changes over the years, and how far their grapple points sit from the spin axis.</p>
+      <p class="actions">
+        <a class="btn" href="https://github.com/yim1305/HARMONIA-Code" target="_blank" rel="noopener">Code on GitHub</a>
+      </p>
+    </header>
+
+    <!-- ===== FACTS: short label and value pairs ===== -->
+    <dl class="facts">
+      <div><dt>Lab</dt><dd>Space Systems Group (SSG), University of Florida</dd></div>
+      <div><dt>Advisor</dt><dd>Dr. Fitz-Coy</dd></div>
+      <div><dt>Role</dt><dd>Undergraduate researcher, supporting the lead researcher's PhD dissertation</dd></div>
+      <div><dt>Period</dt><dd>2026 to present</dd></div>
+      <div><dt>Tools</dt><dd>Python, MATLAB</dd></div>
+    </dl>
+
+    <!-- ===== BODY: lead figure, text sections, figure grid ===== -->
+    <figure class="figure figure--lead">
+      <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/harmonia/rate.webp" data-zoom><img src="../assets/img/harmonia/rate.webp" alt="Scatter and line plot of rotation rate on a log axis against years since end of life for many defunct satellites. Measured rates lie between about 5 and 100 degrees per second and fall with time; objects with no measured period appear as upper limits near a shaded band at 2 to 5 degrees per second." width="1800" height="1463" decoding="async"></a>
+      <figcaption>Rotation rate against years since end of life. Lines join each object's yearly median rate. Arrows are upper limits for objects with no detectable period. The gray band is the 2 to 5 °/s range assumed for capture studies.</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2>Overview</h2>
+      <p>A servicer that docks with or captures a dead satellite has to match its rotation and reach a point it can hold. HARMONIA is a unified docking and debris-capture architecture studied in the Space Systems Group, and I build its target dataset: defunct satellites in low Earth orbit with their rotation rates, masses and grapple-point geometry. The work supports the lead researcher's PhD dissertation.</p>
+
+      <h2>Approach</h2>
+      <ul>
+        <li><strong>Rotation rates.</strong> Retrieve light curves from the Mini-MegaTORTORA photometric archive with Python, fold each one at its candidate period, and compare the fold at half, one and two times that period to resolve factor-of-two ambiguities. Periods that do not fold cleanly are listed and excluded.</li>
+        <li><strong>Detection limit.</strong> A period only appears when at least about 1.2 rotations fit inside one light curve. For objects with no period, that gives an upper limit on rotation rate from the longest light curve.</li>
+        <li><strong>Grapple geometry.</strong> Estimate the distance from the spin axis to the capture point from satellite bus and adapter-ring dimensions, bracketed between spin about the long axis and the largest-ring case.</li>
+        <li><strong>Rendezvous.</strong> Hohmann-phasing ΔV and Clohessy–Wiltshire relative-motion families in MATLAB for far-field rendezvous and proximity operations.</li>
+      </ul>
+
+      <h2>Results</h2>
+      <ul>
+        <li>Rotation rates determined for 44 defunct satellites. Those inactive for longer trend toward lower rates.</li>
+        <li>Objects with a measurable period rotate at roughly 5 to 100 °/s, mostly above the 2 to 5 °/s range assumed for capture studies. Objects with no detectable period are bounded to slower rates.</li>
+        <li>Of the 12 objects with several years of data, seven show a steady exponential spin-down with e-folding times of about 2 to 6 years. Others slow and then spin up again.</li>
+        <li>Holding station beside a grapple point takes a centripetal acceleration of 8 to 708 mm/s² across the measured objects, which sets the thrust a servicer needs per kilogram.</li>
+        <li>A Hohmann transfer across the study's altitude range, 400 km to 1,200 km, costs about 416 m/s.</li>
+      </ul>
+    </div>
+
+    <section class="block">
+      <h2>Figures</h2>
+      <div class="figure-grid">
+        <figure class="figure figure--wide">
+          <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/harmonia/spin-evolution.webp" data-zoom><img src="../assets/img/harmonia/spin-evolution.webp" alt="Twelve small panels of rotation rate against year of observation, one per satellite, with dashed exponential fits labeled by e-folding time on the panels that spin down." width="1800" height="1534" loading="lazy" decoding="async"></a>
+          <figcaption>Spin evolution of the 12 objects with multi-year records. Dashed lines are exponential fits, labeled with the e-folding time τ.</figcaption>
+        </figure>
+        <figure class="figure">
+          <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/harmonia/grab-accel.webp" data-zoom><img src="../assets/img/harmonia/grab-accel.webp" alt="Two panels of rotation rate against distance from the spin axis to the grab point, with dotted diagonal lines of equal centripetal acceleration." width="1800" height="1858" loading="lazy" decoding="async"></a>
+          <figcaption>Rotation rate against grapple-point distance, with lines of equal centripetal acceleration.</figcaption>
+        </figure>
+        <figure class="figure">
+          <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/harmonia/detection.webp" data-zoom><img src="../assets/img/harmonia/detection.webp" alt="Scatter plot of measured period against light-curve length; all points lie below a line marking 1.2 rotations per light curve." width="1781" height="1124" loading="lazy" decoding="async"></a>
+          <figcaption>What the survey can measure: every detected period fits at least 1.2 rotations inside its light curve.</figcaption>
+        </figure>
+        <figure class="figure">
+          <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/harmonia/hcw-relative-motion.webp" data-zoom><img src="../assets/img/harmonia/hcw-relative-motion.webp" alt="Family of closed elliptical relative-motion trajectories around a target in the local-vertical local-horizontal frame, colored by time over one orbit." width="1188" height="807" loading="lazy" decoding="async"></a>
+          <figcaption>Clohessy–Wiltshire relative-motion family around the target over one orbit.</figcaption>
+        </figure>
+        <figure class="figure">
+          <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/harmonia/hohmann-delta-v.webp" data-zoom><img src="../assets/img/harmonia/hohmann-delta-v.webp" alt="Line plot of normalized delta-v for each Hohmann burn and their total against orbit radius ratio from 400 to 1200 kilometers altitude." width="1195" height="774" loading="lazy" decoding="async"></a>
+          <figcaption>Hohmann transfer ΔV across the study range, 400 km to 1,200 km.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <nav class="pager" aria-label="More projects">
+      <a class="pager__prev" href="clf-mcbf-hcmg.html"><span>Previous</span><span>CLF-MCBF for safe HCMG mode switching</span></a>
+      <a class="pager__next" href="cbf-nonholonomic.html"><span>Next</span><span>CBF safety control for nonholonomic robots</span></a>
+    </nav>
+
+  </main>
+
+  <!-- ===== SITE FOOTER: identical on every page. ===== -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>Krittin Jindamai (Yim), University of Florida</p>
+      <p class="site-footer__links">
+        <a href="mailto:krittin.jindamai@ufl.edu">krittin.jindamai@ufl.edu</a>
+        <a href="https://www.linkedin.com/in/krittinjindamai/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/yim1305" target="_blank" rel="noopener">GitHub</a>
+        <a href="../assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/site.js" defer></script>
+</body>
+</html>

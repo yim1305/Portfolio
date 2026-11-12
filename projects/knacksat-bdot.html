@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KNACKSAT-3: attitude determination and detumbling | Krittin Jindamai</title>
+  <meta name="description" content="TRIAD attitude determination and a B-dot detumbling simulation used to tune magnetorquer gains for a 1U CubeSat.">
+  <meta property="og:title" content="KNACKSAT-3: attitude determination and detumbling | Krittin Jindamai">
+  <meta property="og:description" content="TRIAD attitude determination and a B-dot detumbling simulation used to tune magnetorquer gains for a 1U CubeSat.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/fonts/stix-two-text-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <!-- Marks the page as script-enabled before first paint (see section 14 of site.css). -->
+  <script>document.documentElement.className += " js";</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===== SITE HEADER: identical on every page. If you edit it, edit it in all HTML files. ===== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-name" href="../index.html">Krittin Jindamai</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="../experience.html">Experience</a>
+        <a href="../projects.html" aria-current="page">Projects</a>
+        <a class="btn" href="../assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container page">
+
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../projects.html">Projects</a> / KNACKSAT-3: attitude determination and detumbling</nav>
+
+    <!-- ===== PROJECT HEADER: what it is, one-sentence abstract, links ===== -->
+    <header class="project-head">
+      <p class="project-head__meta"><span>ADCS research, KMUTNB, Summer 2024</span> <span class="status status--done">Complete</span></p>
+      <h1>KNACKSAT-3: attitude determination and detumbling</h1>
+      <p class="lede">TRIAD attitude determination and B-dot magnetorquer control for detumbling a 1U CubeSat in low Earth orbit.</p>
+      <p class="actions">
+        <a class="btn" href="https://github.com/yim1305/BDOT-Detumbling" target="_blank" rel="noopener">Code on GitHub</a>
+      </p>
+    </header>
+
+    <!-- ===== FACTS: short label and value pairs ===== -->
+    <dl class="facts">
+      <div><dt>Advisor</dt><dd>Dr. Phongsatorn Saisutjarit</dd></div>
+      <div><dt>Institution</dt><dd>Mechanical and Aerospace Engineering, King Mongkut's University of Technology North Bangkok</dd></div>
+      <div><dt>Role</dt><dd>ADCS research assistant</dd></div>
+      <div><dt>Period</dt><dd>Summer 2024</dd></div>
+      <div><dt>Tools</dt><dd>MATLAB, Simulink, Aerospace Toolbox</dd></div>
+    </dl>
+
+    <!-- ===== BODY: lead figure, text sections, figure grid ===== -->
+    <figure class="figure figure--lead">
+      <div class="figure__frame figure__frame--white">
+        <video controls preload="none" playsinline poster="../assets/img/knacksat-bdot/animation-poster.jpg" width="704" height="528" aria-label="MATLAB animation of the CubeSat attitude during detumbling">
+          <source src="../assets/video/bdot-detumbling.mp4" type="video/mp4">
+        </video>
+      </div>
+      <figcaption>3D attitude animation of the detumbling run (3 min, no sound).</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2>Overview</h2>
+      <p>During the summer of my freshman year, I worked with Dr. Saisutjarit on KnackSat 3, the first CubeSat fully designed and built by Thai undergraduate students. I simulated magnetic detumbling in MATLAB to tune the B-dot control gain before deploying the software on the flight computer.</p>
+
+      <h2>Approach</h2>
+      <ul>
+        <li><strong>Orbit and environment.</strong> Propagated a low Earth orbit from Keplerian elements in the Earth-centered inertial frame, solving Kepler's equation with Newton-Raphson iteration and modeling J2 precession of RAAN and argument of perigee.</li>
+        <li><strong>Magnetic-field and attitude model.</strong> Computed the IGRF field with <code>igrfmagm</code>, transformed it into the body frame with a quaternion-derived direction cosine matrix, and modeled angular velocity, scalar-first quaternions, Euler angles, and Euler's rotational equations.</li>
+        <li><strong>B-dot control.</strong> Implemented the magnetorquer law with coil current, magnetic dipole moment, actuator saturation, and magnetic control torque, then integrated the attitude state with a fourth-order Runge-Kutta method.</li>
+        <li><strong>Disturbance framework.</strong> Included gravity-gradient, atmospheric-drag, solar-radiation-pressure, and residual magnetic-dipole torque models.</li>
+        <li><strong>Analysis.</strong> Generated orbital, magnetic-field, angular-velocity, quaternion, Euler-angle, and magnetorquer-current plots plus a 3D attitude visualization using MATLAB Aerospace Toolbox functions.</li>
+      </ul>
+    </div>
+
+    <section class="block">
+      <h2>Results</h2>
+      <div class="figure-grid">
+        <figure class="figure">
+          <a class="figure__frame figure__frame--white" href="../assets/img/knacksat-bdot/angular-velocity.png" data-zoom><img src="../assets/img/knacksat-bdot/angular-velocity.png" alt="MATLAB plot of angular velocity about three axes decaying to zero over time." width="700" height="583" loading="lazy" decoding="async"></a>
+          <figcaption>B-dot detumbling: body angular velocity decays to zero.</figcaption>
+        </figure>
+        <figure class="figure">
+          <a class="figure__frame figure__frame--white" href="../assets/img/knacksat-bdot/magnetic-field.png" data-zoom><img src="../assets/img/knacksat-bdot/magnetic-field.png" alt="MATLAB plot of the three magnetic field components in the body frame oscillating over time." width="700" height="584" loading="lazy" decoding="async"></a>
+          <figcaption>Magnetic field strength in the body frame during detumbling.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <nav class="pager" aria-label="More projects">
+      <a class="pager__prev" href="cbf-nonholonomic.html"><span>Previous</span><span>CBF safety control for nonholonomic robots</span></a>
+      <a class="pager__next" href="adaptive-attitude-tracking.html"><span>Next</span><span>Adaptive attitude tracking with uncertain inertia</span></a>
+    </nav>
+
+  </main>
+
+  <!-- ===== SITE FOOTER: identical on every page. ===== -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>Krittin Jindamai (Yim), University of Florida</p>
+      <p class="site-footer__links">
+        <a href="mailto:krittin.jindamai@ufl.edu">krittin.jindamai@ufl.edu</a>
+        <a href="https://www.linkedin.com/in/krittinjindamai/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/yim1305" target="_blank" rel="noopener">GitHub</a>
+        <a href="../assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/site.js" defer></script>
+</body>
+</html>

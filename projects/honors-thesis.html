@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HCMG momentum management using magnetorquers | Krittin Jindamai</title>
+  <meta name="description" content="A 12U CubeSat simulation that slews with a hybrid CMG array, then uses magnetorquers to desaturate its flywheels during fine pointing.">
+  <meta property="og:title" content="HCMG momentum management using magnetorquers | Krittin Jindamai">
+  <meta property="og:description" content="A 12U CubeSat simulation that slews with a hybrid CMG array, then uses magnetorquers to desaturate its flywheels during fine pointing.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/fonts/stix-two-text-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <!-- Marks the page as script-enabled before first paint (see section 14 of site.css). -->
+  <script>document.documentElement.className += " js";</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===== SITE HEADER: identical on every page. If you edit it, edit it in all HTML files. ===== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-name" href="../index.html">Krittin Jindamai</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="../index.html">Home</a>
+        <a href="../experience.html">Experience</a>
+        <a href="../projects.html" aria-current="page">Projects</a>
+        <a class="btn" href="../assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container page">
+
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../projects.html">Projects</a> / HCMG momentum management using magnetorquers</nav>
+
+    <!-- ===== PROJECT HEADER: what it is, one-sentence abstract, links ===== -->
+    <header class="project-head">
+      <p class="project-head__meta"><span>Undergraduate honors thesis, 2026 to 2027</span> <span class="status status--progress">In progress</span></p>
+      <h1>HCMG momentum management using magnetorquers</h1>
+      <p class="lede">Hybrid control moment gyroscope angular momentum desaturation using magnetorquers for CubeSats in low Earth orbit.</p>
+      <p class="actions">
+        <a class="btn btn--primary" href="../assets/docs/honors-thesis-draft.pdf" target="_blank" rel="noopener">Thesis draft (PDF)</a>
+        <a class="btn" href="https://github.com/yim1305/Honors-Thesis" target="_blank" rel="noopener">Code on GitHub</a>
+      </p>
+    </header>
+
+    <!-- ===== FACTS: short label and value pairs ===== -->
+    <dl class="facts">
+      <div><dt>Advisor</dt><dd>Dr. Norman G. Fitz-Coy, Space Systems Group</dd></div>
+      <div><dt>Committee</dt><dd>Dr. Norman G. Fitz-Coy (chair), Dr. Richard C. Lind, Dr. Jonathan T. Brooks</dd></div>
+      <div><dt>Period</dt><dd>Summer 2026 to present</dd></div>
+      <div><dt>Status</dt><dd>Revising the first draft. Oral defense in April 2027.</dd></div>
+      <div><dt>Tools</dt><dd>MATLAB, Python</dd></div>
+    </dl>
+
+    <!-- ===== BODY: lead figure, text sections, figure grid ===== -->
+    <figure class="figure figure--lead">
+      <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/honors-thesis/flywheel-speed.svg" data-zoom><img src="../assets/img/honors-thesis/flywheel-speed.svg" alt="Two line charts of four flywheel speeds over 15 orbits. With magnetorquers off the oscillation grows every orbit; with magnetorquers on it stays within a narrow band around the nominal speed." width="960" height="450" decoding="async"></a>
+      <figcaption>Flywheel speeds over 15 simulated orbits in reaction-wheel mode. Without desaturation the speed excursions grow each orbit; with the magnetorquers on they stay bounded near the nominal 8,002 RPM (838 rad/s).</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2>Overview</h2>
+      <p>Modern CubeSats increasingly require more fine pointing and rapid retargeting capabilities, but reaction wheels give one and control moment gyroscopes (CMGs) give the other, and most CubeSats do not have room for separate actuators of each type. Patankar's Hybrid Control Moment Gyroscope (HCMG) solves this with a single cluster of four gimbaled flywheels that switch between CMG mode for slewing and locked-gimbal reaction wheel mode for fine pointing, but it was only validated with no external disturbance torques.</p>
+      <p>In orbit those disturbances constantly feed the flywheels torque they have to reject, drifting their speeds away from nominal until one hits its limit and loses control authority, so this thesis tests whether magnetorquers (MTQs) can desaturate that drift without interfering with the CMG-mode steering algorithm.</p>
+
+      <h2>Approach</h2>
+      <ul>
+        <li><strong>Simulation.</strong> A full nonlinear 6DOF attitude and orbit simulation built in MATLAB for a 12U Earth observing CubeSat (230 by 240 by 360 mm) in a sun-synchronous low Earth orbit.</li>
+        <li><strong>Tracking controller.</strong> An eigenaxis PD controller for nadir pointing, tracking a reference quaternion from the orbit's own local vertical, local horizontal (LVLH) frame. Feedback linearization cancels the satellite's gyroscopic coupling, and feedforward plus PD terms do the actual correcting.</li>
+        <li><strong>Steering algorithm.</strong> Commanded torque maps to gimbal rate and flywheel acceleration through a Generalized Singularity Robust (GSR) inverse plus a null motion term. A plain Singularity Robust inverse gets stuck in gimbal lock; GSR's time varying error matrix breaks out of it, and paired with the null motion term (which also biases the gimbals toward a good reaction wheel configuration before the mode switch) the two clear both hyperbolic and elliptic internal singularities.</li>
+        <li><strong>Disturbances.</strong> Aerodynamic drag, J2 perturbation, and gravity gradient torque.</li>
+        <li><strong>Desaturation.</strong> MTQ desaturation runs on the cross product law using a tilted dipole model to determine local magnetic field strength, with a commanded dipole moment built from the excess flywheel momentum crossed with the magnetic field. It only runs in RW mode, so it never fights the CMG-mode steering algorithm.</li>
+        <li><strong>Maneuver profile.</strong> Rapid retargeting to nadir pointing in CMG mode, a 10 second cosine scheduled mode switch (the mode parameter running 1 to 0) into RW mode for precision pointing, then held for 15 orbits.</li>
+        <li><strong>Comparison.</strong> Two identical runs, one with MTQ disabled and one enabled, isolating its effect on flywheel speed, excess momentum, and pointing accuracy.</li>
+      </ul>
+
+      <h2>Results</h2>
+      <ul>
+        <li>Without MTQ, excess angular momentum grows without bound over the full 15 orbit run, and flywheel acceleration never settles back to zero.</li>
+        <li>With MTQ on, excess momentum stays bounded and flywheel speed converges back to its nominal operating point near 838 rad/s.</li>
+        <li>Pointing held steady in both cases, zero steady state attitude and angular velocity error, so there's enough margin to run desaturation on a schedule instead of continuously and save power on a CubeSat's tight budget.</li>
+        <li>MTQ torque output stayed three orders of magnitude below HCMG torque (micronewton meters versus millinewton meters) and never disturbed pointing.</li>
+        <li>The cross product law's real limitation showed up directly in the simulation too: a dipole moment aligned with the local magnetic field produces zero torque, so desaturation authority rises and falls with where the satellite is in orbit, not just with actuator capability.</li>
+      </ul>
+    </div>
+
+    <section class="block">
+      <h2>Figures</h2>
+      <div class="figure-grid">
+        <figure class="figure">
+          <a class="figure__frame figure__frame--white" href="../assets/img/honors-thesis/cmg-pyramid-configuration.png" data-zoom><img src="../assets/img/honors-thesis/cmg-pyramid-configuration.png" alt="Diagram of four control moment gyroscopes arranged on the faces of a pyramid, with spin, gimbal and torque axes drawn as arrows." width="939" height="687" loading="lazy" decoding="async"></a>
+          <figcaption>Four-CMG pyramid array with spin, gimbal and torque axes.</figcaption>
+        </figure>
+        <figure class="figure">
+          <a class="figure__frame figure__frame--white" href="../assets/img/honors-thesis/simulation-block-diagram.png" data-zoom><img src="../assets/img/honors-thesis/simulation-block-diagram.png" alt="Block diagram linking the tracking controller, HCMG steering algorithm, actuator dynamics, satellite dynamics and the magnetorquer cross-product law." width="960" height="720" loading="lazy" decoding="async"></a>
+          <figcaption>Simulation block diagram: tracking controller, HCMG steering, and the MTQ cross-product desaturation loop.</figcaption>
+        </figure>
+        <figure class="figure figure--wide">
+          <a class="figure__frame figure__frame--white" href="../assets/img/honors-thesis/singularity-surfaces.webp" data-zoom><img src="../assets/img/honors-thesis/singularity-surfaces.webp" alt="Two three-dimensional surface plots of the angular momentum envelope of the CMG array." width="1600" height="770" loading="lazy" decoding="async"></a>
+          <figcaption>Singularity surfaces of the array: external (left) and internal (right).</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <nav class="pager" aria-label="More projects">
+      <a class="pager__next" href="clf-mcbf-hcmg.html"><span>Next</span><span>CLF-MCBF for safe HCMG mode switching</span></a>
+    </nav>
+
+  </main>
+
+  <!-- ===== SITE FOOTER: identical on every page. ===== -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>Krittin Jindamai (Yim), University of Florida</p>
+      <p class="site-footer__links">
+        <a href="mailto:krittin.jindamai@ufl.edu">krittin.jindamai@ufl.edu</a>
+        <a href="https://www.linkedin.com/in/krittinjindamai/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/yim1305" target="_blank" rel="noopener">GitHub</a>
+        <a href="../assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/site.js" defer></script>
+</body>
+</html>
