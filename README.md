@@ -21,7 +21,7 @@ A small static website for professors and research groups: who I am, what I work
 ## File map
 
 ```
-index.html            Home: intro, links, awards, coursework, five selected projects
+index.html            Home: intro, links, awards, coursework, six selected projects
 experience.html       Experience: same content as the CV, linked to project pages
 projects.html         Projects: one list of every project
 projects/
@@ -32,8 +32,11 @@ assets/
   js/site.js          Scroll reveal, trajectory rail, in-view video, figure lightbox
   fonts/              Self-hosted fonts (STIX Two Text, IBM Plex Sans; SIL Open Font License)
   img/<project>/      Images for each project, in a folder named like its page
-  video/              MP4 files
+  video/              Existing MP4 files and project-specific transparent WebM videos
   docs/               CV, transcript and papers (PDF)
+docs/
+  media-exports/      Animation preview, asset notes and original validation records
+  archive/            Historical website handoff
 .nojekyll             Tells GitHub Pages to serve the files untouched
 ```
 
@@ -191,6 +194,18 @@ For a screen recording with a light gray background (a MATLAB figure window, for
 ffmpeg -i input.mp4 -an -vf "crop=704:528:0:68,colorlevels=rimax=0.93:gimax=0.93:bimax=0.93,fps=24" -c:v libx264 -preset slow -crf 28 -pix_fmt yuv420p -movflags +faststart output.mp4
 ```
 
+### Transparent simulation videos
+
+The nonholonomic CBF and honors-thesis pages use transparent WebM videos as their lead figures. The Projects page uses those videos as previews. In Selected work, the thesis uses three plot cards, with the flywheel-speed comparison in front.
+
+- Videos: `assets/video/cbf-nonholonomic/` and `assets/video/honors-thesis/`.
+- Posters, alternate animated WebP exports and reusable stills: the matching folders under `assets/img/`.
+- Use `media--transparent` on the containing figure, thumbnail or video card. Its CSS filter gives the original light outlines a dark appearance on the white page without altering the source files.
+- Videos play muted only while visible. Detail-page controls allow manual playback, including with reduced motion enabled. Previews use `preload="none"` so the full simulations are not fetched during the initial page load.
+- Export notes, original validation records and a working format/background preview are in [docs/media-exports](docs/media-exports/README.md).
+
+The lunar hopper uses `assets/video/lunar-hopper/hopper-trajectory.webm` for its home, Projects and detail-page videos. Its `media--hopper` class darkens pale trajectory lines for white backgrounds. The detail page shows only Astro flight profiles and GN touchdown dispersion, split into readable panels, plus the cleaned CAD image. Original exports, unused plots and the WebP alternative remain in `assets/img/lunar-hopper/`; [hopper media notes](docs/media-exports/lunar-hopper/README.md) document organization and reproducible styling.
+
 ### Link buttons on a project page
 
 ```html
@@ -265,11 +280,8 @@ plt.rcParams.update({
 Things left for the owner to fill in or confirm:
 
 - **CLF-MCBF for safe HCMG mode switching:** result figure, write-up and paper link (placeholders on its page, on the home page and on the Projects page).
-- **Lunar hopper:** two navigation figures are still placeholders. The repository only stores the trajectory figures; the Monte Carlo plots have to be exported from a local run.
 - **Lunar hopper numbers:** the project page reports the navigation results recorded in the repository README (median 12 to 13 m, worst 23 to 34 m, 100 runs). The CV and the Experience page say "RMS landing error below 10 m across 1,000 Monte Carlo simulations". Make the two agree.
-- **Lunar hopper status** is shown as "In progress". Change it to "Complete" when the course ends (three places, see "Change a status").
 - **Payload flight software** flight-data plot: the axis units (m, m/s) were carried over from the previous site. The values look more like ft and ft/s; confirm and regenerate if needed.
-- **Animations from the previous site.** The thesis and CBF animations there are live 3D scenes, not video files, so they are not on this site. To use one, screen-record it, convert it with the commands under "Home page video", and swap it into that project's figure block.
 - **Airbrake** result plots are small screenshots (about 390 px wide). Higher-resolution exports from MATLAB would look sharper.
 
 ### The satellite

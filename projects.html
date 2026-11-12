@@ -43,7 +43,11 @@
       <ul class="index">
           <li>
             <a class="index__row" href="projects/honors-thesis.html">
-              <div class="index__thumb index__thumb--plot"><img src="assets/img/honors-thesis/flywheel-speed-home.svg" alt="" loading="lazy" decoding="async"></div>
+              <div class="index__thumb media--transparent">
+                <video data-inview muted loop playsinline preload="none" poster="assets/img/honors-thesis/cmg-rotation-middle.png" width="720" height="720" aria-hidden="true">
+                  <source src="assets/video/honors-thesis/cmg-rotation.webm" type="video/webm">
+                </video>
+              </div>
               <div>
                 <p class="index__title">HCMG momentum management using magnetorquers</p>
                 <p class="index__desc">A 12U CubeSat simulation that slews with a hybrid CMG array, then uses magnetorquers to desaturate its flywheels during fine pointing.</p>
@@ -68,12 +72,16 @@
                 <p class="index__title">HARMONIA: unified docking and debris-capture architecture</p>
                 <p class="index__desc">Rotation rates and grapple geometry for 44 defunct LEO satellites, plus rendezvous analysis supporting a PhD dissertation.</p>
               </div>
-              <div class="index__meta"><span>2026 to present</span> <span class="status status--progress">Ongoing</span></div>
+              <div class="index__meta"><span>2026</span> <span class="status status--done">Complete</span></div>
             </a>
           </li>
           <li>
             <a class="index__row" href="projects/cbf-nonholonomic.html">
-              <div class="index__thumb"><img src="assets/img/cbf-nonholonomic/gazebo-lab.png" alt="" loading="lazy" decoding="async"></div>
+              <div class="index__thumb media--transparent">
+                <video data-inview muted loop playsinline preload="none" poster="assets/img/cbf-nonholonomic/cbf-tracker-middle.png" width="1200" height="500" aria-hidden="true">
+                  <source src="assets/video/cbf-nonholonomic/cbf-tracker.webm" type="video/webm">
+                </video>
+              </div>
               <div>
                 <p class="index__title">CBF safety control for nonholonomic robots</p>
                 <p class="index__desc">Look-ahead control barrier functions that let a safety filter steer, not just brake, a differential-drive robot near walls.</p>
@@ -110,12 +118,16 @@
           </li>
           <li>
             <a class="index__row" href="projects/lunar-hopper.html">
-              <div class="index__thumb index__thumb--plot"><img src="assets/img/lunar-hopper/trajectory-3d.webp" alt="" loading="lazy" decoding="async"></div>
+              <div class="index__thumb media--hopper">
+                <video data-inview muted loop playsinline preload="none" poster="assets/img/lunar-hopper/hopper-poster.webp" width="1600" height="900" aria-hidden="true">
+                  <source src="assets/video/lunar-hopper/hopper-trajectory.webm" type="video/webm">
+                </video>
+              </div>
               <div>
                 <p class="index__title">Lunar hopper trajectory optimization and navigation</p>
-                <p class="index__desc">Minimum-wet-mass hop trajectories over real lunar terrain, and GPS-independent navigation with an error-state EKF.</p>
+                <p class="index__desc">Minimum-wet-mass trajectory optimization at the lunar south pole using Hermite–Simpson collocation, CasADi and IPOPT, plus a custom inertial navigation system validated using an error-state EKF.</p>
               </div>
-              <div class="index__meta"><span>Fall 2026</span> <span class="status status--progress">In progress</span></div>
+              <div class="index__meta"><span>Fall 2026</span> <span class="status status--done">Complete</span></div>
             </a>
           </li>
           <li>

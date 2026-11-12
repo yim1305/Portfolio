@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Hopper media preview</title>
+  <link rel="stylesheet" href="../../../assets/css/site.css">
+  <link rel="stylesheet" href="hopper.css">
+  <style>
+    main { max-width: 70rem; margin: 2rem auto; padding: 1.5rem; }
+    .stage { background: #fff; border: 1px solid #c5cddb; border-radius: 6px; }
+    .stage.light video, .stage.light img { filter: brightness(0.65) saturate(1.35); }
+    .stage.dark { background: #10151d; }
+    .stage.checker { background: repeating-conic-gradient(#d5dde8 0% 25%, #f2f5f8 0% 50%) 0 / 28px 28px; }
+    nav { display: flex; gap: 0.5rem; margin-block: 1rem; }
+    figure { margin-block: 2rem; }
+    figure img { width: 100%; }
+  </style>
+</head>
+<body><main>
+  <h1>Lunar hopper media</h1>
+  <p><a href="../../../projects/lunar-hopper.html">Open the project page</a></p>
+  <nav aria-label="Preview background">
+    <button class="btn" data-bg="light">White with darker trajectory</button>
+    <button class="btn" data-bg="dark">Dark with original colors</button>
+    <button class="btn" data-bg="checker">Transparency grid</button>
+  </nav>
+  <div class="stage light" id="stage">
+    <div class="hopper-media" data-hopper role="group" aria-label="Lunar hopper round-trip animation">
+      <img data-poster src="../../../assets/img/lunar-hopper/hopper-poster.webp" width="1600" height="900" alt="Hopper trajectory over lunar terrain">
+      <video hidden muted loop playsinline preload="none" data-src="../../../assets/video/lunar-hopper/hopper-trajectory.webm" width="1600" height="900" aria-label="Hopper round trip with moving vehicle and thrust indicator"></video>
+      <img hidden data-animation data-src="../../../assets/img/lunar-hopper/hopper-trajectory.webp" width="960" height="540" alt="Animated hopper round trip">
+      <button type="button">Play animation</button>
+    </div>
+  </div>
+  <p>Transparent WebM with animated WebP fallback. Original exports are unchanged; the white preview applies the portfolio's contrast adjustment.</p>
+  <figure class="figure">
+    <img src="../../../assets/img/lunar-hopper/flight-profiles-detail.png" width="1419" height="1238" alt="Astro altitude, speed, thrust and mass profiles" loading="lazy">
+    <figcaption>Astro flight profiles with navy labels and a white background.</figcaption>
+  </figure>
+  <figure class="figure">
+    <img src="../../../assets/img/lunar-hopper/gn-touchdown-dispersion.webp" width="2250" height="1470" alt="Complete GN touchdown navigation-error distributions" loading="lazy">
+    <figcaption>Original GN touchdown dispersion figure. The project page presents separate outbound and return scatter plots and histograms.</figcaption>
+  </figure>
+  <p>Terrain: NASA LOLA, Barker et al. (2023). Vertical scale is exaggerated by 2; terrain illumination is illustrative.</p>
+</main>
+<script type="module" src="hopper.js"></script>
+<script>
+document.querySelectorAll('[data-bg]').forEach(function (button) {
+  button.addEventListener('click', function () {
+    document.querySelector('#stage').className = 'stage ' + button.dataset.bg;
+  });
+});
+</script>
+</body>
+</html>

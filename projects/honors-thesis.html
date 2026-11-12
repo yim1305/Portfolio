@@ -57,8 +57,13 @@
 
     <!-- ===== BODY: lead figure, text sections, figure grid ===== -->
     <figure class="figure figure--lead">
-      <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/honors-thesis/flywheel-speed.svg" data-zoom><img src="../assets/img/honors-thesis/flywheel-speed.svg" alt="Two line charts of four flywheel speeds over 15 orbits. With magnetorquers off the oscillation grows every orbit; with magnetorquers on it stays within a narrow band around the nominal speed." width="960" height="450" decoding="async"></a>
-      <figcaption>Flywheel speeds over 15 simulated orbits in reaction-wheel mode. Without desaturation the speed excursions grow each orbit; with the magnetorquers on they stay bounded near the nominal 8,002 RPM (838 rad/s).</figcaption>
+      <div class="figure__frame media--transparent media--rotation">
+        <video data-inview controls muted loop playsinline preload="none" poster="../assets/img/honors-thesis/cmg-rotation-middle.png" width="720" height="720" aria-label="Thesis attitude simulation showing CubeSat rotation, body axes and the nadir direction">
+          <source src="../assets/video/honors-thesis/cmg-rotation.webm" type="video/webm">
+          <a href="../assets/img/honors-thesis/cmg-rotation.webp">View the animated simulation</a>
+        </video>
+      </div>
+      <figcaption>Attitude simulation playback in a fixed inertial view, showing the CubeSat's rotation, body axes and nadir direction. <a href="../assets/img/honors-thesis/cmg-rotation.webp">Animated image version</a>.</figcaption>
     </figure>
 
     <div class="prose">
@@ -90,6 +95,10 @@
     <section class="block">
       <h2>Figures</h2>
       <div class="figure-grid">
+        <figure class="figure figure--wide">
+          <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/honors-thesis/flywheel-speed.svg" data-zoom><img src="../assets/img/honors-thesis/flywheel-speed.svg" alt="Two line charts of four flywheel speeds over 15 orbits. With magnetorquers off the oscillation grows every orbit; with magnetorquers on it stays within a narrow band around the nominal speed." width="960" height="450" loading="lazy" decoding="async"></a>
+          <figcaption>Flywheel speeds over 15 simulated orbits in reaction-wheel mode. Without desaturation the speed excursions grow each orbit; with the magnetorquers on they stay bounded near the nominal 8,002 RPM (838 rad/s).</figcaption>
+        </figure>
         <figure class="figure">
           <a class="figure__frame figure__frame--white" href="../assets/img/honors-thesis/cmg-pyramid-configuration.png" data-zoom><img src="../assets/img/honors-thesis/cmg-pyramid-configuration.png" alt="Diagram of four control moment gyroscopes arranged on the faces of a pyramid, with spin, gimbal and torque axes drawn as arrows." width="939" height="687" loading="lazy" decoding="async"></a>
           <figcaption>Four-CMG pyramid array with spin, gimbal and torque axes.</figcaption>

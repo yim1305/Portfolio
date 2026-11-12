@@ -1,0 +1,26 @@
+[
+  {
+    "name": "cbf-tracker",
+    "width": 1200,
+    "height": 500,
+    "webmAlphaVerified": true,
+    "videoTransparentPixels": 549780,
+    "videoDrawnPixels": 50220,
+    "webpAlpha": true,
+    "webpFrames": 601,
+    "webpDurationSeconds": 41.199,
+    "webpInfiniteLoop": true
+  },
+  {
+    "name": "cmg-rotation",
+    "width": 720,
+    "height": 720,
+    "webmAlphaVerified": true,
+    "videoTransparentPixels": 419163,
+    "videoDrawnPixels": 99237,
+    "webpAlpha": true,
+    "webpFrames": 1358,
+    "webpDurationSeconds": 93.399,
+    "webpInfiniteLoop": true
+  }
+]

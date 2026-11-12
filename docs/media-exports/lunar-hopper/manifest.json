@@ -1,0 +1,259 @@
+{
+  "case": "a2200_08",
+  "created": "2026-11-12T02:49:10.668Z",
+  "source_hashes": {
+    "Astro/results/a2200_08/trajectory.npz": "551acfe33571ca5feb87b8ed762a3b281989ae5335f135cad9434c2a777604db",
+    "Astro/results/a2200_08/phases.csv": "7866e4177e254f9faf0cb439a5c7e15c2c6b95dcf4311e61225db64f7518b3af",
+    "Astro/results/a2200_08/parameters.json": "84ae5d640fd9fb1f12dfb36edcd098aac672e8b7e92ee2b07fa4043330ac4e73",
+    "Astro/results/a2200_08/summary.json": "be7738af6834900707929783600e5d33628a752ac9e91ef68f1122f222b00eaf",
+    "GN/results/dem_a2200_08/summary.json": "16508990d87d6088db566c254df869f1db25c8a7e5b66d87247857ae4395d085",
+    "GN/results/dem_a2200_08/histories.npz": "5eab0047b2cd823e661bdfd392a6cb2fcdbdd1fc723ad6f646b245f656e233b2",
+    "GN/results/dem_a2200_08/touchdown_runs.npz": "7143fa3e9003f09d885633506268e31522bebca2a0c1034596a9f09dde97bc46"
+  },
+  "animation": {
+    "file": "assets/video/hopper-trajectory.webm",
+    "codec": "VP9",
+    "alpha": true,
+    "width": 1600,
+    "height": 900,
+    "fps": 30,
+    "frames": 1500,
+    "duration_s": 50,
+    "mission_duration_s": 1285.38660055741,
+    "flight_playback_s": 48,
+    "hold_s": 2,
+    "vertical_exaggeration": 2,
+    "camera": {
+      "azimuth_deg": -74,
+      "elevation_deg": 16
+    },
+    "terrain": "NASA LOLA 30 m DEM, sampled every 8 pixels for visualization",
+    "hillshade": "Illustrative, not the mission Sun",
+    "thrust": "Arrow along saved thrust; plume opposite; indicative visual scale. Plume clipped to 90% of DEM altitude.",
+    "playback": [
+      {
+        "name": "rise",
+        "hop": 1,
+        "kind": "rise",
+        "mission_start_s": 0,
+        "mission_end_s": 7.68448973966533,
+        "screen_start_s": 0,
+        "screen_end_s": 3
+      },
+      {
+        "name": "ascent",
+        "hop": 1,
+        "kind": "ascent",
+        "mission_start_s": 7.68448973966533,
+        "mission_end_s": 185.48423295561068,
+        "screen_start_s": 3,
+        "screen_end_s": 6.555361819346179
+      },
+      {
+        "name": "ascent_s2",
+        "hop": 1,
+        "kind": "ascent",
+        "mission_start_s": 185.48423295561068,
+        "mission_end_s": 185.5842380448931,
+        "screen_start_s": 6.555361819346179,
+        "screen_end_s": 6.557361565069901
+      },
+      {
+        "name": "ascent_s3",
+        "hop": 1,
+        "kind": "ascent",
+        "mission_start_s": 185.5842380448931,
+        "mission_end_s": 185.68424559317268,
+        "screen_start_s": 6.557361565069901,
+        "screen_end_s": 6.559361359964812
+      },
+      {
+        "name": "coast",
+        "hop": 1,
+        "kind": "coast",
+        "mission_start_s": 185.68424559317268,
+        "mission_end_s": 506.84215205442536,
+        "screen_start_s": 6.559361359964812,
+        "screen_end_s": 12.981376026356568
+      },
+      {
+        "name": "braking",
+        "hop": 1,
+        "kind": "braking",
+        "mission_start_s": 506.84215205442536,
+        "mission_end_s": 644.5815444310308,
+        "screen_start_s": 12.981376026356568,
+        "screen_end_s": 15.954048307585415
+      },
+      {
+        "name": "braking_s2",
+        "hop": 1,
+        "kind": "braking",
+        "mission_start_s": 644.5815444310308,
+        "mission_end_s": 645.2752892514294,
+        "screen_start_s": 15.954048307585415,
+        "screen_end_s": 15.969020611167286
+      },
+      {
+        "name": "braking_s3",
+        "hop": 1,
+        "kind": "braking",
+        "mission_start_s": 645.2752892514294,
+        "mission_end_s": 645.8477800004025,
+        "screen_start_s": 15.969020611167286,
+        "screen_end_s": 15.981376026356568
+      },
+      {
+        "name": "observation",
+        "hop": 1,
+        "kind": "observation",
+        "mission_start_s": 645.8477800004025,
+        "mission_end_s": 650.9477800165896,
+        "screen_start_s": 15.981376026356568,
+        "screen_end_s": 19.981376026356568
+      },
+      {
+        "name": "terminal_uprange",
+        "hop": 1,
+        "kind": "terminal",
+        "mission_start_s": 650.9477800165896,
+        "mission_end_s": 673.9718201109656,
+        "screen_start_s": 19.981376026356568,
+        "screen_end_s": 23.981376026356568
+      },
+      {
+        "name": "rise2_uprange",
+        "hop": 2,
+        "kind": "rise",
+        "mission_start_s": 673.9718201109656,
+        "mission_end_s": 679.5047964874605,
+        "screen_start_s": 23.981376026356568,
+        "screen_end_s": 26.981376026356568
+      },
+      {
+        "name": "ascent2_uprange",
+        "hop": 2,
+        "kind": "ascent",
+        "mission_start_s": 679.5047964874605,
+        "mission_end_s": 787.9749865593114,
+        "screen_start_s": 26.981376026356568,
+        "screen_end_s": 29.150393626400525
+      },
+      {
+        "name": "ascent2_uprange_s2",
+        "hop": 2,
+        "kind": "ascent",
+        "mission_start_s": 787.9749865593114,
+        "mission_end_s": 788.0749901652476,
+        "screen_start_s": 29.150393626400525,
+        "screen_end_s": 29.152393342462606
+      },
+      {
+        "name": "ascent2_uprange_s3",
+        "hop": 2,
+        "kind": "ascent",
+        "mission_start_s": 788.0749901652476,
+        "mission_end_s": 788.1749954188706,
+        "screen_start_s": 29.152393342462606,
+        "screen_end_s": 29.154393091472553
+      },
+      {
+        "name": "coast2_uprange",
+        "hop": 2,
+        "kind": "coast",
+        "mission_start_s": 788.1749954188706,
+        "mission_end_s": 1180.5251877731198,
+        "screen_start_s": 29.154393091472553,
+        "screen_end_s": 37
+      },
+      {
+        "name": "braking2_uprange",
+        "hop": 2,
+        "kind": "braking",
+        "mission_start_s": 1180.5251877731198,
+        "mission_end_s": 1262.6445189429178,
+        "screen_start_s": 37,
+        "screen_end_s": 39.992711307275925
+      },
+      {
+        "name": "braking2_uprange_s2",
+        "hop": 2,
+        "kind": "braking",
+        "mission_start_s": 1262.6445189429178,
+        "mission_end_s": 1262.7445190123956,
+        "screen_start_s": 39.992711307275925,
+        "screen_end_s": 39.99635565428157
+      },
+      {
+        "name": "braking2_uprange_s3",
+        "hop": 2,
+        "kind": "braking",
+        "mission_start_s": 1262.7445190123956,
+        "mission_end_s": 1262.8445190465523,
+        "screen_start_s": 39.99635565428157,
+        "screen_end_s": 40
+      },
+      {
+        "name": "observation2_uprange",
+        "hop": 2,
+        "kind": "observation",
+        "mission_start_s": 1262.8445190465523,
+        "mission_end_s": 1267.9445190736326,
+        "screen_start_s": 40,
+        "screen_end_s": 44
+      },
+      {
+        "name": "terminal2_uprange",
+        "hop": 2,
+        "kind": "terminal",
+        "mission_start_s": 1267.9445190736326,
+        "mission_end_s": 1285.38660055741,
+        "screen_start_s": 44,
+        "screen_end_s": 48
+      }
+    ],
+    "fallback": {
+      "file": "assets/video/hopper-trajectory.webp",
+      "width": 960,
+      "height": 540,
+      "fps": 15,
+      "alpha": true
+    }
+  },
+  "plots": [
+    {
+      "file": "assets/plots/ekf-errors-outbound.png",
+      "webp": "assets/plots/ekf-errors-outbound.webp",
+      "source": "GN/results/dem_a2200_08/errors_C_hop1.png"
+    },
+    {
+      "file": "assets/plots/ekf-errors-return.png",
+      "webp": "assets/plots/ekf-errors-return.webp",
+      "source": "GN/results/dem_a2200_08/errors_C_hop2.png"
+    },
+    {
+      "file": "assets/plots/astro-flight-profiles.png",
+      "webp": "assets/plots/astro-flight-profiles.webp",
+      "source": "Astro/results/a2200_08/flight_profiles.png"
+    },
+    {
+      "file": "assets/plots/gn-sensor-comparison.png",
+      "webp": "assets/plots/gn-sensor-comparison.webp",
+      "source": "GN/results/dem_a2200_08/comparison_ABC.png"
+    },
+    {
+      "file": "assets/plots/gn-touchdown-dispersion.png",
+      "webp": "assets/plots/gn-touchdown-dispersion.webp",
+      "source": "GN/results/dem_a2200_08/touchdown_distribution.png"
+    }
+  ],
+  "navigation": {
+    "runs_per_case": 100,
+    "seed": 20261025,
+    "study": "Fixed-trajectory navigation Monte Carlo; not closed-loop landing dispersions",
+    "metric": "3 x horizontal RMS, not an empirical 99.7th percentile",
+    "trn": "Placeholder 50 m per-axis 1 sigma, 0.2 Hz"
+  },
+  "terrain_credit": "Barker et al. (2023), Planetary Science Journal 4, 183; doi:10.3847/PSJ/acf3e1",
+  "source_files_unchanged": true
+}

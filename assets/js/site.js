@@ -61,7 +61,6 @@
       rail.style.setProperty("--rail-y", y + "px");
       rail.style.setProperty("--rail-progress", rail.offsetHeight ? (y / rail.offsetHeight).toFixed(4) : "0");
       root.classList.toggle("sat-on-rail", index >= 0);
-      workItems.forEach(function (item, i) { item.classList.toggle("is-passed", i <= index); });
     };
 
     var band = new IntersectionObserver(function (entries) {
@@ -92,7 +91,7 @@
         var v = entry.target;
         if (entry.isIntersecting) {
           var p = v.play();
-          if (p && p.catch) p.catch(function () { v.controls = true; });
+          if (p && p.catch) p.catch(function () { if (!v.closest("a")) v.controls = true; });
         } else {
           v.pause();
         }
@@ -100,7 +99,7 @@
     }, { threshold: 0.5 });
     videos.forEach(function (v) { vio.observe(v); });
   } else {
-    videos.forEach(function (v) { v.controls = true; });
+    videos.forEach(function (v) { if (!v.closest("a")) v.controls = true; });
   }
 
   /* 4. Lightbox: enlarge a figure in a native <dialog>; falls back to opening the image */

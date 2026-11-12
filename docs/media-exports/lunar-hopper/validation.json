@@ -1,0 +1,155 @@
+{
+  "checked_at": "2026-11-12T02:53:17.248Z",
+  "video": {
+    "frames": 1500,
+    "duration_s": 50,
+    "alpha_decoded_with": "FFmpeg libvpx-vp9",
+    "samples": [
+      {
+        "time_s": 0,
+        "transparent_pixels": 1327986,
+        "opaque_pixels": 94554,
+        "antialiased_pixels": 17460,
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "time_s": 4,
+        "transparent_pixels": 1327799,
+        "opaque_pixels": 94582,
+        "antialiased_pixels": 17619,
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "time_s": 12,
+        "transparent_pixels": 1325872,
+        "opaque_pixels": 95491,
+        "antialiased_pixels": 18637,
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "time_s": 22,
+        "transparent_pixels": 1325988,
+        "opaque_pixels": 96050,
+        "antialiased_pixels": 17962,
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "time_s": 35,
+        "transparent_pixels": 1324555,
+        "opaque_pixels": 96997,
+        "antialiased_pixels": 18448,
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "time_s": 44,
+        "transparent_pixels": 1324343,
+        "opaque_pixels": 97425,
+        "antialiased_pixels": 18232,
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "time_s": 49.9,
+        "transparent_pixels": 1324417,
+        "opaque_pixels": 97456,
+        "antialiased_pixels": 18127,
+        "corner_alpha": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "animated_webp": {
+    "alpha": true,
+    "width": 960,
+    "height": 540,
+    "frames": 720,
+    "duration_ms": 49999
+  },
+  "plots": [
+    {
+      "file": "assets/plots/ekf-errors-outbound.png",
+      "width": 1950,
+      "height": 1275,
+      "exact_copy": true,
+      "webp_pixel_exact": true
+    },
+    {
+      "file": "assets/plots/ekf-errors-return.png",
+      "width": 1950,
+      "height": 1275,
+      "exact_copy": true,
+      "webp_pixel_exact": true
+    },
+    {
+      "file": "assets/plots/astro-flight-profiles.png",
+      "width": 1419,
+      "height": 1282,
+      "exact_copy": true,
+      "webp_pixel_exact": true
+    },
+    {
+      "file": "assets/plots/gn-sensor-comparison.png",
+      "width": 1950,
+      "height": 720,
+      "exact_copy": true,
+      "webp_pixel_exact": true
+    },
+    {
+      "file": "assets/plots/gn-touchdown-dispersion.png",
+      "width": 2250,
+      "height": 1470,
+      "exact_copy": true,
+      "webp_pixel_exact": true
+    }
+  ],
+  "flight_navigation_duration_match": [
+    {
+      "hop": 1,
+      "optimizer_duration_s": 673.9718201109656,
+      "navigation_duration_s": 673.9718204719745
+    },
+    {
+      "hop": 2,
+      "optimizer_duration_s": 611.4147804464444,
+      "navigation_duration_s": 611.4147799650993
+    }
+  ],
+  "source_files_unchanged": true,
+  "browser": {
+    "status": "not_tested",
+    "reason": "Computer Use was not approved to use Google Chrome"
+  }
+}

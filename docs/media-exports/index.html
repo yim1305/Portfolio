@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Transparent CBF and CMG animations</title>
+<style>
+body{margin:0;padding:24px;background:#fff;color:#0e1a33;font:16px system-ui}
+main{max-width:1200px;margin:auto}h1{font-size:24px}h2{font-size:18px}
+.surface{background:#fff;border:1px solid #c5cddb;border-radius:8px;overflow:hidden;margin:16px 0}
+.surface.light video,.surface.light img{filter:invert(1) hue-rotate(180deg)}
+video,img{display:block;max-width:100%;height:auto;background:transparent;margin:auto}
+button,select{font:inherit;padding:8px;margin-right:8px}a{color:#1238a8}
+.cmg{max-width:720px}p{line-height:1.5}
+</style>
+<main>
+<h1>Transparent animation exports</h1>
+<p>Choose a format and background to inspect the exported files. Animated WebP also works as a normal website image.</p>
+<label>Format <select id="format"><option value="webm">WebM video</option><option value="webp">Animated WebP image</option></select></label>
+<button data-color="#fff">Light (dark outlines)</button><button data-color="#20242b">Dark (original outlines)</button><button data-color="#174d55">Teal</button><button data-color="checker">Checkerboard</button>
+<h2>CBF tracker · 1200 × 500 · 41.2 seconds</h2>
+<div class="surface light" id="cbf"></div>
+<p><a href="../../assets/video/cbf-nonholonomic/cbf-tracker.webm" download>Download video</a> · <a href="../../assets/img/cbf-nonholonomic/cbf-tracker.webp" download>Download animated image</a></p>
+<h2>CMG satellite rotation · 720 × 720 · 93.4 seconds</h2>
+<div class="surface cmg light" id="cmg"></div>
+<p><a href="../../assets/video/honors-thesis/cmg-rotation.webm" download>Download video</a> · <a href="../../assets/img/honors-thesis/cmg-rotation.webp" download>Download animated image</a> · <a href="../../assets/img/honors-thesis/cmg-rotation-small.webp" download>Smaller animated image</a></p>
+<p>The portfolio uses dark outlines on white. Original transparent exports retain their light outlines for reuse on dark backgrounds.</p>
+</main>
+<script>
+const jobs=[['cbf','cbf-nonholonomic','cbf-tracker',1200,500],['cmg','honors-thesis','cmg-rotation',720,720]];
+function show(){for(const [id,project,name,w,h] of jobs){
+ const video=document.querySelector('#format').value==='webm';
+ const el=document.createElement(video?'video':'img');el.width=w;el.height=h;
+ el.src='../../assets/'+(video?'video/':'img/')+project+'/'+name+(video?'.webm':'.webp');
+ if(video){el.autoplay=true;el.muted=true;el.loop=true;el.playsInline=true;el.controls=true;}
+ else el.alt=name.replaceAll('-',' ');
+ document.getElementById(id).replaceChildren(el);
+}}
+document.querySelector('#format').onchange=show;
+for(const button of document.querySelectorAll('button'))button.onclick=()=>{
+ for(const el of document.querySelectorAll('.surface')){
+   el.style.background=button.dataset.color==='checker'?'repeating-conic-gradient(#343b44 0% 25%,#555f6c 0% 50%) 0 / 24px 24px':button.dataset.color;
+   el.classList.toggle('light',button.dataset.color==='#fff');
+ }
+};show();
+</script>
+</html>

@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lunar hopper trajectory optimization and navigation | Krittin Jindamai</title>
-  <meta name="description" content="Minimum-wet-mass hop trajectories over real lunar terrain, and GPS-independent navigation with an error-state EKF.">
+  <meta name="description" content="Minimum-wet-mass lunar south pole trajectory optimization using Hermite–Simpson collocation, CasADi and IPOPT, plus a custom inertial navigation system validated using an error-state EKF.">
   <meta property="og:title" content="Lunar hopper trajectory optimization and navigation | Krittin Jindamai">
-  <meta property="og:description" content="Minimum-wet-mass hop trajectories over real lunar terrain, and GPS-independent navigation with an error-state EKF.">
+  <meta property="og:description" content="Minimum-wet-mass lunar south pole trajectory optimization using Hermite–Simpson collocation, CasADi and IPOPT, plus a custom inertial navigation system validated using an error-state EKF.">
   <meta property="og:type" content="website">
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="../assets/fonts/stix-two-text-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -37,9 +37,9 @@
 
     <!-- ===== PROJECT HEADER: what it is, one-sentence abstract, links ===== -->
     <header class="project-head">
-      <p class="project-head__meta"><span>Senior design project, Fall 2026</span> <span class="status status--progress">In progress</span></p>
+      <p class="project-head__meta"><span>Senior design project, Fall 2026</span> <span class="status status--done">Complete</span></p>
       <h1>Lunar hopper trajectory optimization and navigation</h1>
-      <p class="lede">Hopper1 flies about 202 km from a base near the lunar south pole to the floor of Drygalski crater and back. I built the trajectory optimizer that sizes the vehicle and the navigation simulation that checks it can find its landing site.</p>
+      <p class="lede">Optimized a minimum-wet-mass trajectory for a lunar hopper operating at the lunar south pole. Validated a custom inertial navigation system using an error-state extended Kalman filter (EKF).</p>
       <p class="actions">
         <a class="btn" href="https://github.com/yim1305/Final-Hopper-Optimizer-and-EKF-Code" target="_blank" rel="noopener">Code on GitHub</a>
       </p>
@@ -50,19 +50,30 @@
       <div><dt>Role</dt><dd>Astrodynamics and guidance, navigation lead</dd></div>
       <div><dt>Supervisor</dt><dd>Prof. Michael Generale</dd></div>
       <div><dt>Period</dt><dd>Fall 2026</dd></div>
-      <div><dt>Status</dt><dd>In progress</dd></div>
+      <div><dt>Status</dt><dd>Complete</dd></div>
+      <div><dt>Completed</dt><dd><time datetime="2026-11-11">November 11, 2026</time></dd></div>
       <div><dt>Tools</dt><dd>Python, CasADi, IPOPT, SciPy</dd></div>
     </dl>
 
     <!-- ===== BODY: lead figure, text sections, figure grid ===== -->
     <figure class="figure figure--lead">
-      <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/lunar-hopper/trajectory-3d.webp" data-zoom><img src="../assets/img/lunar-hopper/trajectory-3d.webp" alt="Three-dimensional plot of two arcing trajectories over a gray terrain surface, from a launch base to a target about 200 kilometers away, peaking near 40 kilometers altitude." width="1053" height="957" decoding="async"></a>
-      <figcaption>Outbound (orange) and return (blue) reference trajectories of the selected design over the mapped lunar surface, from the launch base to the Drygalski target about 202 km away.</figcaption>
+      <div class="figure__frame media--hopper">
+        <video data-inview controls muted loop playsinline preload="none" poster="../assets/img/lunar-hopper/hopper-poster.webp" width="1600" height="900" aria-label="Optimized lunar hopper round trip over mapped terrain, showing the moving vehicle, phase-colored trail and thrust indicator">
+          <source src="../assets/video/lunar-hopper/hopper-trajectory.webm" type="video/webm">
+          <a href="../assets/img/lunar-hopper/hopper-trajectory.webp">View the animated trajectory</a>
+        </video>
+      </div>
+      <figcaption>Optimized outbound and return flights between the south-pole base and Drygalski crater, with a moving vehicle and thrust indicator. About 21.4 minutes of flight play in 50 seconds; the vertical scale is exaggerated by 2. Terrain: NASA LOLA, Barker et al. (2023). <a href="../assets/img/lunar-hopper/hopper-trajectory.webp">Animated image version</a>.</figcaption>
     </figure>
 
     <div class="prose">
       <h2>Overview</h2>
-      <p>The senior design brief is a lunar hopper, similar to NASA's Advanced Moonfall, that carries a 200 kg payload to sites 200 km from the lunar south pole and returns. I lead astrodynamics and guidance and navigation. The trajectory work answers how small the vehicle can be and still fly the round trip over real terrain. The navigation work answers how well it knows its position at touchdown without GPS.</p>
+      <p>The senior design brief is a lunar hopper, similar to NASA's Advanced Moonfall, that carries a 200 kg payload to sites 200 km from the lunar south pole and returns. I led astrodynamics and guidance and navigation. The trajectory work answers how small the vehicle can be and still fly the round trip over real terrain. The navigation work answers how well it knows its position at touchdown without GPS.</p>
+
+      <figure class="figure figure--vehicle">
+        <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/lunar-hopper/hopper-vehicle-clean.png" data-zoom><img src="../assets/img/lunar-hopper/hopper-vehicle-clean.png" alt="Lunar hopper CAD view with red propellant tanks, central equipment body, engines and landing legs." width="1275" height="1233" loading="lazy" decoding="async"></a>
+        <figcaption>Lunar hopper vehicle configuration.</figcaption>
+      </figure>
 
       <h2>Approach</h2>
       <ul>
@@ -75,28 +86,35 @@
       <h2>Results</h2>
       <ul>
         <li>The selected design uses eight A2200 engines and a 2,000 kg dry mass, and needs a wet mass of 5,363 kg for the round trip.</li>
-        <li>With the IMU, both star trackers and terrain-relative navigation, the median horizontal position error at touchdown is 12.0 m outbound and 13.0 m on return over 100 Monte Carlo runs, and the worst runs are 23.4 m and 34.2 m, inside the 50 m requirement.</li>
+        <li>With the IMU, both star trackers and terrain-relative navigation, the median horizontal position-estimation error at touchdown is 12.0 m outbound and 13.0 m on return over 100 Monte Carlo runs, and the worst runs are 23.4 m and 34.2 m, inside the 50 m requirement.</li>
         <li>Without star trackers the 3σ error grows to 81 to 89 m and fails the requirement. On inertial sensing alone the estimate drifts 2.1 to 2.8 km.</li>
         <li>The optimized trajectory and mass results fed the structural design, propellant-tank sizing and engine-configuration trades.</li>
       </ul>
     </div>
 
     <section class="block">
-      <h2>Figures</h2>
+      <h2>Flight profiles and touchdown navigation</h2>
+      <p class="section__note">The navigation study uses 100 trials per sensor case and hop on a fixed trajectory. These plots show estimation error at touchdown. Terrain-relative navigation uses assumed 50 m per-axis position noise at 0.2 Hz.</p>
       <div class="figure-grid">
         <figure class="figure figure--wide">
-          <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/lunar-hopper/flight-profiles.webp" data-zoom><img src="../assets/img/lunar-hopper/flight-profiles.webp" alt="Four stacked plots against flight time for the outbound and return hops: height above terrain peaking near 40 kilometers, speed up to about 500 meters per second, thrust, and vehicle mass falling from about 5,400 to 2,300 kilograms." width="1419" height="1282" loading="lazy" decoding="async"></a>
-          <figcaption>Height above terrain, speed, thrust and vehicle mass against flight time for the outbound (orange) and return (blue) hops.</figcaption>
+          <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/lunar-hopper/flight-profiles-detail.png" data-zoom><img src="../assets/img/lunar-hopper/flight-profiles-detail.png" alt="Four stacked plots of altitude above terrain, speed, thrust and mass over the outbound and return flights." width="1419" height="1238" loading="lazy" decoding="async"></a>
+          <figcaption>Astro flight profiles: height above terrain, speed, thrust and vehicle mass over the outbound (orange) and return (blue) hops. Surface stay is excluded from cumulative flight time.</figcaption>
         </figure>
-        <!-- PLACEHOLDER FIGURE. To fill: replace this whole <figure> with the "Figure" snippet from README.md. -->
         <figure class="figure">
-          <div class="figure__frame"><div class="placeholder"><strong>Result plot to be added</strong></div></div>
-          <figcaption>Suggested: touchdown position-error distribution from the Monte Carlo study.</figcaption>
+          <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/lunar-hopper/touchdown-outbound-scatter.png" data-zoom><img src="../assets/img/lunar-hopper/touchdown-outbound-scatter.png" alt="Outbound downrange and crossrange estimation errors for sensor cases E and C over 100 runs each, with filter uncertainty ellipses and the 50 m requirement circle." width="770" height="680" loading="lazy" decoding="async"></a>
+          <figcaption>Outbound touchdown navigation dispersion. Each dot is one Monte Carlo run; the circle marks the 50 m requirement and the dashed ellipses show filter uncertainty.</figcaption>
         </figure>
-        <!-- PLACEHOLDER FIGURE. To fill: replace this whole <figure> with the "Figure" snippet from README.md. -->
         <figure class="figure">
-          <div class="figure__frame"><div class="placeholder"><strong>Result plot to be added</strong></div></div>
-          <figcaption>Suggested: position-error history with and without star trackers.</figcaption>
+          <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/lunar-hopper/touchdown-outbound-distribution.png" data-zoom><img src="../assets/img/lunar-hopper/touchdown-outbound-distribution.png" alt="Outbound case C horizontal touchdown navigation-error histogram: median 12.0 m, 95th percentile 20.5 m and worst run 23.4 m." width="730" height="680" loading="lazy" decoding="async"></a>
+          <figcaption>Outbound case C: median horizontal estimation error of 12.0 m, 95th percentile of 20.5 m and worst run of 23.4 m.</figcaption>
+        </figure>
+        <figure class="figure">
+          <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/lunar-hopper/touchdown-return-scatter.png" data-zoom><img src="../assets/img/lunar-hopper/touchdown-return-scatter.png" alt="Return-hop downrange and crossrange estimation errors for sensor cases E and C over 100 runs each, with filter uncertainty ellipses and the 50 m requirement circle." width="770" height="690" loading="lazy" decoding="async"></a>
+          <figcaption>Return touchdown navigation dispersion, shown at the same scale as the outbound hop.</figcaption>
+        </figure>
+        <figure class="figure">
+          <a class="figure__frame figure__frame--pad figure__frame--white" href="../assets/img/lunar-hopper/touchdown-return-distribution.png" data-zoom><img src="../assets/img/lunar-hopper/touchdown-return-distribution.png" alt="Return case C horizontal touchdown navigation-error histogram: median 13.0 m, 95th percentile 25.7 m and worst run 34.2 m." width="730" height="690" loading="lazy" decoding="async"></a>
+          <figcaption>Return case C: median horizontal estimation error of 13.0 m, 95th percentile of 25.7 m and worst run of 34.2 m.</figcaption>
         </figure>
       </div>
     </section>

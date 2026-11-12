@@ -55,6 +55,16 @@
     </dl>
 
     <!-- ===== BODY: lead figure, text sections, figure grid ===== -->
+    <figure class="figure figure--lead">
+      <div class="figure__frame media--transparent">
+        <video data-inview controls muted loop playsinline preload="none" poster="../assets/img/cbf-nonholonomic/cbf-tracker-middle.png" width="1200" height="500" aria-label="CBF safety-filter simulation of a robot tracking a spiral inside a rectangular safe set">
+          <source src="../assets/video/cbf-nonholonomic/cbf-tracker.webm" type="video/webm">
+          <a href="../assets/img/cbf-nonholonomic/cbf-tracker.webp">View the animated simulation</a>
+        </video>
+      </div>
+      <figcaption>CBF-QP tracking playback: the robot follows the commanded spiral while the safety filter keeps it inside the rectangular safe set, even when the reference extends outside it. <a href="../assets/img/cbf-nonholonomic/cbf-tracker.webp">Animated image version</a>.</figcaption>
+    </figure>
+
     <div class="prose">
       <h2>Overview</h2>
       <p>A standard Control Barrier Function assumes a fully-actuated system. A differential-drive robot's angular velocity has no instantaneous effect on a barrier evaluated at its own centroid, so the constraint has no sensitivity to ω and a CBF-QP safety filter can brake the robot in front of a wall but can't turn it away. This work resolves that by evaluating the barrier at a look-ahead point offset from the robot along its heading, a standard feedback-linearization technique. It makes the barrier's time derivative affine in the full body-frame input u = [v, ω], giving the filter direct authority over steering instead of just speed.</p>

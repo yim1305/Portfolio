@@ -1,0 +1,5 @@
+.hopper-media { position:relative; width:100%; aspect-ratio:16/9; background:transparent; overflow:hidden; }
+.hopper-media > img,.hopper-media > video { display:block; width:100%; height:100%; object-fit:contain; background:transparent; }
+.hopper-media > [hidden] { display:none !important; }
+.hopper-media button { position:absolute; right:12px; bottom:12px; border:1px solid #8594a8; border-radius:999px; padding:7px 13px; color:#e8eef8; background:#101827e8; cursor:pointer; font:12px system-ui,sans-serif; }
+.hopper-media button:focus-visible { outline:3px solid #4cc9f0; outline-offset:3px; }
