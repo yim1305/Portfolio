@@ -24,7 +24,7 @@
       <a class="site-name" href="index.html">Krittin Jindamai</a>
       <nav class="site-nav" aria-label="Main">
         <a href="index.html">Home</a>
-        <a href="experience.html" aria-current="page">Experience</a>
+        <a href="experience.html" aria-current="page">Education and experience</a>
         <a href="projects.html">Projects</a>
         <a class="btn" href="assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV</a>
       </nav>
@@ -34,11 +34,6 @@
   <main id="main" class="container page">
 
     <h1 class="page-title">Experience</h1>
-    <p class="page-intro">The same content as my CV, with links to project pages.</p>
-    <p class="actions">
-      <a class="btn btn--primary" href="assets/docs/Krittin-Jindamai-CV.pdf" target="_blank" rel="noopener">CV (PDF)</a>
-      <a class="btn" href="assets/docs/transcript.pdf" target="_blank" rel="noopener">Transcript (PDF)</a>
-    </p>
 
     <!-- Each <article class="entry"> is one row: dates on the left, details on the right. -->
 
@@ -49,11 +44,6 @@
         <div class="entry__body">
           <h3>University of Florida</h3>
           <p class="entry__role">Bachelor of Science in Aerospace Engineering, expected May 2027. GPA 3.98 / 4.00</p>
-          <ul>
-            <li>Davis UWC Scholar, University Scholars Program, Honors Program, Dean's List</li>
-            <li>Certificate of Outstanding Merit, Herbert Wertheim College of Engineering (2024)</li>
-            <li>Relevant coursework: Nonlinear Control, Astrodynamics, Stability and Control of Spacecraft, Optimal Control</li>
-          </ul>
         </div>
       </article>
       <article class="entry">
@@ -63,6 +53,28 @@
           <p class="entry__role">International Baccalaureate Diploma Programme</p>
         </div>
       </article>
+    </section>
+
+    <section class="cv-section">
+      <h2>Honors and awards</h2>
+      <ul class="cv-list">
+        <li>Honors Program</li>
+        <li>On track to graduate summa cum laude</li>
+        <li>University Scholars Program</li>
+        <li>Davis UWC Scholar</li>
+        <li>Dean's List</li>
+        <li>Certificate of Outstanding Merit, Herbert Wertheim College of Engineering <span>(2024)</span></li>
+      </ul>
+    </section>
+
+    <section class="cv-section">
+      <h2>Relevant coursework</h2>
+      <ul class="cv-list">
+        <li>Nonlinear Control</li>
+        <li>Astrodynamics</li>
+        <li>Stability and Control of Spacecraft</li>
+        <li>Optimal Control</li>
+      </ul>
     </section>
 
     <section class="cv-section">
@@ -80,7 +92,7 @@
             <li>Reviewed passive and active desaturation methods, HCMG steering laws, and spacecraft disturbance models.</li>
           </ul>
           <h4><a href="projects/harmonia.html">HARMONIA: unified docking and debris-capture architecture</a></h4>
-          <p class="entry__role">Completed <time datetime="2026-11-11">November 11, 2026</time></p>
+          <p class="entry__role">Fall 2026. Completed <time datetime="2026-11-11">November 11, 2026</time></p>
           <ul>
             <li>Retrieved folded Mini-MegaTORTORA light curves using Python and determined rotation rates for 44 defunct low-Earth-orbit satellites, resolving factor-of-two period ambiguities.</li>
             <li>Estimated grapple radii, the distances from spin axes to capture points, using satellite bus and adapter-ring dimensions, and analyzed trends across the dataset.</li>
@@ -102,8 +114,9 @@
             <li>Currently drafting a conference paper as the first author.</li>
           </ul>
           <h4><a href="projects/cbf-nonholonomic.html">CBF safety control for nonholonomic robots</a></h4>
+          <p class="entry__role">Summer 2026. <span class="status status--done">Complete</span></p>
           <ul>
-            <li>Investigate look-ahead control barrier functions (CBFs) for smooth waypoint tracking of nonholonomic robots near safety constraints.</li>
+            <li>Investigated look-ahead control barrier functions (CBFs) for smooth waypoint tracking of nonholonomic robots near safety constraints.</li>
             <li>Simulated trajectory tracking in a virtual indoor laboratory space using ROS 2 and Gazebo Harmonic to assess feasibility before hardware deployment.</li>
           </ul>
         </div>
@@ -141,7 +154,7 @@
       <article class="entry">
         <p class="entry__when">Fall 2026</p>
         <div class="entry__body">
-          <h3><a href="projects/adaptive-attitude-tracking.html">Adaptive attitude tracking for CubeSats with uncertain inertia</a></h3>
+          <h3><a href="projects/adaptive-attitude-tracking.html">Adaptive Attitude Tracking of a CMG-Actuated Spacecraft with Unknown Inertia</a></h3>
           <p class="entry__role">Nonlinear Control final project</p>
           <ul>
             <li>Designed an adaptive attitude-tracking controller for a spacecraft actuated by a four-CMG pyramid with unknown inertia, using a pseudoinverse steering law.</li>

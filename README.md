@@ -21,8 +21,8 @@ A small static website for professors and research groups: who I am, what I work
 ## File map
 
 ```
-index.html            Home: intro, links, awards, coursework, six selected projects
-experience.html       Experience: same content as the CV, linked to project pages
+index.html            Home: intro, links, six selected projects
+experience.html       Experience: education, honors, coursework, research, engineering and work experience
 projects.html         Projects: one list of every project
 projects/
   _template.html      Copy this to start a new project page
@@ -84,7 +84,7 @@ No HTML changes are needed. If the CV content changed, update `experience.html` 
 
 ### Edit the intro, awards or coursework
 
-Open `index.html`. Each block starts with a comment in capitals (`INTRO`, `AT A GLANCE`, `SELECTED WORK`). Change the text between the tags.
+Edit the intro and Selected work in `index.html` (look for the `INTRO` and `SELECTED WORK` comments). Education, Honors and awards, and Relevant coursework are the first three sections in `experience.html`. The navigation label is Education and experience; the page title and filename remain Experience and `experience.html`.
 
 To show the PhD application line, find `Optional line for application season` in `index.html` and remove the comment marks around it.
 
@@ -108,7 +108,7 @@ Placeholders are marked in the HTML with `PLACEHOLDER` comments. Search the proj
 
 ### Change which projects are on the home page
 
-In `index.html`, each selected project is one `<li class="work__item">` block that starts with a `SELECTED WORK ITEM` comment. Reorder, remove or copy whole blocks. Keep it to about five; the page is meant to be read in two minutes.
+In `index.html`, each selected project is one `<li class="work__item">` block that starts with a `SELECTED WORK ITEM` comment. Reorder, remove or copy whole blocks. The intro button scrolls smoothly to `#selected-work` (instantly with reduced motion enabled), and the bottom Other projects button links to `projects.html`. Keep it to about six; the page is meant to be read in two minutes.
 
 ### Change a status
 
@@ -216,7 +216,7 @@ The lunar hopper uses `assets/video/lunar-hopper/hopper-trajectory.webm` for its
 </p>
 ```
 
-Use `btn--primary` once per page, for the most important link.
+Use `btn--primary` once per page, for the most important link. On the home page this is Selected work.
 
 **Every link to a PDF, to GitHub, or to any other site opens in a new tab:** add `target="_blank" rel="noopener"` to the `<a>`. Links between pages of this site stay in the same tab.
 
@@ -238,7 +238,7 @@ The site should read like a well-typeset paper: white page, navy ink, hairline r
 - Add libraries, frameworks, CSS resets, icon fonts, analytics or web fonts from a CDN.
 - Add gradients, glow, blur, glass effects, emoji, or rounded "pill" tags. The only shadow is `--card-shadow`, on the overlapping plot cards of the home page.
 - Add new colors. The orange `--signal` is only for the satellite marker and the in-progress dot. Blue `--link` is only for links.
-- Add new animation. Every animation is listed in section 14 of `site.css`: the orbit drawing itself once, the satellite circling the portrait and wiggling, the satellite riding the trajectory line as the page scrolls, plot cards dealing in once, the one-time text reveal, and the cross-fade between the two portraits. All of them animate only `transform` or `opacity`, none run on scroll events, and all switch off for visitors who prefer reduced motion.
+- Add new animation. Every animation is listed in section 14 of `site.css`: the orbit drawing itself once, the satellite circling the portrait and wiggling, the satellite flying reversibly between its orbit and the trajectory line as the page scrolls, plot cards dealing in once, the one-time text reveal. All of them animate only `transform` or `opacity` and switch off for visitors who prefer reduced motion. The satellite uses a passive scroll listener that schedules at most one `requestAnimationFrame`; the other reveals use IntersectionObserver.
 - Put more than three cards per project on the home page, or combine a video with other cards.
 - Open a PDF, a GitHub link or any external link in the same tab.
 - Use 3D, canvas or WebGL, or draw charts in the browser. Plots are static images.
@@ -286,12 +286,12 @@ Things left for the owner to fill in or confirm:
 
 ### The satellite
 
-The satellite is one SVG symbol (`<symbol id="sat">` near the top of `index.html`), colored by the `.sat__*` rules in `site.css`. It circles the portrait; when the reader reaches Selected work it fades from the orbit and the same icon rides the trajectory line, stopping at the waypoint of the project at mid-screen and following the page up or down. `site.js` section 2 does this with an IntersectionObserver, not a scroll listener. To change the icon, edit the shapes inside the symbol only.
+The satellite is one SVG symbol (`<symbol id="sat">` near the top of `index.html`), colored by the `.sat__*` rules in `site.css`. It circles the portrait, then flies continuously from its current orbit position to the Selected work rail as the visitor scrolls down. The orbit clock pauses during this trip. Scrolling up retraces the same curve, rejoins the saved orbit position, and resumes the orbit clock. On the rail, the original IntersectionObserver selects the project at mid-screen, preserving the 800 ms spring slide, 300 ms pop/fade, wiggle, and 700 ms rail fill. A separate transparent marker is visible only during the flight between orbit and rail; neither satellite wrapper has a white background circle. `site.js` section 2 uses a passive scroll listener and requestAnimationFrame for the connecting flight transforms, and remeasures layout on resize, image/font load, and ResizeObserver notifications. Reduced motion keeps the satellite still on its orbit and shows static waypoints. Run `node scripts/check-satellite.cjs` for desktop/mobile behavior checks. To change the icon, edit the shapes inside the symbol only.
 
 ### Icon buttons
 
-LinkedIn, GitHub and Email in the intro are round icon buttons with a tooltip (`data-label`). The icons are neutral line drawings (person, code brackets, envelope), not the companies' logos. To use an official logo, download its SVG from the company's brand page and replace the `<svg>` inside that `<a class="icon-btn">`.
+LinkedIn, GitHub and Email in the intro are round icon buttons with a tooltip (`data-label`). LinkedIn and GitHub use recognizable SVG brand marks in the site's navy ink; Email uses an envelope outline. The `.icon-btn__brand` class fills the brand marks with `currentColor` instead of applying the envelope's stroke. GitHub artwork: https://github.com/primer/octicons/blob/main/icons/mark-github-16.svg. LinkedIn brand reference: https://brand.linkedin.com/in-logo.
 
 ### Intro portraits
 
-The intro cross-fades between `assets/img/portrait.jpg` (headshot) and `assets/img/portrait-rocket.jpg`. Both are square. To change a photo, replace the file with another square image of at least 600 x 600 px. To show only one, delete the second `<img class="orbit__portrait orbit__portrait--alt">` in `index.html`.
+The intro displays only `assets/img/portrait.jpg` (the smiling headshot), with no photo swapping. The unused `assets/img/portrait-rocket.jpg` is retained for future use. To change the displayed photo, replace the headshot with another square image of at least 600 x 600 px.

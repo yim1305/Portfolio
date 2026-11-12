@@ -91,7 +91,7 @@
 
 /* 3. Base elements --------------------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 5rem; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 5rem; scroll-behavior: smooth; }
 body {
   margin: 0;
   background: var(--paper);
@@ -144,6 +144,11 @@ a:hover { color: var(--link-hover); text-decoration-thickness: 2px; }
   .site-nav { gap: 0.8rem; font-size: 0.875rem; }
   .site-name { font-size: 1.0625rem; }
 }
+@media (max-width: 40rem) {
+  .site-header__inner { flex-wrap: wrap; gap: 0.15rem; padding-block: 0.5rem; }
+  .site-nav { width: 100%; justify-content: space-between; }
+  .site-nav a { padding-block: 0.55rem; }
+}
 
 .site-footer { border-top: 1px solid var(--rule); margin-top: clamp(2rem, 5vw, 3.5rem); padding-block: 2rem 2.5rem; font-size: var(--text-sm); color: var(--ink-2); }
 .site-footer__inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem 2rem; }
@@ -184,6 +189,7 @@ a:hover { color: var(--link-hover); text-decoration-thickness: 2px; }
 .icon-btn { position: relative; display: inline-grid; place-items: center; width: 2.5rem; height: 2.5rem; border: 1px solid var(--rule-strong); border-radius: 50%; color: var(--ink); transition: border-color 150ms var(--ease), background-color 150ms var(--ease), transform 150ms var(--ease); }
 .icon-btn:hover { border-color: var(--ink); background: var(--wash); color: var(--ink); transform: translateY(-2px); }
 .icon-btn svg { width: 1.2rem; height: 1.2rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.icon-btn svg.icon-btn__brand { fill: currentColor; stroke: none; }
 .icon-btn::after { content: attr(data-label); position: absolute; top: calc(100% + 0.4rem); left: 50%; transform: translateX(-50%); padding: 0.1rem 0.5rem; border-radius: 4px; background: var(--ink); color: var(--paper); font: 500 var(--text-xs)/1.5 var(--sans); white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 150ms var(--ease); z-index: 2; }
 .icon-btn:hover::after, .icon-btn:focus-visible::after { opacity: 1; }
 
@@ -193,8 +199,7 @@ a:hover { color: var(--link-hover); text-decoration-thickness: 2px; }
 .orbit__path { fill: none; stroke: var(--rule-strong); stroke-width: 1.25; }
 .orbit__path--dashed { stroke: var(--rule); stroke-dasharray: 3 7; }
 .orbit__target { fill: var(--paper); stroke: var(--ink-3); stroke-width: 1.25; }
-.orbit__sat { transition: opacity 400ms var(--ease); }
-.sat-on-rail .orbit__sat { opacity: 0; pointer-events: none; }
+.satellite-away .orbit__sat { opacity: 0; pointer-events: none; }
 .orbit__profile {
   position: absolute; left: 50%; top: 50%; width: 58%; aspect-ratio: 1;
   transform: translate(-50%, -50%); transition: transform 350ms var(--ease);
@@ -206,7 +211,7 @@ a:hover { color: var(--link-hover); text-decoration-thickness: 2px; }
 }
 @media (max-width: 54rem) {
   .intro__grid { grid-template-columns: minmax(0, 1fr); }
-  .orbit { order: -1; max-width: 17rem; margin-inline: 0; margin-left: 1.75rem; }
+  .orbit { max-width: 17rem; margin-inline: auto; }
 }
 
 /* The satellite icon (symbol #sat in index.html). */
@@ -237,25 +242,29 @@ a:hover { color: var(--link-hover); text-decoration-thickness: 2px; }
 
 /* 9. Home: selected work, trajectory rail, plot cards ----------------------- */
 /* The rail is one dashed line (the planned path) beside the whole list.
-   site.js finds the project at mid-screen and sets two values on .rail:
-     --rail-y         where the satellite sits, in px from the top of the list
-     --rail-progress  how much of the line is solid ("flown"), 0 to 1
-   Both follow the page in either direction. Without JavaScript the line is
+   site.js flies the satellite from its paused orbit to this line, then slides
+   between project waypoints with the original spring timing in either direction.
+   --rail-progress marks how much of the line is solid ("flown"), 0 to 1.
+   Without JavaScript the line is
    solid, the waypoints are filled, and the satellite stays on its orbit. */
+.selected-work { padding-top: clamp(2rem, 4vw, 3rem); }
+.work-more { margin: 1rem 0 3rem 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); }
 .work-wrap { position: relative; padding-left: 3.5rem; }
 .rail { position: absolute; left: 1.25rem; top: 0; bottom: 0; width: 2px; background: repeating-linear-gradient(to bottom, var(--rule-strong) 0 5px, transparent 5px 11px); }
 .rail__flown { position: absolute; inset: 0; background: var(--ink); transform-origin: top; }
-.rail__sat { position: absolute; z-index: 1; left: 50%; top: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px; display: none; border-radius: 50%; background: var(--paper); }
+.rail__sat { position: absolute; z-index: 1; left: 50%; top: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px; display: none; }
+.satellite-flight { position: fixed; z-index: 3; top: 0; left: 0; width: 44px; height: 44px; pointer-events: none; }
+.satellite-flight[hidden] { display: none; }
 .js .rail__flown { transform: scaleY(var(--rail-progress, 0)); transition: transform 700ms var(--ease); }
 .js .rail__sat { display: block; opacity: 0; transform: translateY(var(--rail-y, 0px)); transition: transform 800ms var(--settle), opacity 300ms var(--ease); }
-.js .sat-on-rail .rail__sat, .js.sat-on-rail .rail__sat { opacity: 1; }
+.js.sat-on-rail .rail__sat { opacity: 1; }
 
 .work { list-style: none; margin: 0; padding: 0; }
 .work__item { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(1.5rem, 3.5vw, 3rem); align-items: center; padding-block: 2.25rem; margin: 0; }
 /* Waypoint on the rail, level with the item's first line of text.
    With JavaScript, keep its layout anchor and let the satellite be the marker. */
 .work__node { position: absolute; left: calc(-2.25rem + 1px); top: 3.25rem; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border-radius: 50%; background: var(--ink); outline: 4px solid var(--paper); }
-.js .work__node { visibility: hidden; }
+.satellite-ready .work__node { visibility: hidden; }
 /* Hide the line below the last waypoint. */
 .work__item:last-child::after { content: ""; position: absolute; left: calc(-2.25rem - 8px); top: calc(3.25rem + 6px); bottom: 0; width: 18px; background: var(--paper); }
 
@@ -289,6 +298,7 @@ a:hover { color: var(--link-hover); text-decoration-thickness: 2px; }
 .work__result { border-left: 2px solid var(--ink); padding-left: 0.9rem; margin-bottom: 1rem; max-width: 60ch; font-weight: 500; }
 @media (max-width: 54rem) {
   .work-wrap { padding-left: 2.5rem; }
+  .work-more { margin-left: 2.5rem; }
   .rail { left: 0.9rem; }
   .work__node { left: calc(-1.6rem + 1px); top: 2.6rem; }
   .work__item:last-child::after { left: calc(-1.6rem - 8px); top: calc(2.6rem + 6px); }
@@ -370,6 +380,7 @@ a.figure__frame:hover { border-color: var(--ink-3); }
 .page-intro { color: var(--ink-2); max-width: var(--reading); margin-bottom: 1.5rem; }
 .cv-section { margin-top: 3.25rem; }
 .cv-section > h2 { font-size: var(--text-xl); padding-bottom: 0.6rem; border-bottom: 1px solid var(--ink); }
+.cv-list { margin-block: 1.25rem 0; font-size: var(--text-sm); color: var(--ink-2); }
 .entry { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 0.25rem 2rem; padding-block: 1.5rem; border-bottom: 1px solid var(--rule); }
 .entry__when { font-size: var(--text-sm); color: var(--ink-3); padding-top: 0.2rem; font-variant-numeric: tabular-nums; }
 .entry__body h3 { font: 600 var(--text-lg)/1.3 var(--serif); }
@@ -423,7 +434,9 @@ a.figure__frame:hover { border-color: var(--ink-3); }
 @keyframes card-in { from { opacity: 0; translate: 0 26px; scale: 0.94; } to { opacity: 1; translate: 0 0; scale: 1; } }
 
 /* (c) Orbit: the main orbit draws itself once on load. The satellite's slow
-       trip around it is an SVG <animateMotion> inside index.html. */
+       trip around it is an SVG <animateMotion> inside index.html. site.js pauses
+       that clock during the scroll-driven flight and resumes it on return.
+       The fixed flight marker moves only by transform, in either direction. */
 .orbit__path--draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: orbit-draw 1800ms var(--ease) 150ms forwards; }
 @keyframes orbit-draw { to { stroke-dashoffset: 0; } }
 
@@ -440,22 +453,20 @@ a.figure__frame:hover { border-color: var(--ink-3); }
   75% { transform: rotate(18deg) translateY(-3px); }
 }
 
-/* (e) Intro portrait: the second photo fades in and out over the first. */
-.orbit__portrait--alt { opacity: 0; animation: portrait-swap 16s var(--ease) 3s infinite; }
-@keyframes portrait-swap { 0%, 42% { opacity: 0; } 50%, 92% { opacity: 1; } 100% { opacity: 0; } }
-
-/* (f) Page-to-page cross-fade in browsers that support it; others just load. */
+/* (e) Page-to-page cross-fade in browsers that support it; others just load. */
 @view-transition { navigation: auto; }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 180ms; }
 
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   .js .reveal, .js .reveal.is-in { opacity: 1; transform: none; transition: none; }
   .js .stack:not(.is-in) .stack__card { opacity: 1; }
   .js .stack.is-in .stack__card { animation: none; }
   .stack__card, .icon-btn, .btn, a.figure__frame, .orbit__profile { transition: none; }
-  .js .rail__flown, .js .rail__sat, .orbit__sat { transition: none; }
+  .js .rail__flown, .js .rail__sat { transition: none; }
+  .satellite-flight, .js .rail__sat { display: none; }
   .orbit__path--draw { animation: none; stroke-dashoffset: 0; }
-  .sat-wiggle, .orbit__portrait--alt, .orbit__sat:hover .sat-wiggle, .rail__sat:hover .sat-wiggle { animation: none; }
+  .sat-wiggle, .orbit__sat:hover .sat-wiggle, .rail__sat:hover .sat-wiggle { animation: none; }
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 }
 
@@ -467,7 +478,7 @@ a.figure__frame:hover { border-color: var(--ink-3); }
 
 /* 16. Print ------------------------------------------------------------------ */
 @media print {
-  .site-header, .site-footer, .pager, .skip-link, .orbit__svg, .orbit__portrait--alt { display: none; }
+  .site-header, .site-footer, .pager, .skip-link, .orbit__svg, .satellite-flight { display: none; }
   .js .reveal { opacity: 1; transform: none; }
   body { font-size: 11pt; }
 }
