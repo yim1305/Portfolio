@@ -33,135 +33,124 @@
 
   <main id="main" class="container page">
 
-    <h1 class="page-title">Projects</h1>
-    <p class="page-intro">Everything in one list. Each row opens a page with the approach, results, figures, and links to papers and code.</p>
+    <header class="page-head">
+      <h1 class="page-title">Projects</h1>
+      <p class="page-intro">Everything in one place. Each card opens a page with the approach, results, figures, and links to papers and code.</p>
+      <!-- Filter buttons. site.js counts the cards and adds the numbers. data-filter must match a card's data-category. -->
+      <div class="filters" role="group" aria-label="Filter projects by type" data-filter-list="#project-list">
+        <button class="filter" type="button" data-filter="all" aria-pressed="true">All</button>
+        <button class="filter" type="button" data-filter="research" aria-pressed="false">Research</button>
+        <button class="filter" type="button" data-filter="engineering" aria-pressed="false">Engineering projects</button>
+      </div>
+    </header>
 
-    <!-- To add a project: copy one <li> block, change the link, image, text and dates. -->
-    <section class="cv-section">
-      <h2 class="visually-hidden">Research</h2>
-      <div class="section__head"><h3>Research</h3></div>
-      <ul class="index">
-          <li>
-            <a class="index__row" href="projects/honors-thesis.html">
-              <div class="index__thumb media--transparent">
-                <video data-inview muted loop playsinline preload="none" poster="assets/img/honors-thesis/cmg-rotation-middle.png" width="720" height="720" aria-hidden="true">
-                  <source src="assets/video/honors-thesis/cmg-rotation.webm" type="video/webm">
-                </video>
-              </div>
-              <div>
-                <p class="index__title">HCMG momentum management using magnetorquers</p>
-                <p class="index__desc">A 12U CubeSat simulation that slews with a hybrid CMG array, then uses magnetorquers to desaturate its flywheels during fine pointing.</p>
-              </div>
-              <div class="index__meta"><span>2026 to 2027</span> <span class="status status--progress">In progress</span></div>
-            </a>
-          </li>
-          <li>
-            <a class="index__row" href="projects/clf-mcbf-hcmg.html">
-              <div class="index__thumb"><div class="placeholder">Figure to be added</div></div>
-              <div>
-                <p class="index__title">CLF-MCBF for safe HCMG mode switching</p>
-                <p class="index__desc">Matrix-valued control barrier functions that keep a hybrid CMG array nonsingular while its gimbals lock and unlock.</p>
-              </div>
-              <div class="index__meta"><span>2026 to 2027</span> <span class="status status--progress">In progress</span></div>
-            </a>
-          </li>
-          <li>
-            <a class="index__row" href="projects/harmonia.html">
-              <div class="index__thumb index__thumb--plot"><img src="assets/img/harmonia/periods.webp" alt="" loading="lazy" decoding="async"></div>
-              <div>
-                <p class="index__title">HARMONIA: unified docking and debris-capture architecture</p>
-                <p class="index__desc">Rotation rates and grapple geometry for 44 defunct LEO satellites, plus rendezvous analysis supporting a PhD dissertation.</p>
-              </div>
-              <div class="index__meta"><span>Fall 2026</span> <span class="status status--done">Complete</span></div>
-            </a>
-          </li>
-          <li>
-            <a class="index__row" href="projects/cbf-nonholonomic.html">
-              <div class="index__thumb media--transparent">
-                <video data-inview muted loop playsinline preload="none" poster="assets/img/cbf-nonholonomic/cbf-tracker-middle.png" width="1200" height="500" aria-hidden="true">
-                  <source src="assets/video/cbf-nonholonomic/cbf-tracker.webm" type="video/webm">
-                </video>
-              </div>
-              <div>
-                <p class="index__title">CBF safety control for nonholonomic robots</p>
-                <p class="index__desc">Look-ahead control barrier functions that let a safety filter steer, not just brake, a differential-drive robot near walls.</p>
-              </div>
-              <div class="index__meta"><span>Summer 2026</span> <span class="status status--done">Complete</span></div>
-            </a>
-          </li>
-          <li>
-            <a class="index__row" href="projects/knacksat-bdot.html">
-              <div class="index__thumb index__thumb--plot"><img src="assets/img/knacksat-bdot/angular-velocity.png" alt="" loading="lazy" decoding="async"></div>
-              <div>
-                <p class="index__title">KNACKSAT-3: attitude determination and detumbling</p>
-                <p class="index__desc">TRIAD attitude determination and a B-dot detumbling simulation used to tune magnetorquer gains for a 1U CubeSat.</p>
-              </div>
-              <div class="index__meta"><span>Summer 2024</span> <span class="status status--done">Complete</span></div>
-            </a>
-          </li>
-      </ul>
-    </section>
-
-    <section class="cv-section">
-      <h2 class="visually-hidden">Engineering projects</h2>
-      <div class="section__head"><h3>Engineering projects</h3></div>
-      <ul class="index">
-          <li>
-            <a class="index__row" href="projects/adaptive-attitude-tracking.html">
-              <div class="index__thumb index__thumb--plot"><img src="assets/img/adaptive-attitude-tracking/offset-tracking-errors.webp" alt="" loading="lazy" decoding="async"></div>
-              <div>
-                <p class="index__title">Adaptive Attitude Tracking of a CMG-Actuated Spacecraft with Unknown Inertia</p>
-                <p class="index__desc">An adaptive controller for a four-CMG spacecraft with unknown inertia, with a Lyapunov proof of asymptotic tracking.</p>
-              </div>
-              <div class="index__meta"><span>Fall 2026</span> <span class="status status--done">Complete</span></div>
-            </a>
-          </li>
-          <li>
-            <a class="index__row" href="projects/lunar-hopper.html">
-              <div class="index__thumb media--hopper">
-                <video data-inview muted loop playsinline preload="none" poster="assets/img/lunar-hopper/hopper-poster.webp" width="1600" height="900" aria-hidden="true">
-                  <source src="assets/video/lunar-hopper/hopper-trajectory.webm" type="video/webm">
-                </video>
-              </div>
-              <div>
-                <p class="index__title">Lunar hopper trajectory optimization and navigation</p>
-                <p class="index__desc">Minimum-wet-mass trajectory optimization at the lunar south pole using Hermite–Simpson collocation, CasADi and IPOPT, plus a custom inertial navigation system validated using an error-state EKF.</p>
-              </div>
-              <div class="index__meta"><span>Fall 2026</span> <span class="status status--done">Complete</span></div>
-            </a>
-          </li>
-          <li>
-            <a class="index__row" href="projects/airbrake.html">
-              <div class="index__thumb"><img src="assets/img/airbrake/flight-poster.jpg" alt="" loading="lazy" decoding="async"></div>
-              <div>
-                <p class="index__title">Apogee control airbrake for Project TerraGator</p>
-                <p class="index__desc">A cam-slot airbrake with Kalman-filter navigation and PID control that put three flights within 20 ft of target apogee.</p>
-              </div>
-              <div class="index__meta"><span>2025 to 2026</span> <span class="status status--done">Complete</span></div>
-            </a>
-          </li>
-          <li>
-            <a class="index__row" href="projects/communigator-payload.html">
-              <div class="index__thumb"><img src="assets/img/communigator-payload/launch.jpg" alt="" loading="lazy" decoding="async"></div>
-              <div>
-                <p class="index__title">Payload flight software for Project Communigator</p>
-                <p class="index__desc">Embedded flight computer that logs, filters and transmits payload telemetry for the 2025 NASA Student Launch competition.</p>
-              </div>
-              <div class="index__meta"><span>2024 to 2025</span> <span class="status status--done">Complete</span></div>
-            </a>
-          </li>
-          <li>
-            <a class="index__row" href="projects/theos-3a.html">
-              <div class="index__thumb"><img src="assets/img/theos-3a/theos-constellation.webp" alt="" loading="lazy" decoding="async"></div>
-              <div>
-                <p class="index__title">THEOS-3A structural analysis</p>
-                <p class="index__desc">Meshing, modal analysis and quasi-static load analysis of the primary structure of Thailand's THEOS-3A satellite.</p>
-              </div>
-              <div class="index__meta"><span>Summer 2025</span> <span class="status status--done">Complete</span></div>
-            </a>
-          </li>
-      </ul>
-    </section>
+    <!-- To add a project: copy one <li> block, then change data-category ("research" or "engineering"),
+         the link, image, tag, status, title, description and dates. -->
+    <ul class="cards" id="project-list">
+      <li data-category="research">
+        <a class="card" href="projects/honors-thesis.html">
+          <div class="card__media">
+            <video data-inview data-hover muted loop playsinline preload="none" poster="assets/img/honors-thesis/hcmg-loop-poster.jpg" width="768" height="528" aria-hidden="true">
+              <source src="assets/video/honors-thesis/hcmg-loop.mp4" type="video/mp4">
+            </video>
+          </div>
+          <p class="card__meta"><span class="tag">Research</span> <span class="status status--progress">In progress</span></p>
+          <h2 class="card__title">HCMG momentum management using magnetorquers</h2>
+          <p class="card__desc">A 12U CubeSat simulation that slews with a hybrid CMG array, then uses magnetorquers to desaturate its flywheels during fine pointing.</p>
+          <p class="card__when">2026 to 2027</p>
+        </a>
+      </li>
+      <!-- PLACEHOLDER. To fill: replace the <div class="placeholder">…</div> with an <img> (see README, "Fill a placeholder"). -->
+      <li data-category="research">
+        <a class="card" href="projects/clf-mcbf-hcmg.html">
+          <div class="card__media"><div class="placeholder"><span>Figure to be added</span></div></div>
+          <p class="card__meta"><span class="tag">Research</span> <span class="status status--progress">In progress</span></p>
+          <h2 class="card__title">CLF-MCBF for safe HCMG mode switching</h2>
+          <p class="card__desc">Matrix-valued control barrier functions that keep a hybrid CMG array nonsingular while its gimbals lock and unlock.</p>
+          <p class="card__when">2026 to 2027</p>
+        </a>
+      </li>
+      <li data-category="research">
+        <a class="card" href="projects/harmonia.html">
+          <div class="card__media card__media--plot"><img src="assets/img/harmonia/periods-card.webp" alt="" loading="lazy" decoding="async"></div>
+          <p class="card__meta"><span class="tag">Research</span> <span class="status status--done">Complete</span></p>
+          <h2 class="card__title">HARMONIA: unified docking and debris-capture architecture</h2>
+          <p class="card__desc">Rotation rates and grapple geometry for 44 defunct LEO satellites, plus rendezvous analysis supporting a PhD dissertation.</p>
+          <p class="card__when">Fall 2026</p>
+        </a>
+      </li>
+      <li data-category="research">
+        <a class="card" href="projects/cbf-nonholonomic.html">
+          <div class="card__media media--transparent">
+            <video data-inview data-hover muted loop playsinline preload="none" poster="assets/img/cbf-nonholonomic/cbf-tracker-poster.jpg" width="720" height="300" aria-hidden="true">
+              <source src="assets/video/cbf-nonholonomic/cbf-loop.mp4" type="video/mp4">
+            </video>
+          </div>
+          <p class="card__meta"><span class="tag">Research</span> <span class="status status--done">Complete</span></p>
+          <h2 class="card__title">CBF safety control for nonholonomic robots</h2>
+          <p class="card__desc">Look-ahead control barrier functions that let a safety filter steer, not just brake, a differential-drive robot near walls.</p>
+          <p class="card__when">Summer 2026</p>
+        </a>
+      </li>
+      <li data-category="research">
+        <a class="card" href="projects/knacksat-bdot.html">
+          <div class="card__media card__media--plot"><img src="assets/img/knacksat-bdot/angular-velocity.png" alt="" loading="lazy" decoding="async"></div>
+          <p class="card__meta"><span class="tag">Research</span> <span class="status status--done">Complete</span></p>
+          <h2 class="card__title">KNACKSAT-3: attitude determination and detumbling</h2>
+          <p class="card__desc">TRIAD attitude determination and a B-dot detumbling simulation used to tune magnetorquer gains for a 1U CubeSat.</p>
+          <p class="card__when">Summer 2024</p>
+        </a>
+      </li>
+      <li data-category="engineering">
+        <a class="card" href="projects/adaptive-attitude-tracking.html">
+          <div class="card__media card__media--plot"><img src="assets/img/adaptive-attitude-tracking/offset-tracking-errors.webp" alt="" loading="lazy" decoding="async"></div>
+          <p class="card__meta"><span class="tag">Engineering project</span> <span class="status status--done">Complete</span></p>
+          <h2 class="card__title">Adaptive Attitude Tracking of a CMG-Actuated Spacecraft with Unknown Inertia</h2>
+          <p class="card__desc">An adaptive controller for a four-CMG spacecraft with unknown inertia, with a Lyapunov proof of asymptotic tracking.</p>
+          <p class="card__when">Fall 2026</p>
+        </a>
+      </li>
+      <li data-category="engineering">
+        <a class="card" href="projects/lunar-hopper.html">
+          <div class="card__media media--hopper">
+            <video data-inview data-hover muted loop playsinline preload="none" poster="assets/img/lunar-hopper/hopper-poster.jpg" width="800" height="450" aria-hidden="true">
+              <source src="assets/video/lunar-hopper/hopper-loop.mp4" type="video/mp4">
+            </video>
+          </div>
+          <p class="card__meta"><span class="tag">Engineering project</span> <span class="status status--done">Complete</span></p>
+          <h2 class="card__title">Lunar hopper trajectory optimization and navigation</h2>
+          <p class="card__desc">Minimum-wet-mass trajectory optimization at the lunar south pole using Hermite–Simpson collocation, CasADi and IPOPT, plus a custom inertial navigation system validated using an error-state EKF.</p>
+          <p class="card__when">Fall 2026</p>
+        </a>
+      </li>
+      <li data-category="engineering">
+        <a class="card" href="projects/airbrake.html">
+          <div class="card__media"><img src="assets/img/airbrake/flight-poster.jpg" alt="" loading="lazy" decoding="async"></div>
+          <p class="card__meta"><span class="tag">Engineering project</span> <span class="status status--done">Complete</span></p>
+          <h2 class="card__title">Apogee control airbrake for Project TerraGator</h2>
+          <p class="card__desc">A cam-slot airbrake with Kalman-filter navigation and PID control that put three flights within 20 ft of target apogee.</p>
+          <p class="card__when">2025 to 2026</p>
+        </a>
+      </li>
+      <li data-category="engineering">
+        <a class="card" href="projects/communigator-payload.html">
+          <div class="card__media"><img src="assets/img/communigator-payload/launch-card.webp" alt="" loading="lazy" decoding="async"></div>
+          <p class="card__meta"><span class="tag">Engineering project</span> <span class="status status--done">Complete</span></p>
+          <h2 class="card__title">Payload flight software for Project Communigator</h2>
+          <p class="card__desc">Embedded flight computer that logs, filters and transmits payload telemetry for the 2025 NASA Student Launch competition.</p>
+          <p class="card__when">2024 to 2025</p>
+        </a>
+      </li>
+      <li data-category="engineering">
+        <a class="card" href="projects/theos-3a.html">
+          <div class="card__media"><img src="assets/img/theos-3a/theos-constellation-card.webp" alt="" loading="lazy" decoding="async"></div>
+          <p class="card__meta"><span class="tag">Engineering project</span> <span class="status status--done">Complete</span></p>
+          <h2 class="card__title">THEOS-3A structural analysis</h2>
+          <p class="card__desc">Meshing, modal analysis and quasi-static load analysis of the primary structure of Thailand's THEOS-3A satellite.</p>
+          <p class="card__when">Summer 2025</p>
+        </a>
+      </li>
+    </ul>
 
   </main>
 

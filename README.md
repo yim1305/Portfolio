@@ -22,14 +22,14 @@ A small static website for professors and research groups: who I am, what I work
 
 ```
 index.html            Home: intro, links, six selected projects
-experience.html       Experience: education, honors, coursework, research, engineering and work experience
-projects.html         Projects: one list of every project
+experience.html       Experience: contact links, education, honors, coursework, a timeline chart, every role, skills
+projects.html         Projects: a card for every project, with filter buttons
 projects/
   _template.html      Copy this to start a new project page
   <project>.html      One page per project
 assets/
   css/site.css        All styles. Design tokens (colors, type, spacing) are in section 2
-  js/site.js          Scroll reveal, trajectory rail, in-view video, figure lightbox
+  js/site.js          Scroll reveal, satellite trajectory, in-view video, lightbox, filters, timeline chart, copy email
   fonts/              Self-hosted fonts (STIX Two Text, IBM Plex Sans; SIL Open Font License)
   img/<project>/      Images for each project, in a folder named like its page
   video/              Existing MP4 files and project-specific transparent WebM videos
@@ -84,7 +84,7 @@ No HTML changes are needed. If the CV content changed, update `experience.html` 
 
 ### Edit the intro, awards or coursework
 
-Edit the intro and Selected work in `index.html` (look for the `INTRO` and `SELECTED WORK` comments). Education, Honors and awards, and Relevant coursework are the first three sections in `experience.html`. The navigation label is Education and experience; the page title and filename remain Experience and `experience.html`.
+Edit the intro and Selected work in `index.html` (look for the `INTRO` and `SELECTED WORK` comments). Education, Honors and awards, and Relevant coursework are the first sections in `experience.html`. The line under the Experience title repeats the degree and GPA; keep it in step with the Education entry. The navigation label is Education and experience; the page title and filename remain Experience and `experience.html`.
 
 To show the PhD application line, find `Optional line for application season` in `index.html` and remove the comment marks around it.
 
@@ -95,16 +95,41 @@ Placeholders are marked in the HTML with `PLACEHOLDER` comments. Search the proj
 - **Figure on a project page:** replace the whole `<figure>` that contains `<div class="placeholder">` with the [Figure snippet](#figure).
 - **Text on a project page:** replace the `<div class="placeholder placeholder--text">` with normal `<p>` or `<ul>` elements.
 - **Figure on the home page:** inside the project's `<a class="work__figure stack ...">`, replace the `<div class="stack__card placeholder">…</div>` with one to three `<img class="stack__card">` and set `stack--N` to the count (see [Home page plot cards](#home-page-plot-cards)).
-- **Thumbnail on the Projects page:** replace `<div class="placeholder">…</div>` inside `index__thumb` with `<img src="assets/img/<project>/<file>" alt="" loading="lazy" decoding="async">`.
+- **Image on a Projects page card:** replace `<div class="placeholder">…</div>` inside `card__media` with `<img src="assets/img/<project>/<file>" alt="" loading="lazy" decoding="async">`. Add the class `card__media--plot` to the `<div class="card__media">` if the image is a plot, so it is shown whole on white instead of cropped.
 
 ### Add a project
 
 1. Copy `projects/_template.html` to `projects/<project-name>.html`. Use lowercase letters and hyphens.
 2. Replace every item marked `EDIT`.
 3. Put images in `assets/img/<project-name>/`, PDFs in `assets/docs/`, videos in `assets/video/`.
-4. Open `projects.html`, copy one `<li>…</li>` row in the right list, and change its link, thumbnail, title, description, dates and status.
+4. Open `projects.html`, copy one `<li data-category="…">…</li>` card, and change its `data-category` (`research` or `engineering`), link, image, tag text, status, title, description and dates. The filter buttons count the cards themselves.
 5. Update the `Previous` / `Next` links at the bottom of the neighbouring project pages if you want the new page in that chain.
-6. Optional: add it to `experience.html`.
+6. Optional: add it to `experience.html` (see the next section).
+
+### Add or edit an experience entry
+
+Every role in `experience.html` is one `<li class="entry">` inside `<ol class="entries" id="roles">`. Copy a whole block and change the text. Four attributes on the `<li>` drive the timeline chart and the filter buttons, so there is nothing else to update:
+
+```html
+<li class="entry" data-category="research" data-start="2026-01" data-end="present" data-label="Space Systems Group">
+  <div class="entry__logo" aria-hidden="true">S</div>
+  <div class="entry__body">
+    <h3>Space Systems Group (SSG)</h3>
+    <p class="entry__role">Undergraduate researcher. Advisor: Dr. Fitz-Coy. Gainesville, Florida</p>
+    <p class="entry__meta"><span>Spring 2026 to present</span> <span class="tag">Research</span></p>
+    <h4><a href="projects/<project>.html">Project or role title</a></h4>
+    <ul>
+      <li>What was done and what came of it.</li>
+    </ul>
+  </div>
+</li>
+```
+
+- `data-category` is `research`, `engineering` or `work`. It must match a filter button's `data-filter` and a key in the timeline's `data-groups`. Write the same category in the visible `<span class="tag">`.
+- `data-start` and `data-end` are `YYYY-MM` and only place the bar on the timeline; the date a visitor reads is the text in `entry__meta`. Use Spring = 01 to 05, Summer = 05 to 08, Fall = 08 to 12, and `data-end="present"` for an ongoing role.
+- `data-label` is the short name on the timeline row. Without it the `<h3>` text is used.
+- **Logo:** use the institution's original mark in the borderless left column. Put an image about 200 px across in `assets/img/logos/` and use `<img src="assets/img/logos/<name>.png" alt="" width="200" height="200" loading="lazy" decoding="async">`, with its actual dimensions. CSS preserves its aspect ratio and caps its height at 32 px on desktop and 28 px on mobile. Round seals stay round, wide wordmarks stay wide, and a letter can stand in for a missing logo. Education entries use the same treatment.
+- To add a category, add a filter button, add `key:Label` to `data-groups` on `<div class="timeline">`, and use the key in `data-category`.
 
 ### Change which projects are on the home page
 
@@ -117,7 +142,7 @@ In `index.html`, each selected project is one `<li class="work__item">` block th
 <span class="status status--done">Complete</span>
 ```
 
-A project's status appears in up to three places: its own page, `projects.html`, and `index.html` if it is a selected project.
+A project's status appears in up to three places: its own page, its card in `projects.html`, and `index.html` if it is a selected project.
 
 ## Snippets
 
@@ -172,7 +197,11 @@ Each selected project shows one to three overlapping white cards. The **last** `
 
 ### Home page video
 
-A project with a video shows that one video and no other cards. It plays muted only while it is on screen.
+A project with a video shows that one video and no other cards. It plays muted only while 100% visible in the active tab and pauses when any part leaves the viewport. Videos larger than the viewport will not autoplay; detail-page controls allow manual playback. Reduced motion and data saver disable automatic playback and warming; detail-page controls still allow manual playback. Nearby loops warm after page load. Page links prefetch only HTML, with at most two hints per page and no hints on data saver or 2G connections.
+
+Run `node scripts/check-media.cjs` to check video visibility, background tabs, preference changes and prefetch limits. See [the performance audit](docs/performance-audit.md) for measured asset sizes and remaining candidates.
+
+On the Projects listing, add `data-hover` alongside `data-inview` to make a preview download and play only while a mouse hovers over its `.card` link. It must still be fully visible; leaving the card pauses playback. Touch visitors see static previews and can tap through to the project.
 
 ```html
 <a class="work__figure stack stack--1 stack--video reveal" href="projects/<project>.html" aria-label="Open the project page">
@@ -199,9 +228,10 @@ ffmpeg -i input.mp4 -an -vf "crop=704:528:0:68,colorlevels=rimax=0.93:gimax=0.93
 The nonholonomic CBF and honors-thesis pages use transparent WebM videos as their lead figures. The Projects page uses those videos as previews. In Selected work, the thesis uses three plot cards, with the flywheel-speed comparison in front.
 
 - Videos: `assets/video/cbf-nonholonomic/` and `assets/video/honors-thesis/`.
+- The honors thesis uses two videos rendered from the HCMG visualizer: `assets/video/honors-thesis/hcmg-visualizer.mp4` (lead figure on the thesis page, 1280 x 720) and `hcmg-loop.mp4` (home page box and Projects list, 768 x 528). Both have a white background, so they take no `media--transparent` class. Posters are `assets/img/honors-thesis/hcmg-visualizer-poster.jpg` and `hcmg-loop-poster.jpg`. The earlier `cmg-rotation.*` files are no longer referenced by any page.
 - Posters, alternate animated WebP exports and reusable stills: the matching folders under `assets/img/`.
 - Use `media--transparent` on the containing figure, thumbnail or video card. Its CSS filter gives the original light outlines a dark appearance on the white page without altering the source files.
-- Videos play muted only while visible. Detail-page controls allow manual playback, including with reduced motion enabled. Previews use `preload="none"` so the full simulations are not fetched during the initial page load.
+- Videos play muted only while visible, and start downloading when they are about one screen away so they are ready on arrival. Detail-page controls allow manual playback, including with reduced motion enabled. Previews use `preload="none"` so the full simulations are not fetched during the initial page load.
 - Export notes, original validation records and a working format/background preview are in [docs/media-exports](docs/media-exports/README.md).
 
 The lunar hopper uses `assets/video/lunar-hopper/hopper-trajectory.webm` for its home, Projects and detail-page videos. Its `media--hopper` class darkens pale trajectory lines for white backgrounds. The detail page shows only Astro flight profiles and GN touchdown dispersion, split into readable panels, plus the cleaned CAD image. Original exports, unused plots and the WebP alternative remain in `assets/img/lunar-hopper/`; [hopper media notes](docs/media-exports/lunar-hopper/README.md) document organization and reproducible styling.
@@ -222,7 +252,9 @@ Use `btn--primary` once per page, for the most important link. On the home page 
 
 ## Design rules
 
-The site should read like a well-typeset paper: white page, navy ink, hairline rules, captioned figures. Follow these to keep it that way.
+The site should read like a well-typeset paper with a little color: white page, navy ink, hairline rules, captioned figures, and one small accent palette (`--c-blue`, `--c-violet`, `--c-orange`, `--c-gold`, `--c-green`, `--c-teal` in section 2 of `site.css`). Follow these to keep it that way, and to keep it fast.
+
+Where the color goes: soft washes and a dot grid behind the intro, the ring, moon and stars around the portrait, the stripe under the header (it grows with the scroll as a reading-progress bar), a short bar under titles, and one accent per Selected work item (`--accent`, assigned in order by `.work__item:nth-child`), which colors that project's number, waypoint, result line and the glow behind its figure. Timeline bars take one color per category.
 
 **Do**
 
@@ -236,9 +268,9 @@ The site should read like a well-typeset paper: white page, navy ink, hairline r
 **Don't**
 
 - Add libraries, frameworks, CSS resets, icon fonts, analytics or web fonts from a CDN.
-- Add gradients, glow, blur, glass effects, emoji, or rounded "pill" tags. The only shadow is `--card-shadow`, on the overlapping plot cards of the home page.
-- Add new colors. The orange `--signal` is only for the satellite marker and the in-progress dot. Blue `--link` is only for links.
-- Add new animation. Every animation is listed in section 14 of `site.css`: the orbit drawing itself once, the satellite circling the portrait and wiggling, the satellite flying reversibly between its orbit and the trajectory line as the page scrolls, plot cards dealing in once, the one-time text reveal. All of them animate only `transform` or `opacity` and switch off for visitors who prefer reduced motion. The satellite uses a passive scroll listener that schedules at most one `requestAnimationFrame`; the other reveals use IntersectionObserver.
+- Add blur, backdrop or glass effects, animated gradients, emoji, or rounded "pill" tags. Blur and backdrop filters cost frames while scrolling; the washes on the site are plain gradients painted once. Category tags (`.tag`) and filter buttons (`.filter`) are square-cornered on purpose.
+- Add colors outside the accent palette. Blue `--link` is for links. The four `--sat-*` colors (blue panels, pale cell lines, gold band, pink cheeks) are only for the satellite icon.
+- Add animation that is not listed in section 14 of `site.css`, or that animates anything other than transform and opacity. The list: the orbit drawing itself once, the satellite circling the portrait and wiggling (and smiling under the pointer), the moon circling the other way, the stars twinkling, the color ring turning, the reading-progress stripe, the satellite flying reversibly from its orbit to the curved path beside Selected work and following the scroll along it, plot cards dealing in once, the one-time text reveal, and a few short state transitions. All of them switch off for visitors who prefer reduced motion, and the intro's animations pause while it is off screen. The satellite uses a passive scroll listener that schedules `requestAnimationFrame` only while it is still catching up with the scroll; the reveals use IntersectionObserver.
 - Put more than three cards per project on the home page, or combine a video with other cards.
 - Open a PDF, a GitHub link or any external link in the same tab.
 - Use 3D, canvas or WebGL, or draw charts in the browser. Plots are static images.
@@ -286,11 +318,24 @@ Things left for the owner to fill in or confirm:
 
 ### The satellite
 
-The satellite is one SVG symbol (`<symbol id="sat">` near the top of `index.html`), colored by the `.sat__*` rules in `site.css`. It circles the portrait, then flies continuously from its current orbit position to the Selected work rail as the visitor scrolls down. The orbit clock pauses during this trip. Scrolling up retraces the same curve, rejoins the saved orbit position, and resumes the orbit clock. On the rail, the original IntersectionObserver selects the project at mid-screen, preserving the 800 ms spring slide, 300 ms pop/fade, wiggle, and 700 ms rail fill. A separate transparent marker is visible only during the flight between orbit and rail; neither satellite wrapper has a white background circle. `site.js` section 2 uses a passive scroll listener and requestAnimationFrame for the connecting flight transforms, and remeasures layout on resize, image/font load, and ResizeObserver notifications. Reduced motion keeps the satellite still on its orbit and shows static waypoints. Run `node scripts/check-satellite.cjs` for desktop/mobile behavior checks. To change the icon, edit the shapes inside the symbol only.
+The satellite is one SVG symbol (`<symbol id="sat">` near the top of `index.html`), colored by the `.sat__*` rules in `site.css`: blue solar panels, a gold band on the body and the orange beacon, each from a `--sat-*` or `--signal` token in section 2. To change the icon, edit the shapes inside the symbol only.
+
+**Faces.** The symbol holds two faces, `.sat__calm` and `.sat__happy`. The wrapper elements (`.orbit__sat` and `.rail__sat`) set `--sat-happy: 1` while the pointer is on them, or while they are pressed on a touch screen, and the two faces cross-fade on that value. The hover wiggle is unchanged.
+
+**Path.** The satellite circles the portrait, then flies from its current orbit position to the first Selected work waypoint as the visitor scrolls down; the orbit clock pauses during the trip. From there it follows a curved path that swings out to each project's waypoint, moving with the scroll in both directions. The flown part of the path is solid, the rest is dashed, and each waypoint fills once the satellite has passed it. Scrolling back up retraces everything, rejoins the saved orbit position and resumes the orbit clock.
+
+- `site.js` section 2 builds the curve from the waypoint positions, so adding, removing or reordering Selected work items needs no other change. It remeasures on resize, image and font load, and ResizeObserver notifications.
+- Two custom properties on `.work-wrap` in `site.css` (section 9) shape the curve: `--rail-amp` is how far it swings to each side, and `--rail-wave` is the longest stretch one swing may cover before a second swing is added. Both have smaller values in the narrow-screen media query. Keep `--rail-amp` small enough that the 44 px satellite stays inside the left margin.
+- The flown part of the path is drawn once, in a blue-to-gold gradient, inside a clipping window (`.rail__mask`). Scrolling slides the window down and its content back up by the same amount, so the browser moves two layers and never repaints the curve. Keep it that way: redrawing a page-tall path every frame is what makes scrolling stutter.
+- The moon (`.orbit__moon`) follows the dashed ellipse with CSS `offset-path`. If you change the dashed ellipse in `index.html`, change the matching path in section 14(i) of `site.css`.
+- The scroll position is eased by 20% per frame, which is what makes the motion glide. A separate fixed marker (`.satellite-flight`) is visible only during the flight between orbit and path; neither satellite wrapper has a white background circle.
+- Without JavaScript the path is a straight dashed line with filled waypoints and the satellite stays on its orbit. Reduced motion keeps the satellite on its orbit and shows the whole curve with every waypoint filled.
+
+Run `node scripts/check-satellite.cjs` for desktop/mobile behavior checks.
 
 ### Icon buttons
 
-LinkedIn, GitHub and Email in the intro are round icon buttons with a tooltip (`data-label`). LinkedIn and GitHub use recognizable SVG brand marks in the site's navy ink; Email uses an envelope outline. The `.icon-btn__brand` class fills the brand marks with `currentColor` instead of applying the envelope's stroke. GitHub artwork: https://github.com/primer/octicons/blob/main/icons/mark-github-16.svg. LinkedIn brand reference: https://brand.linkedin.com/in-logo.
+LinkedIn, GitHub and Email are round icon buttons with a tooltip (`data-label`), in the home page intro and again at the top of the Experience page. The Email button copies the address in its `data-copy` attribute and confirms with a short message; without JavaScript it opens the mail app instead. LinkedIn and GitHub use recognizable SVG brand marks in the site's navy ink; Email uses an envelope outline. The `.icon-btn__brand` class fills the brand marks with `currentColor` instead of applying the envelope's stroke. GitHub artwork: https://github.com/primer/octicons/blob/main/icons/mark-github-16.svg. LinkedIn brand reference: https://brand.linkedin.com/in-logo.
 
 ### Intro portraits
 
