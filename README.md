@@ -129,6 +129,7 @@ Every role in `experience.html` is one `<li class="entry">` inside `<ol class="e
 - `data-start` and `data-end` are `YYYY-MM` and only place the bar on the timeline; the date a visitor reads is the text in `entry__meta`. Use Spring = 01 to 05, Summer = 05 to 08, Fall = 08 to 12, and `data-end="present"` for an ongoing role.
 - `data-label` is the short name on the timeline row. Without it the `<h3>` text is used.
 - **Logo:** use the institution's original mark in the borderless left column. Put an image about 200 px across in `assets/img/logos/` and use `<img src="assets/img/logos/<name>.png" alt="" width="200" height="200" loading="lazy" decoding="async">`, with its actual dimensions. CSS preserves its aspect ratio and caps its height at 32 px on desktop and 28 px on mobile. Round seals stay round, wide wordmarks stay wide, and a letter can stand in for a missing logo. Education entries use the same treatment.
+- For circular marks, add `entry__logo--round` to the logo wrapper. Their height cap is 40 px on desktop and 34 px on mobile to balance their visual weight against square marks and wordmarks.
 - To add a category, add a filter button, add `key:Label` to `data-groups` on `<div class="timeline">`, and use the key in `data-category`.
 
 ### Change which projects are on the home page
