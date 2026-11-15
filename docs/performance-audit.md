@@ -19,7 +19,8 @@ References: [IntersectionObserver intersection ratios](https://developer.mozilla
 - Home-page images are lazy except the high-priority portrait; image and video dimensions reserve layout space.
 - Videos use `preload="none"` and static posters. Full flight videos are manually played.
 - Every active MP4 has its `moov` metadata before `mdat`, allowing playback without fetching the whole file first.
-- Scroll animation schedules frames only while catching up; geometry is cached between layout changes. The path uses transform-based clipping rather than redrawing its stroke each frame.
+- Where `ScrollTimeline` exists (Chrome, Edge, recent Safari), the satellite, its flight and the flown path are scroll-driven animations: keyframes are written once per layout and the compositor plays them, so no script runs per frame. Script only switches states (which satellite shows, which waypoints are filled). Not yet confirmed in a real browser trace.
+- In other browsers the frame-by-frame fallback schedules frames only while catching up; geometry is cached between layout changes. The path uses transform-based clipping rather than redrawing its stroke each frame.
 - Old 20+ MB CMG animations are not referenced by current HTML. Removing them would reduce repository size, but would not speed up the current pages.
 
 ## Remaining candidates, in priority order

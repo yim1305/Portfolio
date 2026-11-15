@@ -51,8 +51,10 @@
           orbit    the satellite circles the portrait (an SVG clock, paused while it is away)
           flight   a fixed marker flies from the orbit to the first waypoint
           path     the marker on the rail follows a curve that swings out to every waypoint
-        The scroll position is eased a little each frame so the motion glides instead of
-        stepping. The curve is rebuilt from the waypoints whenever the layout changes. */
+        Where the browser supports scroll-driven animations, the motion is handed to it
+        as keyframes and runs off the main thread, locked to the scroll. Elsewhere the
+        script moves the satellite each frame, easing the scroll position a little so it
+        glides. The curve is rebuilt from the waypoints whenever the layout changes. */
   var wrap = document.querySelector(".work-wrap");
   var rail = wrap && wrap.querySelector(".rail");
   var orbitSvg = document.querySelector(".orbit__svg");
@@ -160,6 +162,135 @@
       passed = index;
       workItems.forEach(function (item, i) { item.classList.toggle("is-passed", i <= index); });
     };
+    /* Where the rail satellite sits, and how it leans, at height y on the curve. */
+    var railPose = function (y) {
+      var spot = along(y);
+      return "translate3d(" + spot.x.toFixed(2) + "px," + y.toFixed(2) + "px,0) rotate(" + (-spot.lean).toFixed(2) + "deg)";
+    };
+    /* The flight at progress t (0 on the orbit, 1 at the first waypoint) when the page is
+       scrolled to s. A gentle bend leaves the orbit and arrives heading straight down;
+       reversing the scroll retraces the same curve. */
+    var flightPose = function (matrix, sourceY, t, s) {
+      var sourceX = matrix.e;
+      var distanceY = geometry.first - sourceY;
+      var u = 1 - t;
+      var x = u * u * u * sourceX + 3 * u * u * t * sourceX + 3 * u * t * t * geometry.x + t * t * t * geometry.x;
+      var flightY = u * u * u * sourceY + 3 * u * u * t * (sourceY + distanceY * 0.45) + 3 * u * t * t * (geometry.first - distanceY * 0.2) + t * t * t * geometry.first;
+      var orbitSize = 56 * Math.hypot(matrix.a, matrix.b);
+      var size = orbitSize + (44 - orbitSize) * t;
+      var rotation = Math.atan2(matrix.b, matrix.a) * 180 / Math.PI * (1 - t);
+      return "translate3d(" + (x - 22) + "px," + (flightY - s - 22) + "px,0) scale(" + (size / 44) + ") rotate(" + rotation + "deg)";
+    };
+
+    /* Preferred method: scroll-driven animations. Where the browser has ScrollTimeline,
+       the whole motion is written once as keyframes tied to the scroll position, and the
+       browser's compositor plays them in step with the scroll, with no script per frame.
+       The script then only switches states (which satellite shows, which waypoints are
+       filled). Other browsers use the frame-by-frame method further down. */
+    var composited = "ScrollTimeline" in window && typeof railSat.animate === "function";
+    var timeline = null;
+    var pathAnimations = [];
+    var flightAnimations = [];
+    var stopAnimations = function (list) {
+      list.forEach(function (animation) { animation.cancel(); });
+      list.length = 0;
+    };
+    var drive = function (node, keyframes, list) {
+      if (!timeline) timeline = new window.ScrollTimeline({ source: document.scrollingElement || root, axis: "block" });
+      list.push(node.animate(keyframes, { timeline: timeline, fill: "both", easing: "linear" }));
+    };
+    /* A scroll position as a fraction of the whole scroll range (a keyframe offset). */
+    var offsetAt = function (scroll) { return clamp(scroll / geometry.range, 0, 1); };
+    var buildPathAnimations = function () {
+      stopAnimations(pathAnimations);
+      var last = geometry.nodes.length - 1;
+      var run = geometry.nodes[last] - geometry.nodes[0];
+      var start = offsetAt(geometry.arrival);
+      var end = Math.max(start, offsetAt(geometry.arrival + run / geometry.rate));
+      var first = railPose(geometry.nodes[0]);
+      /* The satellite: hidden until it lands, then one keyframe every 16 pixels of path. */
+      var sat = [{ offset: 0, opacity: 0, transform: first }, { offset: start, opacity: 0, transform: first }, { offset: start, opacity: 1, transform: first }];
+      var steps = Math.max(1, Math.ceil(run / 16));
+      for (var k = 1; k <= steps; k++) {
+        sat.push({ offset: Math.min(end, start + (end - start) * k / steps), opacity: 1, transform: railPose(geometry.nodes[0] + run * k / steps) });
+      }
+      if (end < 1) sat.push({ offset: 1, opacity: 1, transform: railPose(geometry.nodes[last]) });
+      drive(railSat, sat, pathAnimations);
+      /* The flown path: the clipping window slides down, its content slides back up. */
+      var shiftAt = function (y) { return clamp(y, 0, geometry.height) - geometry.height; };
+      var stops = [[0, -geometry.height], [start, -geometry.height], [start, shiftAt(geometry.nodes[0] + 2)], [end, shiftAt(geometry.nodes[last] + 2)]];
+      if (end < 1) stops.push([1, shiftAt(geometry.nodes[last] + 2)]);
+      var slide = function (sign) {
+        return stops.map(function (stop) { return { offset: stop[0], transform: "translate3d(0," + (sign * stop[1]).toFixed(1) + "px,0)" }; });
+      };
+      drive(mask, slide(1), pathAnimations);
+      drive(doneCurve, slide(-1), pathAnimations);
+    };
+    /* The flight starts wherever the satellite is on its orbit at that moment, so its
+       keyframes are written when it leaves (the orbit is paused while it is away). */
+    var buildFlightAnimation = function (scroll) {
+      stopAnimations(flightAnimations);
+      var matrix = orbitSat.getScreenCTM();
+      if (!matrix) return false;
+      var sourceY = matrix.f + scroll;
+      var span = geometry.arrival - geometry.departure;
+      var frames = [];
+      /* Above the departure point it stays exactly on top of the orbit satellite. */
+      if (geometry.departure > 0) frames.push({ offset: 0, opacity: 1, transform: flightPose(matrix, sourceY, 0, 0) });
+      for (var k = 0; k <= 24; k++) {
+        var t = k / 24;
+        var s = geometry.departure + span * t;
+        frames.push({ offset: offsetAt(s), opacity: 1, transform: flightPose(matrix, sourceY, t, s) });
+      }
+      /* On landing it hands over to the rail satellite at the same scroll position. */
+      var landed = flightPose(matrix, sourceY, 1, geometry.arrival);
+      frames.push({ offset: offsetAt(geometry.arrival), opacity: 0, transform: landed });
+      if (offsetAt(geometry.arrival) < 1) frames.push({ offset: 1, opacity: 0, transform: landed });
+      drive(flightSat, frames, flightAnimations);
+      return true;
+    };
+    /* Switch states to match the scroll position. Runs once per scrolled frame, reads no
+       layout, and changes the page only when a state actually changes. */
+    var updateStates = function (scroll) {
+      var last = geometry.nodes.length - 1;
+      if (!pathAnimations.length) buildPathAnimations();
+      root.classList.add("satellite-ready");
+      var home = function () {
+        stopAnimations(flightAnimations);
+        flightSat.hidden = true;
+        setPassed(-1);
+        if (orbitSvg.unpauseAnimations) orbitSvg.unpauseAnimations();
+        away = false;
+      };
+      if (scroll <= geometry.departure) {
+        root.classList.remove("satellite-away", "sat-on-rail");
+        home();
+        return;
+      }
+      if (!away) {
+        if (orbitSvg.pauseAnimations) orbitSvg.pauseAnimations();
+        away = true;
+      }
+      if (!flightAnimations.length && !buildFlightAnimation(scroll)) {
+        /* Keep the original visible if its SVG has no rendered geometry yet. */
+        root.classList.remove("satellite-away", "satellite-ready", "sat-on-rail");
+        home();
+        return;
+      }
+      root.classList.add("satellite-away");
+      if (scroll < geometry.arrival) {
+        root.classList.remove("sat-on-rail");
+        setPassed(-1);
+        flightSat.hidden = false;
+        return;
+      }
+      var y = clamp(geometry.nodes[0] + (scroll - geometry.arrival) * geometry.rate, geometry.nodes[0], geometry.nodes[last]);
+      var reached = -1;
+      for (var i = 0; i <= last; i++) if (y >= geometry.nodes[i] - 3) reached = i;
+      setPassed(reached);
+      flightSat.hidden = true;
+      root.classList.add("sat-on-rail");
+    };
 
     var measure = function (scroll) {
       var railRect = rail.getBoundingClientRect();
@@ -179,6 +310,8 @@
         amp: amp,
         nodes: nodes,
         height: railRect.height,
+        /* The scroll range the browser's scroll timeline runs over. */
+        range: Math.max(arrival + 1, root.scrollHeight - (root.clientHeight || window.innerHeight)),
         full: nodes[nodes.length - 1] + 2,             /* reveal height that shows the whole path */
         curve: buildCurve(nodes, amp, wave),
         x: railRect.left + railRect.width / 2 + amp,   /* first waypoint, in page pixels */
@@ -197,6 +330,9 @@
       gradient.setAttribute("y2", nodes[nodes.length - 1].toFixed(1));
       lastShift = null;
       needsMeasure = false;
+      /* Keyframes are written for one layout; they are rebuilt for the new one. */
+      stopAnimations(pathAnimations);
+      stopAnimations(flightAnimations);
     };
 
     var updateSatellite = function () {
@@ -211,9 +347,15 @@
         eased = scroll;
         flightSat.hidden = true;
         root.classList.remove("satellite-away", "satellite-ready", "sat-on-rail");
+        stopAnimations(pathAnimations);
+        stopAnimations(flightAnimations);
         setFlown(geometry.full);
         setPassed(last);
         if (orbitSvg.pauseAnimations) orbitSvg.pauseAnimations();
+        return;
+      }
+      if (composited) {
+        updateStates(scroll);
         return;
       }
 
@@ -246,10 +388,9 @@
       if (progress === 1) {
         /* On the path: the height follows the scroll, the curve gives the sideways position. */
         var y = clamp(geometry.nodes[0] + (eased - geometry.arrival) * geometry.rate, geometry.nodes[0], geometry.nodes[last]);
-        var spot = along(y);
         var reached = -1;
         for (var i = 0; i <= last; i++) if (y >= geometry.nodes[i] - 3) reached = i;
-        railSat.style.transform = "translate3d(" + spot.x.toFixed(2) + "px," + y.toFixed(2) + "px,0) rotate(" + (-spot.lean).toFixed(2) + "deg)";
+        railSat.style.transform = railPose(y);
         setFlown(y + 2);
         setPassed(reached);
         flightSat.hidden = true;
@@ -268,19 +409,7 @@
         if (orbitSvg.unpauseAnimations) orbitSvg.unpauseAnimations();
         return;
       }
-      /* A gentle bend leaves the orbit and arrives heading straight down at the first
-         waypoint. Reversing scroll uses the same frozen origin and the same curve. */
-      var sourceX = matrix.e;
-      var sourceY = matrix.f + scroll;
-      var distanceY = geometry.first - sourceY;
-      var t = progress;
-      var u = 1 - t;
-      var x = u * u * u * sourceX + 3 * u * u * t * sourceX + 3 * u * t * t * geometry.x + t * t * t * geometry.x;
-      var flightY = u * u * u * sourceY + 3 * u * u * t * (sourceY + distanceY * 0.45) + 3 * u * t * t * (geometry.first - distanceY * 0.2) + t * t * t * geometry.first;
-      var orbitSize = 56 * Math.hypot(matrix.a, matrix.b);
-      var size = orbitSize + (44 - orbitSize) * t;
-      var rotation = Math.atan2(matrix.b, matrix.a) * 180 / Math.PI * (1 - t);
-      flightSat.style.transform = "translate3d(" + (x - 22) + "px," + (flightY - scroll - 22) + "px,0) scale(" + (size / 44) + ") rotate(" + rotation + "deg)";
+      flightSat.style.transform = flightPose(matrix, matrix.f + scroll, progress, scroll);
       flightSat.hidden = false;
       root.classList.add("satellite-away");
     };
@@ -421,15 +550,20 @@
 
   /* 6. Filters. A <div class="filters" data-filter-list="#id"> holds buttons with
         data-filter="all" or a category name. Every direct child of the list that
-        carries data-category is counted, and hidden when it does not match. */
+        carries data-category is counted, and hidden when it does not match.
+        data-category="research engineering" puts an item in both categories. */
   all(".filters[data-filter-list]").forEach(function (bar) {
     var list = document.querySelector(bar.getAttribute("data-filter-list"));
     if (!list) return;
     var items = all("[data-category]", list).filter(function (item) { return item.parentNode === list; });
     var buttons = all(".filter", bar);
+    /* An item may list several categories, separated by spaces; it shows under each. */
+    var inKind = function (item, kind) {
+      return kind === "all" || (item.getAttribute("data-category") || "").split(/\s+/).indexOf(kind) !== -1;
+    };
     buttons.forEach(function (button) {
       var kind = button.getAttribute("data-filter");
-      var count = kind === "all" ? items.length : items.filter(function (item) { return item.getAttribute("data-category") === kind; }).length;
+      var count = items.filter(function (item) { return inKind(item, kind); }).length;
       var badge = document.createElement("span");
       badge.className = "filter__count";
       badge.textContent = count;
@@ -438,7 +572,7 @@
       button.addEventListener("click", function () {
         var apply = function () {
           buttons.forEach(function (other) { other.setAttribute("aria-pressed", other === button ? "true" : "false"); });
-          items.forEach(function (item) { item.hidden = kind !== "all" && item.getAttribute("data-category") !== kind; });
+          items.forEach(function (item) { item.hidden = !inKind(item, kind); });
         };
         if (document.startViewTransition && !motionPreference.matches) document.startViewTransition(apply); else apply();
       });
@@ -467,7 +601,7 @@
       var open = !/^\d{4}-\d{1,2}$/.test(entry.getAttribute("data-end") || "");
       return {
         entry: entry,
-        category: entry.getAttribute("data-category"),
+        category: (entry.getAttribute("data-category") || "").split(/\s+/)[0],   /* the first one listed places it on the chart */
         label: entry.getAttribute("data-label") || (title ? title.textContent : ""),
         when: when ? when.textContent : "",
         start: monthIndex(entry.getAttribute("data-start")),

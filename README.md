@@ -102,7 +102,7 @@ Placeholders are marked in the HTML with `PLACEHOLDER` comments. Search the proj
 1. Copy `projects/_template.html` to `projects/<project-name>.html`. Use lowercase letters and hyphens.
 2. Replace every item marked `EDIT`.
 3. Put images in `assets/img/<project-name>/`, PDFs in `assets/docs/`, videos in `assets/video/`.
-4. Open `projects.html`, copy one `<li data-category="…">…</li>` card, and change its `data-category` (`research` or `engineering`), link, image, tag text, status, title, description and dates. The filter buttons count the cards themselves.
+4. Open `projects.html`, copy one `<li data-category="…">…</li>` card, and change its `data-category` (`research` or `engineering`; write both, `research engineering`, for a project that is both, and give it both tags), link, image, tag text, status, title, description and dates. The filter buttons count the cards themselves.
 5. Update the `Previous` / `Next` links at the bottom of the neighbouring project pages if you want the new page in that chain.
 6. Optional: add it to `experience.html` (see the next section).
 
@@ -125,7 +125,7 @@ Every role in `experience.html` is one `<li class="entry">` inside `<ol class="e
 </li>
 ```
 
-- `data-category` is `research`, `engineering` or `work`. It must match a filter button's `data-filter` and a key in the timeline's `data-groups`. Write the same category in the visible `<span class="tag">`.
+- `data-category` is `research`, `engineering` or `work`. It must match a filter button's `data-filter` and a key in the timeline's `data-groups`. Write the same category in the visible `<span class="tag">`. An entry can list two, separated by a space (`engineering research`): it then shows under both filters, and the first one decides its group and color on the timeline.
 - `data-start` and `data-end` are `YYYY-MM` and only place the bar on the timeline; the date a visitor reads is the text in `entry__meta`. Use Spring = 01 to 05, Summer = 05 to 08, Fall = 08 to 12, and `data-end="present"` for an ongoing role.
 - `data-label` is the short name on the timeline row. Without it the `<h3>` text is used.
 - **Logo:** use the institution's original mark in the borderless left column. Put an image about 200 px across in `assets/img/logos/` and use `<img src="assets/img/logos/<name>.png" alt="" width="200" height="200" loading="lazy" decoding="async">`, with its actual dimensions. CSS preserves its aspect ratio and caps its height at 32 px on desktop and 28 px on mobile. Round seals stay round, wide wordmarks stay wide, and a letter can stand in for a missing logo. Education entries use the same treatment.

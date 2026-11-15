@@ -5,8 +5,15 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 
-function preview({ reduced = false, scroll = 0, mobile = false } = {}) {
+function preview({ reduced = false, scroll = 0, mobile = false, timeline = false } = {}) {
   const events = {};
+  // With timeline: true the fixture offers ScrollTimeline, and records every animation.
+  const animations = [];
+  const animate = function (keyframes, options) {
+    const record = { node: this, keyframes, options, cancelled: false, cancel() { this.cancelled = true; } };
+    animations.push(record);
+    return record;
+  };
   const classes = new Set();
   let pending;
   let paused = false;
@@ -28,7 +35,9 @@ function preview({ reduced = false, scroll = 0, mobile = false } = {}) {
     requestAnimationFrame: fn => { pending = fn; return 1; }
   };
   const rect = (left, top, width, height) => ({ left, top: top - win.pageYOffset, width, height });
+  if (timeline) win.ScrollTimeline = function ScrollTimeline(options) { this.options = options; };
   const marker = { hidden: false, style: {}, setAttribute() {}, className: 'rail__sat' };
+  if (timeline) marker.animate = animate;
   const railMarker = { ...marker, style: {}, cloneNode: () => marker };
   const items = [0, 450, 950, 1400, 1900, 2400].map(offset => {
     const set = new Set();
@@ -57,8 +66,8 @@ function preview({ reduced = false, scroll = 0, mobile = false } = {}) {
     documentElement: { classList: classList(classes), scrollHeight: pageHeight },
     querySelector: name => elements[name] || null,
     querySelectorAll: name => name === 'svg.orbit__svg' ? [svg] : [],
-    createElementNS: () => { const node = { attributes: {}, style: {}, setAttribute(key, value) { this.attributes[key] = value; }, appendChild() {} }; created.push(node); return node; },
-    createElement: () => { const node = { attributes: {}, style: {}, setAttribute(key, value) { this.attributes[key] = value; }, appendChild() {} }; created.push(node); return node; },
+    createElementNS: () => { const node = { attributes: {}, style: {}, animate, setAttribute(key, value) { this.attributes[key] = value; }, appendChild() {} }; created.push(node); return node; },
+    createElement: () => { const node = { attributes: {}, style: {}, animate, setAttribute(key, value) { this.attributes[key] = value; }, appendChild() {} }; created.push(node); return node; },
     body: { appendChild: element => { assert.equal(element, marker); } }
   };
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../assets/js/site.js'), 'utf8'), { window: win, document: doc, navigator: {}, Math, Promise });
@@ -70,7 +79,9 @@ function preview({ reduced = false, scroll = 0, mobile = false } = {}) {
   const shiftOf = node => Number(/translate3d\(0,([-\d.]+)px/.exec(node.style.transform)[1]);
   const railHeight = 2500;
   return {
-    marker, railMarker, classes, wrapClasses,
+    marker, railMarker, classes, wrapClasses, range: pageHeight - win.innerHeight,
+    live: node => animations.filter(a => !a.cancelled && (!node || a.node === node)),
+    get maskNode() { return mask(); },
     get paused() { return paused; },
     get flown() {
       const content = created.find(node => node.attributes.class === 'rail__curve' && node.style.transform);
@@ -153,6 +164,63 @@ const deepLink = preview({ scroll: 1200 });
 assert(deepLink.classes.has('sat-on-rail') && deepLink.paused, 'Opening at Selected work starts on the path');
 const staticPage = preview({ reduced: true });
 assert(staticPage.marker.hidden && staticPage.paused, 'Initial reduced-motion preference is respected');
+
+// Browsers with ScrollTimeline get the motion as keyframes; the script only switches states.
+for (const mobile of [false, true]) {
+  const page = preview({ mobile, timeline: true });
+  const checkFrames = animation => {
+    const offsets = animation.keyframes.map(k => k.offset);
+    assert(offsets.every((o, i) => o >= 0 && o <= 1 && (!i || o >= offsets[i - 1])), 'Keyframe offsets are ordered and within 0 to 1');
+    assert(animation.options.timeline && animation.options.fill === 'both', 'The animation follows the scroll timeline');
+  };
+  assert.equal(page.live().length, 3, 'At the top only the path animations exist: satellite, window, curve');
+  page.live().forEach(checkFrames);
+  assert.equal(page.railMarker.style.transform, undefined, 'No per-frame styles are written');
+  assert.equal(page.paused, false, 'The orbit runs at the top');
+
+  const sat = page.live(page.railMarker)[0].keyframes;
+  const landing = page.arrival / page.range;
+  const before = sat.filter(k => k.offset < landing - 1e-9);
+  assert(before.length && before.every(k => k.opacity === 0), 'The rail satellite is hidden until it lands');
+  assert(sat.filter(k => Math.abs(k.offset - landing) < 1e-9).some(k => k.opacity === 1), 'It appears exactly at the landing scroll position');
+  const xs = new Set(sat.map(k => /translate3d\(([-\d.]+)px/.exec(k.transform)[1]));
+  assert(sat.length > 100 && xs.size > 20, 'The curve is sampled finely enough to stay smooth');
+  const shifts = page.live(page.maskNode)[0].keyframes.map(k => Number(/translate3d\(0,([-\d.]+)px/.exec(k.transform)[1]));
+  assert.equal(shifts[0], -2500, 'The flown path starts hidden');
+  assert(Math.abs(2500 + shifts[shifts.length - 1] - page.pathLength) < 0.2, 'The whole path is flown at the end of the page');
+
+  page.scrollTo(page.arrival - 150);
+  assert.equal(page.live(page.marker).length, 1, 'The flight is written once, when the satellite leaves');
+  checkFrames(page.live(page.marker)[0]);
+  assert.equal(page.marker.hidden, false, 'A visible satellite flies between sections');
+  assert(page.paused && page.classes.has('satellite-away') && !page.classes.has('sat-on-rail'), 'Flight state');
+  const flight = page.live(page.marker)[0].keyframes;
+  assert.equal(flight[flight.length - 1].opacity, 0, 'The flight copy fades out exactly on landing');
+  page.scrollTo(page.arrival - 100);
+  assert.equal(page.live(page.marker)[0].keyframes, flight, 'Scrolling does not rewrite the flight');
+
+  page.scrollTo(page.arrival + 100);
+  assert(page.classes.has('sat-on-rail') && page.marker.hidden, 'The rail satellite takes over after landing');
+  assert.equal(page.passed, 1, 'The first waypoint fills on arrival');
+  page.scrollTo(page.end);
+  assert.equal(page.passed, 6, 'Every waypoint is filled at the end of the page');
+  page.scrollTo(page.arrival + 100);
+  assert.equal(page.passed, 1, 'Waypoints empty again while scrolling up');
+
+  page.resize(-30);
+  assert.equal(page.live().length, 4, 'A layout change rebuilds the keyframes without leaving old ones running');
+  page.scrollTo(0);
+  assert.equal(page.live(page.marker).length, 0, 'The flight is dropped on reunion');
+  assert(!page.classes.has('satellite-away') && !page.paused && page.marker.hidden, 'The orbit resumes on reunion');
+
+  page.scrollTo(page.arrival + 100);
+  page.reduced(true);
+  assert.equal(page.live().length, 0, 'Reduced motion removes every scroll animation');
+  assert(page.paused && !page.classes.has('satellite-away') && page.passed === 6, 'Reduced motion shows the still picture');
+  assert(Math.abs(page.flown - page.pathLength) < 0.2, 'Reduced motion shows the whole path');
+  page.reduced(false);
+  assert.equal(page.live().length, 4, 'Animations return when reduced motion is disabled');
+}
 
 const css = fs.readFileSync(path.join(__dirname, '../assets/css/site.css'), 'utf8');
 for (const selector of ['.rail__sat', '.satellite-flight']) {

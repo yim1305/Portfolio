@@ -329,8 +329,8 @@ a:hover { color: var(--link-hover); text-decoration-thickness: 2px; }
    amount, so scrolling only moves two layers and never repaints the curve. */
 .rail__mask { position: absolute; top: 0; left: -40px; width: 82px; height: 100%; overflow: hidden; pointer-events: none; transform: translate3d(0, -100%, 0); will-change: transform; }
 .rail__mask .rail__curve { left: 40px; transform: translate3d(0, 100%, 0); will-change: transform; }
-.rail__sat { position: absolute; z-index: 1; left: 50%; top: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px; display: none; }
-.satellite-flight { position: fixed; z-index: 3; top: 0; left: 0; width: 44px; height: 44px; pointer-events: none; }
+.rail__sat { position: absolute; z-index: 1; left: 50%; top: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px; display: none; will-change: transform; }
+.satellite-flight { position: fixed; z-index: 3; top: 0; left: 0; width: 44px; height: 44px; pointer-events: none; will-change: transform; }
 .satellite-flight[hidden] { display: none; }
 .js .rail__sat { display: block; opacity: 0; }
 .js.sat-on-rail .rail__sat { opacity: 1; }
@@ -621,7 +621,9 @@ a.figure__frame:hover { border-color: var(--c-blue); }
        that clock while the satellite is away and resumes it on return.
        On scroll the satellite flies to the curved path beside Selected work and
        follows it; both markers move only by transform, in either direction, and
-       the flown part of the path is revealed with stroke-dashoffset. */
+       the flown part of the path is revealed by a sliding clipping window. Where
+       the browser supports it, site.js runs all of this as scroll-driven
+       animations, off the main thread. */
 .orbit__path--draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: orbit-draw 1800ms var(--ease) 150ms forwards; }
 @keyframes orbit-draw { to { stroke-dashoffset: 0; } }
 
